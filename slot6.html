@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slot 6: Penyelesaian Masalah & Kreativiti</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Roboto', sans-serif; overflow: hidden; }
+        h1, h2, h3, .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        
+        .slide-enter { animation: slideIn 0.5s ease-out forwards; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* 5 Whys Animation */
+        .reveal-down { animation: revealDown 0.5s ease-out forwards; }
+        @keyframes revealDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card Flip & Hover */
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        
+        .hover-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+
+        /* Neon Glow */
+        .neon-text { text-shadow: 0 0 10px rgba(59, 130, 246, 0.8), 0 0 20px rgba(59, 130, 246, 0.5); }
+        .neon-border { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5), inset 0 0 15px rgba(59, 130, 246, 0.2); }
+
+        /* 9 Dots Puzzle Line Animation */
+        .draw-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 3s linear forwards;
+        }
+        @keyframes dash { to { stroke-dashoffset: 0; } }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-950 text-white transition-colors duration-500" id="mainBody">
+
+    <!-- Header -->
+    <div class="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-20 pointer-events-none">
+        <div class="text-xl font-orbitron tracking-widest text-blue-400 bg-blue-900/40 px-6 py-1 rounded-full border border-blue-500/50 backdrop-blur-sm shadow-lg" id="slideCounter">
+            SLOT 6 / SLAID 1
+        </div>
+        <!-- Progress Dots -->
+        <div class="flex gap-1 pointer-events-auto" id="progressBar"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="w-full h-screen px-4 md:px-16 flex flex-col justify-center relative z-10 pt-16 pb-20" id="slideContainer">
+        <!-- Content injected via JS -->
+    </main>
+
+    <!-- Navigation -->
+    <div class="absolute bottom-0 left-0 w-full p-6 flex justify-between items-center z-20 pointer-events-none">
+        <button onclick="prevSlide()" id="btnPrev" class="pointer-events-auto flex items-center gap-2 px-6 py-3 rounded-lg font-bold hover:bg-white/10 transition-all disabled:opacity-30 disabled:cursor-not-allowed bg-slate-800/80 border border-slate-600 text-white shadow-lg backdrop-blur-md">
+            <i data-lucide="arrow-left"></i> SEBELUM
+        </button>
+        <button onclick="nextSlide()" id="btnNext" class="pointer-events-auto flex items-center gap-2 px-8 py-3 rounded-lg font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/30 transition-all hover:-translate-y-1 backdrop-blur-md border border-blue-400/50">
+            SETERUSNYA <i data-lucide="arrow-right"></i>
+        </button>
+    </div>
+
+    <script>
+        const slides = [
+            // --- BAHAGIAN 1: PENGENALAN ---
+            {
+                id: 1,
+                type: "title",
+                title: "PENYELESAIAN MASALAH & KEPUTUSAN KREATIF",
+                subtitle: "ROOT CAUSE ANALYSIS & INOVASI",
+                desc: "Slot 6: 8.00 MLM - 10.00 MLM",
+                bg: "bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')] bg-cover bg-center"
+            },
+            {
+                id: 2,
+                type: "nasa_story",
+                title: "THE NASA PARADOX",
+                subtitle: "Mitos vs Fakta: Kisah Pen Angkasa",
+                bg: "bg-slate-900"
+            },
+            {
+                id: 3,
+                type: "simplicity",
+                title: "SENI KESEDERHANAAN",
+                subtitle: "Simplicity is the ultimate sophistication",
+                bg: "bg-slate-950"
+            },
+            {
+                id: 4,
+                type: "problem_types",
+                title: "JENIS MASALAH",
+                subtitle: "Teknikal vs Adaptif",
+                bg: "bg-indigo-950"
+            },
+            
+            // --- KUIZ 1: JENIS MASALAH ---
+            {
+                id: 5,
+                type: "quiz_problems",
+                title: "KUIZ KUMPULAN: TEKNIKAL ATAU ADAPTIF?",
+                subtitle: "6 Situasi untuk 6 Kumpulan",
+                bg: "bg-slate-900"
+            },
+
+            // --- BAHAGIAN 2: PUNCA KUASA (RCA) ---
+            {
+                id: 6,
+                type: "rca_intro",
+                title: "MENCARI PUNCA KUASA",
+                subtitle: "Root Cause Analysis (RCA)",
+                bg: "bg-slate-800"
+            },
+            {
+                id: 7,
+                type: "five_whys",
+                title: "TEKNIK 5 WHYS",
+                subtitle: "Gali Sampai Akar Umbi (Klik untuk tanya)",
+                bg: "bg-slate-900"
+            },
+            {
+                id: 8,
+                type: "fishbone_visual",
+                title: "RAJAH TULANG IKAN",
+                subtitle: "Diagram Ishikawa (4M + 1E)",
+                bg: "bg-slate-200", // Ditukar dari putih ke slate-200 utk kurangkan silau tapi kekal terang
+                text: "text-slate-900"
+            },
+            {
+                id: 9,
+                type: "fishbone_flashcards", // UPDATED: Flashcard style
+                title: "BEDAH SIASAT IKAN",
+                subtitle: "Klik Kad Untuk Lihat Contoh",
+                bg: "bg-slate-900", // Kembali ke gelap utk kontras dengan kad
+                text: "text-white"
+            },
+
+            // --- BENGKEL ---
+            {
+                id: 10,
+                type: "workshop_instr",
+                title: "BENGKEL: BEDAH SIASAT PEJABAT",
+                subtitle: "Arahan Ringkas",
+                bg: "bg-amber-900"
+            },
+            {
+                id: 11,
+                type: "timer",
+                title: "MASA BERMULA!",
+                subtitle: "Analisis Punca Kuasa",
+                bg: "bg-slate-950"
+            },
+            {
+                id: 12,
+                type: "gallery_walk",
+                title: "PEMBENTANGAN GALERI",
+                subtitle: "Kritik & Tambah Nilai",
+                bg: "bg-purple-900"
+            },
+
+            // --- BAHAGIAN 3: KREATIF & KEPUTUSAN ---
+            {
+                id: 13,
+                type: "scamper_flashcards", // UPDATED: Flashcard style
+                title: "TEKNIK S.C.A.M.P.E.R.",
+                subtitle: "Inovasi Cara Kerja (Klik Huruf)",
+                bg: "bg-blue-950"
+            },
+            {
+                id: 14,
+                type: "eisenhower",
+                title: "MATRIKS EISENHOWER",
+                subtitle: "Penting vs Segera",
+                bg: "bg-slate-800"
+            },
+
+            // --- KUIZ 2: KEPUTUSAN ---
+            {
+                id: 15,
+                type: "quiz_matrix",
+                title: "KUIZ KUMPULAN: BUAT KEPUTUSAN",
+                subtitle: "Masuk Kuadran Mana?",
+                bg: "bg-slate-900"
+            },
+
+            // --- PENUTUP ---
+            {
+                id: 16,
+                type: "puzzle_9dots",
+                title: "THINK OUTSIDE THE BOX",
+                subtitle: "Teka-teki 9 Titik",
+                bg: "bg-white",
+                text: "text-slate-900"
+            },
+            {
+                id: 17,
+                type: "closing",
+                title: "RUMUSAN SLOT 6",
+                subtitle: "Selamat Malam",
+                bg: "bg-black"
+            }
+        ];
+
+        let currentSlide = 0;
+        let timerInterval;
+        let whyLevel = 0; // For 5 Whys animation
+        let puzzleSolved = false;
+
+        function renderSlide() {
+            const slide = slides[currentSlide];
+            const container = document.getElementById('slideContainer');
+            const body = document.getElementById('mainBody');
+            
+            // Set Background
+            if (slide.bg.startsWith('bg-[url')) {
+                body.className = `w-full h-screen flex flex-col transition-all duration-500 font-sans ${slide.bg} relative`;
+                // Add overlay for readability
+                if(!document.getElementById('bgOverlay')) {
+                    const overlay = document.createElement('div');
+                    overlay.id = 'bgOverlay';
+                    overlay.className = 'absolute inset-0 bg-slate-900/80 pointer-events-none z-0';
+                    body.insertBefore(overlay, body.firstChild);
+                }
+            } else {
+                body.className = `w-full h-screen flex flex-col transition-colors duration-500 font-sans ${slide.bg} ${slide.text || 'text-white'}`;
+                const overlay = document.getElementById('bgOverlay');
+                if(overlay) overlay.remove();
+            }
+
+            // Reset states
+            if(slide.id !== 7) whyLevel = 0;
+            if(slide.id !== 16) puzzleSolved = false;
+
+            let html = '';
+
+            // --- 1. TITLE ---
+            if (slide.type === 'title') {
+                html = `
+                <div class="flex flex-col items-center text-center slide-enter z-10 px-4">
+                    <div class="mb-8 p-8 bg-blue-600 rounded-full shadow-[0_0_60px_rgba(37,99,235,0.6)] animate-pulse neon-border">
+                        <i data-lucide="lightbulb" width="80" height="80" class="text-white"></i>
+                    </div>
+                    <h1 class="text-5xl md:text-8xl font-bold uppercase leading-none mb-4 text-blue-400 drop-shadow-lg font-orbitron neon-text">
+                        ${slide.title}
+                    </h1>
+                    <div class="h-1 w-32 bg-blue-500 mb-6"></div>
+                    <h2 class="text-2xl md:text-3xl font-orbitron tracking-widest text-blue-200 font-bold drop-shadow-md">
+                        ${slide.subtitle}
+                    </h2>
+                    <p class="mt-6 text-slate-100 font-mono text-lg font-bold bg-blue-900/80 px-8 py-3 rounded-full border border-blue-400/50 shadow-lg">${slide.desc}</p>
+                </div>`;
+            }
+
+            // --- 2. NASA STORY ---
+            else if (slide.type === 'nasa_story') {
+                html = `
+                <div class="flex flex-col items-center text-center slide-enter w-full max-w-6xl mx-auto px-4">
+                    <h2 class="text-5xl font-orbitron mb-12 text-blue-400 neon-text drop-shadow-sm">THE NASA PARADOX</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
+                        <!-- NASA -->
+                        <div class="bg-blue-900/30 p-8 rounded-3xl border-2 border-blue-500/50 hover:bg-blue-900/50 transition-all group backdrop-blur-sm shadow-xl">
+                            <h3 class="text-4xl font-bold text-blue-200 mb-4 drop-shadow-md">NASA 🇺🇸</h3>
+                            <i data-lucide="rocket" width="64" height="64" class="mx-auto text-blue-400 mb-6 animate-pulse"></i>
+                            <p class="text-white text-xl font-medium">"Habiskan jutaan dolar cipta pen graviti sifar."</p>
+                            <div class="mt-6 text-red-400 font-mono text-3xl font-bold bg-black/40 inline-block px-4 py-1 rounded">KOMPLEKS</div>
+                        </div>
+
+                        <!-- RUSIA -->
+                        <div class="bg-red-900/30 p-8 rounded-3xl border-2 border-red-500/50 hover:bg-red-900/50 transition-all group backdrop-blur-sm shadow-xl">
+                            <h3 class="text-4xl font-bold text-red-200 mb-4 drop-shadow-md">RUSIA 🇷🇺</h3>
+                            <i data-lucide="pencil" width="64" height="64" class="mx-auto text-red-400 mb-6 animate-bounce"></i>
+                            <p class="text-white text-xl font-medium">"Guna pensel."</p>
+                            <div class="mt-6 text-green-400 font-mono text-3xl font-bold bg-black/40 inline-block px-4 py-1 rounded">SIMPLE</div>
+                        </div>
+                    </div>
+                    <div class="mt-10 bg-slate-800/90 p-6 rounded-xl border-l-8 border-yellow-500 max-w-3xl shadow-2xl">
+                        <p class="text-2xl italic text-yellow-300 font-bold">"Seni penyelesaian masalah adalah KESEDERHANAAN (Simplicity)."</p>
+                    </div>
+                </div>`;
+            }
+
+            // --- 3. SIMPLICITY ---
+            else if (slide.type === 'simplicity') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
+                    <h2 class="text-7xl md:text-9xl font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 mb-8 drop-shadow-lg font-black">KISS</h2>
+                    <p class="text-5xl font-bold text-white mb-6 tracking-wide drop-shadow-md">KEEP IT SHORT & SIMPLE</p>
+                    <div class="h-1 w-48 bg-emerald-500 mb-8"></div>
+                    <p class="text-slate-300 max-w-3xl text-2xl leading-relaxed font-light">Penyelesaian terbaik selalunya adalah yang paling ringkas, bukan yang paling mahal.</p>
+                </div>`;
+            }
+
+            // --- 4. PROBLEM TYPES ---
+            else if (slide.type === 'problem_types') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4">
+                    <h2 class="text-6xl font-orbitron mb-12 text-white drop-shadow-lg">JENIS MASALAH</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 w-full">
+                        <div class="bg-indigo-900/60 p-10 rounded-3xl border-t-8 border-indigo-500 hover:-translate-y-2 transition-transform shadow-2xl backdrop-blur-md">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="p-4 bg-indigo-600 rounded-full"><i data-lucide="wrench" width="40" height="40" class="text-white"></i></div>
+                                <h3 class="text-4xl font-bold text-white">1. TEKNIKAL</h3>
+                            </div>
+                            <ul class="text-left space-y-4 text-indigo-100 text-xl">
+                                <li class="flex gap-3"><i data-lucide="check" class="text-indigo-400"></i> Jelas & Boleh Dilihat</li>
+                                <li class="flex gap-3"><i data-lucide="check" class="text-indigo-400"></i> Solusi: Panggil Pakar / Baiki</li>
+                                <li class="flex gap-3"><i data-lucide="check" class="text-indigo-400"></i> Contoh: Komputer Rosak</li>
+                            </ul>
+                        </div>
+                        <div class="bg-pink-900/60 p-10 rounded-3xl border-t-8 border-pink-500 hover:-translate-y-2 transition-transform shadow-2xl backdrop-blur-md">
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="p-4 bg-pink-600 rounded-full"><i data-lucide="brain-circuit" width="40" height="40" class="text-white"></i></div>
+                                <h3 class="text-4xl font-bold text-white">2. ADAPTIF</h3>
+                            </div>
+                            <ul class="text-left space-y-4 text-pink-100 text-xl">
+                                <li class="flex gap-3"><i data-lucide="alert-circle" class="text-pink-400"></i> Samar & Melibatkan Sikap</li>
+                                <li class="flex gap-3"><i data-lucide="alert-circle" class="text-pink-400"></i> Solusi: Ubah Cara Fikir / Masa</li>
+                                <li class="flex gap-3"><i data-lucide="alert-circle" class="text-pink-400"></i> Contoh: Staf Demotivasi</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="mt-10 text-slate-300 italic text-xl font-medium bg-black/50 px-6 py-3 rounded-full border border-slate-600">"Jangan cuba selesaikan masalah sikap (Adaptif) dengan beli komputer baru (Teknikal)."</p>
+                </div>`;
+            }
+
+            // --- 5. QUIZ 1 (GROUP) ---
+            else if (slide.type === 'quiz_problems') {
+                const scenarios = [
+                    { id: 1, text: "Server Pejabat 'Down'", ans: "TEKNIKAL" },
+                    { id: 2, text: "Dua Staf Kanan Bergaduh", ans: "ADAPTIF" },
+                    { id: 3, text: "Penghawa Dingin Rosak", ans: "TEKNIKAL" },
+                    { id: 4, text: "Budaya Datang Lewat", ans: "ADAPTIF" },
+                    { id: 5, text: "Borang Permohonan Tak Cukup", ans: "TEKNIKAL" },
+                    { id: 6, text: "Staf Rasa Tidak Dihargai", ans: "ADAPTIF" }
+                ];
+
+                html = `
+                <div class="flex flex-col items-center slide-enter w-full max-w-7xl mx-auto px-4">
+                    <h2 class="text-5xl font-orbitron mb-8 text-blue-400 drop-shadow-md">KUIZ: TEKNIKAL ATAU ADAPTIF?</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                        ${scenarios.map(s => `
+                        <div class="bg-slate-800 p-6 rounded-2xl border border-slate-600 flex flex-col justify-between h-56 group hover:border-blue-400 transition-colors shadow-lg">
+                            <div>
+                                <span class="text-sm font-black text-slate-400 uppercase tracking-widest mb-3 block bg-slate-900 w-fit px-3 py-1 rounded">KUMPULAN ${s.id}</span>
+                                <h3 class="text-2xl font-bold text-white mb-4 leading-tight">"${s.text}"</h3>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-3" id="q1-opts-${s.id}">
+                                <button onclick="checkQuiz1(this, '${s.ans}', 'TEKNIKAL', ${s.id})" class="py-3 rounded-lg bg-indigo-900/80 hover:bg-indigo-600 border-2 border-indigo-500/50 text-white font-bold transition-all text-sm">TEKNIKAL</button>
+                                <button onclick="checkQuiz1(this, '${s.ans}', 'ADAPTIF', ${s.id})" class="py-3 rounded-lg bg-pink-900/80 hover:bg-pink-600 border-2 border-pink-500/50 text-white font-bold transition-all text-sm">ADAPTIF</button>
+                            </div>
+                            <div id="q1-res-${s.id}" class="hidden mt-2 text-center font-black text-xl animate-bounce"></div>
+                        </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+            }
+
+            // --- 6. RCA INTRO ---
+            else if (slide.type === 'rca_intro') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
+                    <div class="bg-white/10 p-10 rounded-full mb-8 animate-pulse shadow-2xl border border-white/20">
+                        <i data-lucide="search" width="120" height="120" class="text-blue-400"></i>
+                    </div>
+                    <h2 class="text-7xl font-orbitron mb-6 text-white font-black tracking-tight">ROOT CAUSE ANALYSIS</h2>
+                    <div class="h-1 w-40 bg-blue-500 mb-8 mx-auto"></div>
+                    <p class="text-3xl text-slate-200 font-light max-w-3xl">"Jangan hanya rawat simptom (batuk), rawat punca penyakit (jangkitan)."</p>
+                </div>`;
+            }
+
+            // --- 7. 5 WHYS ---
+            else if (slide.type === 'five_whys') {
+                const whys = [
+                    "Kenapa data belum siap?",
+                    "Kenapa Unit Kewangan lambat bagi?",
+                    "Kenapa sistem e-Kewangan down?",
+                    "Kenapa server tak diselenggara?",
+                    "PUNCA SEBENAR: Tiada jadual penyelenggaraan! (Proses Salah)"
+                ];
+                
+                let stepsHtml = whys.map((w, i) => `
+                    <div id="why-${i}" class="hidden bg-slate-800 p-5 rounded-xl border-l-8 ${i===4 ? 'border-green-500 bg-green-900/30' : 'border-blue-500'} mb-4 w-full max-w-3xl text-left reveal-down shadow-lg">
+                        <span class="font-bold text-sm text-slate-400 block mb-1 uppercase tracking-wider">${i===4 ? 'ROOT CAUSE (AKAR UMBI)' : 'KENAPA?'}</span>
+                        <span class="text-2xl ${i===4 ? 'text-green-400 font-black' : 'text-white font-bold'}">${w}</span>
+                    </div>
+                `).join('');
+
+                html = `
+                <div class="flex flex-col items-center slide-enter w-full px-4">
+                    <h2 class="text-5xl font-orbitron mb-4 text-blue-400 drop-shadow-md">TEKNIK 5 WHYS</h2>
+                    <p class="text-xl text-slate-300 mb-8 bg-slate-800 px-6 py-2 rounded-full border border-slate-600">Masalah: Staf Lewat Hantar Laporan</p>
+                    
+                    <div class="w-full flex flex-col items-center min-h-[400px]">
+                        ${stepsHtml}
+                        <button id="btnWhy" onclick="revealNextWhy()" class="mt-6 bg-blue-600 hover:bg-blue-500 px-10 py-4 rounded-full font-bold text-xl shadow-xl flex items-center gap-3 transform hover:scale-105 transition-all">
+                            <i data-lucide="help-circle" width="24" height="24"></i> TANYA KENAPA
+                        </button>
+                    </div>
+                </div>`;
+            }
+
+            // --- 8. FISHBONE VISUAL ---
+            else if (slide.type === 'fishbone_visual') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-7xl mx-auto px-4">
+                    <h2 class="text-5xl font-teko mb-10 text-slate-900 font-bold uppercase tracking-wide">RAJAH TULANG IKAN (ISHIKAWA)</h2>
+                    
+                    <!-- Simple CSS Fishbone -->
+                    <div class="relative w-full h-[500px] flex items-center justify-center bg-white rounded-3xl shadow-2xl p-8 border-4 border-slate-300">
+                        <!-- Head -->
+                        <div class="absolute right-10 w-72 h-36 border-4 border-slate-900 rounded-r-full flex items-center justify-center bg-red-100 z-10 shadow-md">
+                            <h3 class="text-3xl font-black text-red-800 text-center leading-none">MASALAH<br>UTAMA</h3>
+                        </div>
+                        <!-- Spine -->
+                        <div class="w-[85%] h-3 bg-slate-900 absolute top-1/2 -translate-y-1/2 right-72 rounded-full"></div>
+                        
+                        <!-- Bones Top -->
+                        <div class="absolute top-20 left-48 w-1.5 h-40 bg-slate-900 rotate-[60deg] origin-bottom rounded-full"></div>
+                        <div class="absolute top-10 left-32 bg-blue-100 px-6 py-3 rounded-lg border-2 border-blue-600 font-bold text-blue-900 text-xl shadow-lg transform -rotate-6">MAN (Manusia)</div>
+
+                        <div class="absolute top-20 left-[30rem] w-1.5 h-40 bg-slate-900 rotate-[60deg] origin-bottom rounded-full"></div>
+                        <div class="absolute top-10 left-[26rem] bg-blue-100 px-6 py-3 rounded-lg border-2 border-blue-600 font-bold text-blue-900 text-xl shadow-lg transform -rotate-6">METHOD (Kaedah)</div>
+
+                        <!-- Bones Bottom -->
+                        <div class="absolute bottom-20 left-48 w-1.5 h-40 bg-slate-900 -rotate-[60deg] origin-top rounded-full"></div>
+                        <div class="absolute bottom-10 left-32 bg-blue-100 px-6 py-3 rounded-lg border-2 border-blue-600 font-bold text-blue-900 text-xl shadow-lg transform rotate-6">MACHINE (Mesin)</div>
+
+                        <div class="absolute bottom-20 left-[30rem] w-1.5 h-40 bg-slate-900 -rotate-[60deg] origin-top rounded-full"></div>
+                        <div class="absolute bottom-10 left-[26rem] bg-blue-100 px-6 py-3 rounded-lg border-2 border-blue-600 font-bold text-blue-900 text-xl shadow-lg transform rotate-6">MATERIAL (Bahan)</div>
+                        
+                        <!-- Environment (Tail) -->
+                         <div class="absolute left-10 w-2 h-32 bg-slate-900 top-1/2 -translate-y-1/2"></div>
+                         <div class="absolute left-4 top-1/2 -translate-y-1/2 bg-blue-100 px-4 py-2 rounded-lg border-2 border-blue-600 font-bold text-blue-900 text-sm shadow-lg -rotate-90">ENVIRONMENT</div>
+                    </div>
+                </div>`;
+            }
+
+            // --- 9. FISHBONE FLASHCARDS (UPDATED) ---
+            else if (slide.type === 'fishbone_flashcards') {
+                const cats = [
+                    { t: "MAN (Manusia)", ex: "Kurang latihan, sikap, penat." },
+                    { t: "METHOD (Kaedah)", ex: "SOP lapuk, birokrasi, tiada panduan." },
+                    { t: "MACHINE (Mesin)", ex: "Komputer lama, internet slow, sistem down." },
+                    { t: "MATERIAL (Bahan)", ex: "Kertas habis, toner kurang, bajet tiada." },
+                    { t: "ENVIRONMENT", ex: "Pejabat bising, panas, budaya toksik." }
+                ];
+
+                html = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-7xl mx-auto px-4">
+                    <h2 class="text-5xl font-teko mb-4 text-white">BEDAH SIASAT 4M + 1E</h2>
+                    <p class="text-slate-400 mb-10 text-xl">Klik kad untuk lihat contoh punca masalah.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full">
+                        ${cats.map(c => `
+                        <div class="relative h-64 w-full perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
+                            <div class="card-inner relative w-full h-full transition-transform duration-700 transform-style-3d">
+                                <!-- FRONT -->
+                                <div class="absolute w-full h-full backface-hidden bg-blue-800 rounded-2xl p-6 flex flex-col justify-center items-center text-center shadow-xl border-4 border-blue-600 hover:border-blue-400">
+                                    <h3 class="text-3xl font-black text-white leading-tight uppercase mb-4">${c.t.split(' ')[0]}</h3>
+                                    <span class="text-blue-300 text-sm font-bold uppercase tracking-widest">${c.t.split(' ')[1] || ''}</span>
+                                    <i data-lucide="mouse-pointer-2" class="mt-6 text-white/50 animate-bounce"></i>
+                                </div>
+                                <!-- BACK -->
+                                <div class="absolute w-full h-full backface-hidden bg-white rounded-2xl p-6 flex flex-col justify-center items-center text-center shadow-xl rotate-y-180 border-4 border-emerald-500">
+                                    <span class="text-emerald-700 font-bold text-xs tracking-widest mb-4 bg-emerald-100 px-2 py-1 rounded">CONTOH PUNCA</span>
+                                    <p class="text-xl font-bold text-slate-800 leading-snug">"${c.ex}"</p>
+                                </div>
+                            </div>
+                        </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+            }
+
+            // --- 10. WORKSHOP INSTRUCTION (SIMPLIFIED) ---
+            else if (slide.type === 'workshop_instr') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
+                    <div class="bg-amber-600 p-8 rounded-full mb-8 animate-pulse shadow-[0_0_50px_rgba(245,158,11,0.5)]">
+                        <i data-lucide="pen-tool" width="80" height="80" class="text-white"></i>
+                    </div>
+                    <h2 class="text-7xl font-teko mb-10 text-white font-bold tracking-wide">ARAHAN BENGKEL</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl w-full">
+                        <div class="bg-black/60 p-8 rounded-2xl border border-amber-500/50 flex items-center gap-6">
+                            <div class="text-6xl font-black text-amber-500">1</div>
+                            <div class="text-left"><h3 class="text-2xl font-bold text-white">LUKIS TULANG IKAN</h3><p class="text-slate-400">Guna Kertas Mahjong.</p></div>
+                        </div>
+                        <div class="bg-black/60 p-8 rounded-2xl border border-amber-500/50 flex items-center gap-6">
+                            <div class="text-6xl font-black text-amber-500">2</div>
+                            <div class="text-left"><h3 class="text-2xl font-bold text-white">TAMPAL PUNCA</h3><p class="text-slate-400">Guna Sticky Notes (4M + 1E).</p></div>
+                        </div>
+                        <div class="bg-black/60 p-8 rounded-2xl border border-amber-500/50 flex items-center gap-6 md:col-span-2 justify-center border-amber-400 shadow-lg shadow-amber-900/20">
+                            <div class="text-6xl font-black text-amber-400">3</div>
+                            <div class="text-left"><h3 class="text-3xl font-bold text-white">BULATKAN 'ROOT CAUSE'</h3><p class="text-slate-300 text-lg">Pilih SATU punca paling kritikal untuk dibentangkan.</p></div>
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            // --- 11. TIMER ---
+            else if (slide.type === 'timer') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter text-center">
+                    <h2 class="text-5xl font-orbitron mb-10 text-blue-400 tracking-widest">MASA PERBINCANGAN</h2>
+                    <div class="text-[12rem] leading-none font-mono font-bold text-white mb-12 neon-text tracking-tighter" id="timerDisplay">20:00</div>
+                    <div class="flex gap-6">
+                        <button onclick="startTimer(20)" class="bg-green-600 hover:bg-green-500 px-10 py-4 rounded-full font-bold shadow-xl text-xl hover:scale-105 transition-transform flex items-center gap-2"><i data-lucide="play"></i> MULA</button>
+                        <button onclick="resetTimer(20)" class="bg-slate-700 hover:bg-slate-600 px-10 py-4 rounded-full font-bold shadow-xl text-xl hover:scale-105 transition-transform flex items-center gap-2"><i data-lucide="rotate-ccw"></i> RESET</button>
+                    </div>
+                </div>`;
+            }
+
+            // --- 12. GALLERY WALK ---
+            else if (slide.type === 'gallery_walk') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
+                    <div class="mb-8 relative">
+                        <div class="absolute inset-0 bg-purple-500 blur-3xl opacity-20 rounded-full"></div>
+                        <i data-lucide="presentation" width="100" height="100" class="text-purple-400 relative z-10"></i>
+                    </div>
+                    <h2 class="text-7xl font-teko mb-8 text-white font-bold">PEMBENTANGAN GALERI</h2>
+                    
+                    <div class="bg-purple-900/40 p-10 rounded-3xl border border-purple-500/50 max-w-3xl backdrop-blur-md shadow-2xl">
+                        <ul class="text-left space-y-6 text-2xl text-purple-100">
+                            <li class="flex items-center gap-4"><div class="bg-purple-600 p-2 rounded-lg"><i data-lucide="clock" class="text-white"></i></div> <strong>2 MINIT</strong> setiap kumpulan.</li>
+                            <li class="flex items-center gap-4"><div class="bg-purple-600 p-2 rounded-lg"><i data-lucide="target" class="text-white"></i></div> Bentang <strong>PUNCA UTAMA</strong> sahaja.</li>
+                            <li class="flex items-center gap-4"><div class="bg-purple-600 p-2 rounded-lg"><i data-lucide="message-square" class="text-white"></i></div> Kumpulan lain boleh <strong>BANGKANG / KOMEN</strong>.</li>
+                        </ul>
+                    </div>
+                </div>`;
+            }
+
+            // --- 13. SCAMPER (UPDATED FLASHCARDS) ---
+            else if (slide.type === 'scamper_flashcards') {
+                const scamper = [
+                    { l: 'S', t: 'SUBSTITUTE', d: 'Gantikan bahan, orang, atau peraturan.' },
+                    { l: 'C', t: 'COMBINE', d: 'Gabungkan dua proses jadi satu.' },
+                    { l: 'A', t: 'ADAPT', d: 'Sesuaikan idea dari tempat lain ke sini.' },
+                    { l: 'M', t: 'MODIFY', d: 'Ubah suai bentuk, saiz, atau rupa.' },
+                    { l: 'P', t: 'PUT TO USE', d: 'Gunakan untuk tujuan lain yang berguna.' },
+                    { l: 'E', t: 'ELIMINATE', d: 'Hapuskan langkah yang tak perlu (Buang Red Tape).' },
+                    { l: 'R', t: 'REARRANGE', d: 'Susun semula urutan kerja atau jadual.' }
+                ];
+                
+                html = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-7xl mx-auto px-4">
+                    <h2 class="text-6xl font-teko mb-4 text-blue-300">TEKNIK S.C.A.M.P.E.R.</h2>
+                    <p class="text-slate-400 mb-10 text-xl">Klik kad untuk lihat maksud inovasi.</p>
+                    
+                    <div class="grid grid-cols-4 md:grid-cols-7 gap-4 w-full">
+                        ${scamper.map(s => `
+                        <div class="relative h-64 w-full perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
+                            <div class="card-inner relative w-full h-full transition-transform duration-700 transform-style-3d">
+                                <!-- FRONT -->
+                                <div class="absolute w-full h-full backface-hidden bg-blue-900/80 rounded-2xl flex flex-col justify-center items-center text-center shadow-lg border-2 border-blue-500 hover:border-blue-300">
+                                    <h1 class="text-7xl font-black text-blue-200 mb-2">${s.l}</h1>
+                                    <div class="text-xs font-bold text-white bg-black/30 px-2 py-1 rounded w-full">${s.t}</div>
+                                </div>
+                                <!-- BACK -->
+                                <div class="absolute w-full h-full backface-hidden bg-white rounded-2xl p-4 flex flex-col justify-center items-center text-center shadow-lg rotate-y-180 border-4 border-indigo-500">
+                                    <h3 class="text-lg font-black text-indigo-900 mb-2">${s.t}</h3>
+                                    <p class="text-sm font-bold text-slate-700 leading-snug">"${s.d}"</p>
+                                </div>
+                            </div>
+                        </div>
+                        `).join('')}
+                    </div>
+                    <div class="mt-8 bg-blue-900/40 p-6 rounded-xl text-center max-w-3xl border border-blue-500/30">
+                        <p class="text-xl italic text-blue-100 font-medium">"Contoh: Ganti borang kertas dengan Google Form (Substitute). Hapus langkah fotostat (Eliminate)."</p>
+                    </div>
+                </div>`;
+            }
+
+            // --- 14. EISENHOWER ---
+            else if (slide.type === 'eisenhower') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-5xl mx-auto px-4">
+                    <h2 class="text-5xl font-teko mb-8 text-slate-200">MATRIKS EISENHOWER</h2>
+                    
+                    <div class="grid grid-cols-2 gap-6 w-full h-[500px]">
+                        <!-- Q1 -->
+                        <div class="bg-red-900/40 border-4 border-red-600 rounded-2xl p-8 relative hover-card">
+                            <span class="absolute top-4 left-4 bg-red-600 text-white text-sm px-3 py-1 rounded font-bold uppercase">PENTING & SEGERA</span>
+                            <div class="flex flex-col h-full justify-center items-center text-center">
+                                <h3 class="text-5xl font-black text-white mb-2 drop-shadow-md">DO</h3>
+                                <p class="text-xl font-bold text-red-300">(BUAT SEKARANG)</p>
+                                <p class="mt-4 text-slate-300 text-sm">Contoh: Krisis, Deadline Esok</p>
+                            </div>
+                        </div>
+                        <!-- Q2 -->
+                        <div class="bg-blue-900/40 border-4 border-blue-500 rounded-2xl p-8 relative hover-card">
+                            <span class="absolute top-4 left-4 bg-blue-500 text-white text-sm px-3 py-1 rounded font-bold uppercase">PENTING, TAK SEGERA</span>
+                            <div class="flex flex-col h-full justify-center items-center text-center">
+                                <h3 class="text-5xl font-black text-white mb-2 drop-shadow-md">SCHEDULE</h3>
+                                <p class="text-xl font-bold text-blue-300">(JADUALKAN)</p>
+                                <p class="mt-4 text-slate-300 text-sm">Contoh: Perancangan, Latihan</p>
+                            </div>
+                        </div>
+                        <!-- Q3 -->
+                        <div class="bg-yellow-900/40 border-4 border-yellow-500 rounded-2xl p-8 relative hover-card">
+                            <span class="absolute top-4 left-4 bg-yellow-600 text-white text-sm px-3 py-1 rounded font-bold uppercase">TAK PENTING, SEGERA</span>
+                            <div class="flex flex-col h-full justify-center items-center text-center">
+                                <h3 class="text-5xl font-black text-white mb-2 drop-shadow-md">DELEGATE</h3>
+                                <p class="text-xl font-bold text-yellow-300">(WAKILKAN)</p>
+                                <p class="mt-4 text-slate-300 text-sm">Contoh: Gangguan, Telefon</p>
+                            </div>
+                        </div>
+                        <!-- Q4 -->
+                        <div class="bg-slate-800/60 border-4 border-slate-500 rounded-2xl p-8 relative hover-card">
+                            <span class="absolute top-4 left-4 bg-slate-500 text-white text-sm px-3 py-1 rounded font-bold uppercase">TAK PENTING, TAK SEGERA</span>
+                            <div class="flex flex-col h-full justify-center items-center text-center">
+                                <h3 class="text-5xl font-black text-slate-300 mb-2 drop-shadow-md">DELETE</h3>
+                                <p class="text-xl font-bold text-slate-400">(HAPUSKAN)</p>
+                                <p class="mt-4 text-slate-400 text-sm">Contoh: Membawang, Medsos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            // --- 15. QUIZ 2 (EISENHOWER) ---
+            else if (slide.type === 'quiz_matrix') {
+                const tasks = [
+                    { id: 1, text: "Dateline Laporan Esok Pagi", ans: "DO (Q1)" },
+                    { id: 2, text: "Perancangan Bajet Tahun Depan", ans: "SCHEDULE (Q2)" },
+                    { id: 3, text: "Panggilan 'Spam' / Scammer", ans: "DELETE (Q4)" }, 
+                    { id: 4, text: "Berbual Kosong / Gosip", ans: "DELETE (Q4)" },
+                    { id: 5, text: "Bos Panggil Masuk Bilik Sekarang", ans: "DO (Q1)" },
+                    { id: 6, text: "Susun Fail Lama (Boleh buat bila-bila)", ans: "SCHEDULE (Q2)" } 
+                ];
+
+                html = `
+                <div class="flex flex-col items-center slide-enter w-full max-w-6xl mx-auto px-4">
+                    <h2 class="text-4xl font-orbitron mb-8 text-blue-400 drop-shadow-md">KUIZ: MASUK KUADRAN MANA?</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                        ${tasks.map(t => `
+                        <div class="bg-slate-800 p-6 rounded-2xl border border-slate-600 shadow-lg hover:border-blue-400 transition-colors">
+                            <span class="text-xs font-black text-slate-900 uppercase tracking-widest mb-3 block bg-slate-400 w-fit px-3 py-1 rounded font-bold">KUMPULAN ${t.id}</span>
+                            <h3 class="text-xl font-bold text-white mb-6 leading-tight min-h-[3rem]">"${t.text}"</h3>
+                            <button onclick="this.innerHTML='${t.ans}'; this.classList.remove('bg-slate-700', 'text-slate-300'); this.classList.add('bg-green-600', 'text-white', 'scale-105', 'font-black');" class="w-full py-4 bg-slate-700 hover:bg-slate-600 rounded-lg text-base font-bold text-slate-300 transition-all border border-slate-500 shadow-md">KLIK UNTUK JAWAPAN</button>
+                        </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+            }
+
+            // --- 16. 9 DOTS PUZZLE ---
+            else if (slide.type === 'puzzle_9dots') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-4xl mx-auto text-center px-4">
+                    <h2 class="text-5xl font-teko mb-4 text-white font-bold">THINK OUTSIDE THE BOX</h2>
+                    <p class="text-slate-300 mb-8 text-xl">Sambungkan 9 titik dengan 4 garis lurus tanpa angkat pen.</p>
+                    
+                    <div class="relative w-72 h-72 bg-white rounded-2xl p-8 shadow-2xl mx-auto mb-10 border-4 border-slate-300">
+                        <div class="grid grid-cols-3 gap-8 absolute inset-0 p-14">
+                            ${[...Array(9)].map(() => `<div class="w-5 h-5 bg-slate-900 rounded-full mx-auto shadow-md"></div>`).join('')}
+                        </div>
+                        <!-- SVG Line Overlay (Hidden initially) -->
+                        <svg class="absolute inset-0 w-full h-full pointer-events-none ${puzzleSolved ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000 z-10" viewBox="0 0 100 100">
+                            <path d="M 20 20 L 80 20 L 0 100 L 20 20 L 20 100 L 80 100 L 0 20" stroke="red" stroke-width="3" fill="none" class="${puzzleSolved ? 'draw-line' : ''}" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+
+                    <button onclick="solvePuzzle()" class="bg-red-600 text-white px-10 py-4 rounded-full font-bold text-xl shadow-lg hover:bg-red-500 transition-transform hover:scale-105 flex items-center gap-3">
+                        <i data-lucide="eye"></i> TUNJUK JAWAPAN
+                    </button>
+                </div>`;
+            }
+
+            // --- 17. CLOSING ---
+            else if (slide.type === 'closing') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
+                    <h1 class="text-8xl font-orbitron mb-8 text-white neon-text font-black">TAMAT SLOT 6</h1>
+                    <div class="bg-slate-900/80 p-10 rounded-3xl border-2 border-slate-600 max-w-4xl shadow-2xl backdrop-blur-sm">
+                        <blockquote class="text-3xl italic text-slate-200 font-light leading-relaxed">
+                            "Masalah di KPM takkan selesai jika kita berfikir dengan cara yang sama kita mencipta masalah itu."
+                        </blockquote>
+                        <p class="text-right mt-4 text-slate-400 font-bold">- Albert Einstein (Diubahsuai)</p>
+                    </div>
+                    
+                    <div class="mt-12 bg-blue-900/60 border border-blue-500 p-8 rounded-2xl text-left max-w-md w-full shadow-lg">
+                        <h3 class="text-2xl font-bold text-blue-300 mb-6 border-b border-blue-500/50 pb-2 flex items-center gap-2"><i data-lucide="check-square"></i> CHECKLIST PULANG</h3>
+                        <ul class="space-y-4 text-xl text-white font-medium">
+                            <li class="flex items-center gap-3"><span class="text-green-400">✔</span> Kemas Kertas Mahjong</li>
+                            <li class="flex items-center gap-3"><span class="text-green-400">✔</span> Pulangkan Marker Pen</li>
+                            <li class="flex items-center gap-3"><span class="text-green-400">✔</span> Minum Malam</li>
+                            <li class="flex items-center gap-3"><span class="text-green-400">✔</span> Rehat (Esok Slot 7!)</li>
+                        </ul>
+                    </div>
+                </div>`;
+            }
+
+            container.innerHTML = html;
+            lucide.createIcons();
+            updateProgressBar();
+        }
+
+        // --- LOGIC ---
+
+        function revealNextWhy() {
+            const el = document.getElementById(`why-${whyLevel}`);
+            if (el) {
+                el.classList.remove('hidden');
+                whyLevel++;
+                document.getElementById('slideContainer').scrollTop = document.getElementById('slideContainer').scrollHeight;
+            }
+        }
+
+        function checkQuiz1(btn, correctAns, type, id) {
+            const parent = document.getElementById(`q1-opts-${id}`);
+            const feedback = document.getElementById(`q1-res-${id}`);
+            
+            const btns = parent.querySelectorAll('button');
+            btns.forEach(b => b.classList.add('opacity-50', 'cursor-not-allowed'));
+
+            feedback.classList.remove('hidden');
+            if (type === correctAns) {
+                btn.classList.remove('bg-indigo-900/50', 'bg-pink-900/50');
+                btn.classList.add('bg-green-600', 'border-green-400', 'scale-105');
+                feedback.innerHTML = `<span class="text-green-400 flex items-center justify-center gap-2"><i data-lucide="check-circle"></i> TEPAT!</span>`;
+            } else {
+                btn.classList.remove('bg-indigo-900/50', 'bg-pink-900/50');
+                btn.classList.add('bg-red-600', 'border-red-400');
+                feedback.innerHTML = `<span class="text-red-400 flex items-center justify-center gap-2"><i data-lucide="x-circle"></i> SALAH (${correctAns})</span>`;
+            }
+            lucide.createIcons();
+        }
+
+        function startTimer(minutes) {
+            let timeLeft = minutes * 60;
+            const display = document.getElementById('timerDisplay');
+            if (timerInterval) clearInterval(timerInterval);
+
+            timerInterval = setInterval(() => {
+                const m = Math.floor(timeLeft / 60);
+                const s = timeLeft % 60;
+                display.textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    display.classList.add('text-red-500', 'animate-pulse');
+                }
+                timeLeft--;
+            }, 1000);
+        }
+
+        function resetTimer(minutes) {
+            if (timerInterval) clearInterval(timerInterval);
+            const display = document.getElementById('timerDisplay');
+            if(display) {
+                display.textContent = `${minutes}:00`;
+                display.classList.remove('text-red-500', 'animate-pulse');
+            }
+        }
+
+        function solvePuzzle() {
+            puzzleSolved = true;
+            renderSlide(); 
+        }
+
+        function updateProgressBar() {
+            const bar = document.getElementById('progressBar');
+            bar.innerHTML = slides.map((_, i) => 
+                `<div class="h-2 rounded-full transition-all duration-300 ${i === currentSlide ? 'bg-blue-500 w-6 md:w-8 shadow-lg shadow-blue-500/50' : 'bg-slate-700 w-2 md:w-4'}"></div>`
+            ).join('');
+
+            document.getElementById('slideCounter').innerText = `SLOT 6 / SLAID ${currentSlide + 1}`;
+            
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+
+            btnPrev.disabled = currentSlide === 0;
+            
+            if (currentSlide === slides.length - 1) {
+                btnNext.innerHTML = 'TAMAT <i data-lucide="check-circle"></i>';
+                btnNext.classList.replace('bg-blue-600', 'bg-slate-700');
+            } else {
+                btnNext.innerHTML = 'SETERUSNYA <i data-lucide="arrow-right"></i>';
+                btnNext.classList.replace('bg-slate-700', 'bg-blue-600');
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide();
+            }
+        }
+
+        renderSlide();
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
+</body>
+</html>    

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slaid Slot 2 - Peserta (Interaktif)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        body { font-family: 'Poppins', sans-serif; overflow: hidden; }
+        
+        /* Animations */
+        .slide-enter { animation: slideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse-slow { animation: pulse 3s infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Card Interactions */
+        .interactive-card { transition: all 0.3s ease; cursor: pointer; }
+        .interactive-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); }
+
+        /* Flip Card Styles */
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        
+        /* Hidden Reveal Classes */
+        .reveal-content { display: none; }
+        .reveal-content.show { display: block; animation: fadeIn 0.5s forwards; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Timer Style */
+        .timer-display { font-variant-numeric: tabular-nums; }
+    </style>
+</head>
+<body class="bg-slate-900 text-white transition-colors duration-500" id="mainBody">
+
+    <!-- Header -->
+    <div class="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-20">
+        <div class="flex flex-col">
+            <div class="text-xs text-amber-500 font-bold tracking-widest uppercase">Kepimpinan 2026</div>
+            <div class="text-sm font-semibold opacity-90" id="slideCounter">SLOT 2 / SLAID 1</div>
+        </div>
+        <div class="flex gap-1 h-1 bg-slate-800 rounded-full overflow-hidden w-48">
+            <div id="progressBar" class="bg-amber-500 h-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <!-- Added 'items-center' to force centering -->
+    <main class="w-full h-screen px-6 md:px-20 flex flex-col justify-center items-center relative z-10 pt-16 pb-20" id="slideContainer">
+        <!-- Content injected via JS -->
+    </main>
+
+    <!-- Footer Navigation -->
+    <div class="absolute bottom-0 left-0 w-full p-6 flex justify-between items-center z-20 bg-gradient-to-t from-slate-900 to-transparent">
+        <button onclick="prevSlide()" id="btnPrev" class="flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all hover:bg-white/10 opacity-50 cursor-not-allowed border border-white/20">
+            <i data-lucide="arrow-left" width="18"></i> Sebelumnya
+        </button>
+
+        <button onclick="nextSlide()" id="btnNext" class="flex items-center gap-2 px-8 py-3 rounded-full font-bold transition-all bg-amber-600 hover:bg-amber-500 shadow-lg hover:shadow-amber-500/20">
+            Seterusnya <i data-lucide="arrow-right" width="18"></i>
+        </button>
+    </div>
+
+    <script>
+        // --- DATA SLAID (15 Slaid) ---
+        const slides = [
+            // 1. Tajuk
+            {
+                type: "title",
+                title: "PERSPEKTIF PENYELIAAN BERKESAN",
+                subtitle: "SLOT 2 (8.30 MLM - 10.30 MLM)",
+                content: "Menukar Minda: Daripada 'Buat Kerja' Kepada 'Mengurus Kerja'",
+                icon: "briefcase"
+            },
+            // 2. The Wake Up Call (Interactive Flip) - DIBAIKI
+            {
+                type: "wake_up_interactive",
+                title: "THE WAKE UP CALL",
+                subtitle: "Klik Kad Untuk Lihat Perbezaan",
+                leftTitle: "KERANA ANDA?",
+                leftContent: "Staf bekerja sebab anda MEMUDAHKAN urusan mereka. Anda adalah inspirasi & pendorong.",
+                rightTitle: "WALAUPUN ADA ANDA?",
+                rightContent: "Staf bekerja sendiri. Anda tiada fungsi (atau menyusahkan). Kerja jalan sebab staf yang bagus, bukan sebab anda.",
+                icon: "help-circle"
+            },
+            // 3. Analogi Jambatan
+            {
+                type: "visual",
+                title: "PENYELIA ADALAH JAMBATAN",
+                subtitle: "Menghubungkan Dua Pulau",
+                content: "Jika jambatan rapuh, arahan dari Pengurusan takkan sampai ke Pelaksana.",
+                icon: "projector" 
+            },
+            // 4. Intro Quiz
+            {
+                type: "section",
+                title: "AKTIVITI: MINDA OPERATOR VS PENYELIA",
+                subtitle: "Uji minda anda. Adakah anda masih berfikir seperti kerani?",
+                icon: "brain-circuit"
+            },
+            // 5. Quiz 1
+            {
+                type: "quiz",
+                question: "Baiki sendiri komputer staf sebab anda lebih pandai IT?",
+                answer: "OPERATOR",
+                reason: "Salah! Penyelia patut ajar atau panggil IT. Jangan buat kerja orang.",
+                correctBtn: 1 // 0 = Penyelia, 1 = Operator
+            },
+            // 6. Quiz 2
+            {
+                type: "quiz",
+                question: "Menyemak draf surat staf dan tunjukkan kesilapan ejaan?",
+                answer: "PENYELIA",
+                reason: "Betul! Ini adalah bimbingan dan kawalan kualiti.",
+                correctBtn: 0
+            },
+            // 7. Quiz 3
+            {
+                type: "quiz",
+                question: "Mengadu kepada bos besar bahawa staf anda malas?",
+                answer: "OPERATOR",
+                reason: "Salah! Penyelia cuba selesaikan masalah dalaman dahulu.",
+                correctBtn: 1
+            },
+            // 8. Quiz 4
+            {
+                type: "quiz",
+                question: "Memastikan bahan mesyuarat siap sebelum bos masuk bilik?",
+                answer: "PENYELIA",
+                reason: "Betul! Ini adalah perancangan dan persediaan.",
+                correctBtn: 0
+            },
+            // 9. Video Intro - VIDEO DI SINI
+            {
+                type: "video_player",
+                title: "BEDAH SIASAT VIDEO",
+                subtitle: "'Horrible Bosses'",
+                videoSrc: "Video_The_Devil_Wears_Prada_Bahasa.mp4",
+                content: "Saksikan klip ini. Perhatikan bahasa badan dan nada suara.",
+                icon: "film"
+            },
+            // 10. Discussion Timer
+            {
+                type: "timer",
+                title: "PERBINCANGAN KUMPULAN",
+                task: "Bincangkan: Apa SATU kesalahan terbesar bos dalam video tadi?",
+                duration: 300 // 5 minit
+            },
+            // 11. POLC Theory 1
+            {
+                type: "cards",
+                title: "KITARAN P.O.L.C (Bahagian 1)",
+                cards: [
+                    { title: "P - PLANNING", desc: "Merancang: Esok nak buat apa? Siapa buat?", icon: "map" },
+                    { title: "O - ORGANIZING", desc: "Mengurus: Cukup tak kertas? Cukup tak orang?", icon: "layers" }
+                ]
+            },
+            // 12. POLC Theory 2
+            {
+                type: "cards",
+                title: "KITARAN P.O.L.C (Bahagian 2)",
+                cards: [
+                    { title: "L - LEADING", desc: "Memimpin: 'Ali buat ni, Siti bantu Ali.'", icon: "flag" },
+                    { title: "C - CONTROLLING", desc: "Mengawal: 'Dah siap? Meh saya semak.'", icon: "clipboard-check" }
+                ]
+            },
+            // 13. Case Study
+            {
+                type: "case_study",
+                title: "KAJIAN KES: 'BUKAN TUGAS SAYA'",
+                scenario: "Staf: 'Tuan, fail meja saya tulis jaga kaunter, bukan photostat. Itu kerja orang lain.'",
+                solution: "Gunakan Diplomasi + Rujukan Perintah Am (Tugas lain yang diarahkan). Terangkan kepentingan tugas itu."
+            },
+            // 14. Reflection
+            {
+                type: "reflection",
+                title: "SURAT UNTUK DIRI SENDIRI",
+                subtitle: "Refleksi Malam",
+                content: "Tuliskan satu tabiat buruk penyeliaan yang anda janji nak BUANG bermula esok.",
+                icon: "feather"
+            },
+            // 15. Closing
+            {
+                type: "closing",
+                title: "JUMPA ESOK!",
+                subtitle: "Slot: SKT & Prestasi",
+                content: "Tidur sebagai Penyelia, bukan lagi Operator.",
+                icon: "moon"
+            }
+        ];
+
+        let currentSlide = 0;
+        let timerInterval = null;
+
+        // --- RENDER FUNCTIONS ---
+
+        function renderSlide() {
+            const slide = slides[currentSlide];
+            const container = document.getElementById('slideContainer');
+            const body = document.getElementById('mainBody');
+            
+            // Clear timer if exists
+            if (timerInterval) clearInterval(timerInterval);
+
+            // Update Background
+            body.className = `w-full h-screen flex flex-col items-center justify-center transition-colors duration-700 overflow-hidden font-sans ${slide.bg || 'bg-slate-900'} text-white`;
+
+            let html = '';
+
+            // 1. TITLE / SECTION
+            if (slide.type === 'title' || slide.type === 'section') {
+                html = `
+                <div class="flex flex-col items-center text-center slide-enter max-w-4xl mx-auto">
+                    <div class="mb-6 p-6 bg-amber-500/20 rounded-full inline-block backdrop-blur-sm shadow-lg shadow-amber-500/10">
+                        <i data-lucide="${slide.icon}" width="80" height="80" class="text-amber-400"></i>
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight leading-tight uppercase bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                        ${slide.title}
+                    </h1>
+                    <div class="h-1 w-32 bg-amber-500 mb-8 rounded-full"></div>
+                    <h2 class="text-xl md:text-3xl font-light opacity-90 mb-4 text-amber-200 uppercase tracking-widest">
+                        ${slide.subtitle || ''}
+                    </h2>
+                    <p class="text-lg opacity-70 italic max-w-2xl mx-auto">
+                        ${slide.content || ''}
+                    </p>
+                </div>`;
+            }
+
+            // 2. WAKE UP CALL (INTERACTIVE FLIP)
+            else if (slide.type === 'wake_up_interactive') {
+                html = `
+                <div class="flex flex-col items-center text-center slide-enter w-full max-w-6xl mx-auto">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-amber-500">${slide.title}</h2>
+                    <p class="text-slate-400 mb-10">${slide.subtitle}</p>
+                    
+                    <div class="flex flex-col md:flex-row gap-8 justify-center w-full">
+                        <!-- Card 1 -->
+                        <div class="relative w-full md:w-96 h-80 perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
+                            <div class="card-inner relative w-full h-full transition-transform duration-700 transform-style-3d">
+                                <div class="absolute w-full h-full backface-hidden bg-green-900/50 border-2 border-green-500 rounded-2xl flex flex-col items-center justify-center p-6 shadow-xl hover:bg-green-900/70">
+                                    <i data-lucide="thumbs-up" width="64" height="64" class="text-green-400 mb-4"></i>
+                                    <h3 class="text-2xl font-bold text-white">${slide.leftTitle}</h3>
+                                    <p class="text-green-200 text-sm mt-4">(Klik untuk maksud)</p>
+                                </div>
+                                <div class="absolute w-full h-full backface-hidden bg-green-700 rounded-2xl flex flex-col items-center justify-center p-6 rotate-y-180 shadow-xl">
+                                    <p class="text-lg font-medium text-white leading-relaxed">"${slide.leftContent}"</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="relative w-full md:w-96 h-80 perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
+                            <div class="card-inner relative w-full h-full transition-transform duration-700 transform-style-3d">
+                                <div class="absolute w-full h-full backface-hidden bg-red-900/50 border-2 border-red-500 rounded-2xl flex flex-col items-center justify-center p-6 shadow-xl hover:bg-red-900/70">
+                                    <i data-lucide="alert-triangle" width="64" height="64" class="text-red-400 mb-4"></i>
+                                    <h3 class="text-2xl font-bold text-white">${slide.rightTitle}</h3>
+                                    <p class="text-red-200 text-sm mt-4">(Klik untuk maksud)</p>
+                                </div>
+                                <div class="absolute w-full h-full backface-hidden bg-red-700 rounded-2xl flex flex-col items-center justify-center p-6 rotate-y-180 shadow-xl">
+                                    <p class="text-lg font-medium text-white leading-relaxed">"${slide.rightContent}"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            // 3. IMPACT
+            else if (slide.type === 'impact') {
+                html = `
+                <div class="flex flex-col items-center text-center slide-enter max-w-5xl mx-auto">
+                    <div class="p-4 bg-white/10 rounded-full mb-6 pulse-slow">
+                        <i data-lucide="${slide.visual}" width="100" height="100" class="text-red-400"></i>
+                    </div>
+                    <h1 class="text-6xl font-bold mb-8 text-white">${slide.title}</h1>
+                    <div class="bg-black/40 p-8 rounded-2xl border-l-8 border-red-500 shadow-2xl">
+                        <h2 class="text-3xl md:text-4xl font-semibold leading-relaxed">
+                            "${slide.question}"
+                        </h2>
+                    </div>
+                </div>`;
+            }
+
+            // 4. VISUAL / METAPHOR
+            else if (slide.type === 'visual') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full relative w-full max-w-6xl mx-auto slide-enter">
+                     <h2 class="text-4xl font-bold mb-12 uppercase tracking-widest text-sky-300 text-center">${slide.title}</h2>
+                    
+                    <div class="flex justify-between w-full items-end mb-4 px-12 relative z-10">
+                        <div class="flex flex-col items-center text-center gap-2">
+                            <i data-lucide="building" width="64" height="64" class="text-slate-300"></i>
+                            <div class="bg-slate-700 px-6 py-3 rounded-lg font-bold">PENGURUSAN</div>
+                        </div>
+                        <div class="flex flex-col items-center text-center gap-2">
+                             <i data-lucide="users" width="64" height="64" class="text-slate-300"></i>
+                             <div class="bg-slate-700 px-6 py-3 rounded-lg font-bold">PELAKSANA</div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative w-3/4 h-24 -mt-10 mb-8 flex flex-col items-center">
+                         <div class="w-full h-full border-t-8 border-dashed border-amber-500 rounded-[50%] absolute top-0"></div>
+                         <div class="absolute -top-6 bg-amber-600 text-white px-6 py-2 rounded-full font-bold shadow-lg flex items-center gap-2 animate-bounce">
+                            <i data-lucide="user-check" width="20"></i> ANDA (PENYELIA)
+                        </div>
+                    </div>
+
+                    <p class="text-xl opacity-60 italic mt-8 text-center max-w-2xl">"${slide.content}"</p>
+                </div>`;
+            }
+
+            // 5. QUIZ
+            else if (slide.type === 'quiz') {
+                html = `
+                <div class="flex flex-col items-center justify-center w-full max-w-4xl mx-auto slide-enter">
+                    <div class="mb-8">
+                        <span class="bg-amber-500 text-black px-3 py-1 rounded font-bold text-xs tracking-wider">KUIZ PANTAS</span>
+                    </div>
+                    <div class="bg-white text-slate-900 p-10 rounded-2xl shadow-2xl text-center w-full mb-10">
+                        <h3 class="text-2xl md:text-3xl font-bold leading-relaxed">
+                            "${slide.question}"
+                        </h3>
+                    </div>
+                    
+                    <div class="flex gap-6 w-full justify-center" id="quizButtons">
+                        <button onclick="answerQuiz(0, ${slide.correctBtn}, '${slide.reason}', '${slide.answer}')" class="flex-1 bg-slate-700 hover:bg-slate-600 p-6 rounded-xl border-2 border-slate-600 hover:border-green-400 transition-all group">
+                            <div class="text-xl font-bold mb-2 group-hover:text-green-400">PENYELIA</div>
+                            <div class="text-xs opacity-50">Mengurus & Memimpin</div>
+                        </button>
+                        <button onclick="answerQuiz(1, ${slide.correctBtn}, '${slide.reason}', '${slide.answer}')" class="flex-1 bg-slate-700 hover:bg-slate-600 p-6 rounded-xl border-2 border-slate-600 hover:border-red-400 transition-all group">
+                            <div class="text-xl font-bold mb-2 group-hover:text-red-400">OPERATOR</div>
+                            <div class="text-xs opacity-50">Buat Sendiri</div>
+                        </button>
+                    </div>
+
+                    <div id="quizResult" class="hidden mt-8 p-6 bg-slate-800 rounded-xl border-l-4 border-amber-500 w-full animate-pulse text-center">
+                        <h4 class="text-xl font-bold text-amber-500 mb-1">JAWAPAN: ${slide.answer}</h4>
+                        <p class="">${slide.reason}</p>
+                    </div>
+                </div>`;
+            }
+
+            // 6. VIDEO PLAYER
+            else if (slide.type === 'video_player') {
+                html = `
+                <div class="flex flex-col items-center justify-center w-full max-w-5xl mx-auto slide-enter">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white">${slide.title}</h2>
+                    <p class="text-slate-400 mb-6">${slide.content}</p>
+                    
+                    <div class="w-full bg-black rounded-xl overflow-hidden shadow-2xl border border-slate-700 relative aspect-video">
+                        <video id="mainVideo" controls class="w-full h-full">
+                            <source src="${slide.videoSrc}" type="video/mp4">
+                            Browser anda tidak menyokong tag video.
+                        </video>
+                    </div>
+                    
+                    <div class="mt-4 text-xs text-slate-500">
+                        *Jika video tidak dimainkan, sila pastikan fail video berada dalam folder yang sama.
+                    </div>
+                </div>`;
+            }
+
+            // 7. TIMER
+            else if (slide.type === 'timer') {
+                html = `
+                <div class="flex flex-col items-center text-center slide-enter w-full max-w-4xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-amber-500">${slide.title}</h2>
+                    <div class="bg-slate-800 p-8 rounded-2xl w-full mb-10 border border-slate-700">
+                        <p class="text-2xl text-white mb-2">${slide.task}</p>
+                    </div>
+                    
+                    <div class="relative w-64 h-64 flex items-center justify-center mb-8">
+                        <div class="absolute w-full h-full rounded-full border-4 border-slate-700"></div>
+                        <div class="absolute w-full h-full rounded-full border-4 border-amber-500 border-t-transparent animate-spin" style="animation-duration: 1s;"></div>
+                        <div class="text-6xl font-mono font-bold timer-display" id="timerDisplay">05:00</div>
+                    </div>
+
+                    <button onclick="startTimer(${slide.duration})" class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full font-bold shadow-lg flex items-center gap-2">
+                        <i data-lucide="play"></i> MULA MASA
+                    </button>
+                </div>`;
+            }
+
+            // 8. CARDS (POLC)
+            else if (slide.type === 'cards') {
+                html = `
+                <div class="flex flex-col items-center w-full max-w-6xl mx-auto slide-enter">
+                    <h2 class="text-4xl font-bold mb-12 text-center text-indigo-300">${slide.title}</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                        ${slide.cards.map(card => `
+                            <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-indigo-500 transition-all hover:-translate-y-2 group cursor-pointer text-center">
+                                <div class="bg-indigo-900/50 p-4 rounded-full w-fit mx-auto mb-6 text-indigo-400 group-hover:text-white group-hover:bg-indigo-600 transition-colors">
+                                    <i data-lucide="${card.icon}" width="32" height="32"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold mb-3 text-white">${card.title}</h3>
+                                <p class="text-slate-400 text-lg group-hover:text-slate-200">${card.desc}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+            }
+
+            // 9. CASE STUDY
+            else if (slide.type === 'case_study') {
+                html = `
+                <div class="flex flex-col items-center w-full max-w-4xl mx-auto slide-enter text-center">
+                    <div class="bg-orange-600 text-white px-4 py-1 rounded-full font-bold text-sm mb-6 uppercase tracking-wider">Situasi Panas</div>
+                    <h2 class="text-4xl font-bold mb-8">${slide.title}</h2>
+                    
+                    <div class="bg-white text-slate-900 p-10 rounded-2xl shadow-xl mb-8 relative">
+                        <i data-lucide="quote" class="text-orange-200 absolute top-4 left-4" width="48" height="48"></i>
+                        <p class="text-2xl font-serif italic relative z-10">"${slide.scenario}"</p>
+                    </div>
+
+                    <button onclick="document.getElementById('solutionBox').classList.remove('hidden')" class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-lg text-sm font-bold border border-slate-500">
+                        LIHAT JAWAPAN PENYELIA BIJAK
+                    </button>
+
+                    <div id="solutionBox" class="hidden mt-6 bg-green-900/50 border border-green-500 p-6 rounded-xl animate-bounce">
+                        <p class="text-green-300 font-semibold"><i data-lucide="check-circle" class="inline mr-2"></i>${slide.solution}</p>
+                    </div>
+                </div>`;
+            }
+
+            // 10. REFLECTION
+            else if (slide.type === 'reflection') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full text-center px-4 max-w-4xl mx-auto slide-enter">
+                    <i data-lucide="feather" width="80" height="80" class="text-amber-200 mb-6 animate-pulse"></i>
+                    <h2 class="text-3xl md:text-5xl font-bold mb-4 text-white">${slide.title}</h2>
+                    <h3 class="text-xl text-amber-500 mb-8 uppercase tracking-widest">${slide.subtitle}</h3>
+                    
+                    <div class="bg-white/10 p-10 rounded-xl border border-white/20 backdrop-blur-md w-full">
+                        <p class="text-2xl text-slate-200 leading-relaxed italic">
+                            "${slide.content}"
+                        </p>
+                    </div>
+                </div>`;
+            }
+
+            // 11. CLOSING
+            else if (slide.type === 'closing') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full text-center px-4 slide-enter">
+                    <div class="mb-6 p-6 bg-amber-500/20 rounded-full">
+                        <i data-lucide="moon" width="100" height="100" class="text-amber-400"></i>
+                    </div>
+                    <h2 class="text-5xl font-bold mb-4 text-white">${slide.title}</h2>
+                    <h3 class="text-2xl text-slate-400 mb-8">${slide.subtitle}</h3>
+                    <p class="text-xl text-slate-300 italic">"${slide.content}"</p>
+                </div>`;
+            }
+
+            container.innerHTML = html;
+            lucide.createIcons();
+            updateProgress();
+            updateButtons();
+        }
+
+        // --- LOGIC FUNGSI ---
+
+        function updateProgress() {
+            document.getElementById('slideCounter').innerText = `SLOT 2 / SLAID ${currentSlide + 1}`;
+            const percentage = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+        }
+
+        function updateButtons() {
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+
+            btnPrev.disabled = currentSlide === 0;
+            btnPrev.classList.toggle('opacity-50', currentSlide === 0);
+            btnPrev.classList.toggle('cursor-not-allowed', currentSlide === 0);
+
+            if (currentSlide === slides.length - 1) {
+                btnNext.innerHTML = 'Tamat <i data-lucide="check" width="18"></i>';
+                btnNext.classList.add('bg-green-600', 'hover:bg-green-500');
+                btnNext.classList.remove('bg-amber-600', 'hover:bg-amber-700');
+            } else {
+                btnNext.innerHTML = 'Seterusnya <i data-lucide="arrow-right" width="18"></i>';
+                btnNext.classList.remove('bg-green-600', 'hover:bg-green-500');
+                btnNext.classList.add('bg-amber-600', 'hover:bg-amber-700');
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide();
+            }
+        }
+
+        // Quiz Logic
+        function answerQuiz(selectedBtn, correctBtn, reason, answerText) {
+            const btns = document.querySelectorAll('#quizButtons button');
+            const resultBox = document.getElementById('quizResult');
+            
+            // Disable buttons
+            btns.forEach(b => b.disabled = true);
+
+            // Highlight Correct/Wrong
+            if (selectedBtn === correctBtn) {
+                btns[selectedBtn].classList.remove('bg-slate-700');
+                btns[selectedBtn].classList.add('bg-green-600', 'border-green-400');
+                resultBox.classList.remove('border-amber-500');
+                resultBox.classList.add('border-green-500');
+            } else {
+                btns[selectedBtn].classList.remove('bg-slate-700');
+                btns[selectedBtn].classList.add('bg-red-600', 'border-red-400');
+                btns[correctBtn].classList.add('ring-2', 'ring-green-400'); // Highlight correct
+            }
+
+            resultBox.classList.remove('hidden');
+        }
+
+        // Timer Logic
+        function startTimer(duration) {
+            let timer = duration, minutes, seconds;
+            const display = document.getElementById('timerDisplay');
+            
+            if (timerInterval) clearInterval(timerInterval);
+
+            timerInterval = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(timerInterval);
+                    display.textContent = "MASA TAMAT";
+                    display.classList.add("text-red-500", "animate-bounce");
+                }
+            }, 1000);
+        }
+
+        // Init
+        renderSlide();
+
+        // Keyboard Nav
+        document.addEventListener('keydown', function(event) {
+            if(event.key === "ArrowRight") nextSlide();
+            if(event.key === "ArrowLeft") prevSlide();
+        });
+
+    </script>
+</body>
+</html>   

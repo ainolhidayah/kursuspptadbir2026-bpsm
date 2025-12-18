@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slaid Slot 1 - Peserta</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; }
+        .slide-enter { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-content { height: 100%; display: flex; flex-direction: column; }
+        
+        /* Timer Animation */
+        .timer-pulse { animation: pulse-red 1s infinite; }
+        @keyframes pulse-red {
+            0% { transform: scale(1); color: white; }
+            50% { transform: scale(1.05); color: #ef4444; }
+            100% { transform: scale(1); color: white; }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white transition-colors duration-500" id="mainBody">
+
+    <!-- Header / Progress Bar -->
+    <div class="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-20">
+        <div class="text-sm font-semibold opacity-70 tracking-widest" id="slideCounter">
+            SLOT 1 / SLAID 1
+        </div>
+        <div class="flex gap-1" id="progressBar">
+            <!-- Progress bars injected via JS -->
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="w-full h-screen px-4 md:px-16 flex flex-col justify-center relative z-10 pt-16 pb-20" id="slideContainer">
+        <!-- Content injected via JS -->
+    </main>
+
+    <!-- Footer Navigation -->
+    <div class="absolute bottom-0 left-0 w-full p-6 flex justify-between items-center z-20">
+        <button onclick="prevSlide()" id="btnPrev" class="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all hover:bg-white/10 opacity-50 cursor-not-allowed">
+            <i data-lucide="arrow-left" width="20"></i> Sebelumnya
+        </button>
+
+        <button onclick="nextSlide()" id="btnNext" class="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl">
+            Seterusnya <i data-lucide="arrow-right" width="20"></i>
+        </button>
+    </div>
+
+    <script>
+        // Data Slaid
+        const slides = [
+            {
+                id: 1,
+                type: "title",
+                title: "KEPIMPINAN DAN PENYELIAAN BERKESAN 2026",
+                subtitle: "SLOT 1: ICE BREAKING & PEMBENTUKAN KUMPULAN",
+                content: "Membina Keserasian & Menetapkan Hala Tuju",
+                bgColor: "bg-gradient-to-br from-blue-900 to-slate-800",
+                textColor: "text-white"
+            },
+            {
+                id: 2,
+                type: "chart",
+                title: "FORMULA KEJAYAAN KERJAYA",
+                subtitle: "Statistik Stanford Research Institute",
+                bgColor: "bg-white",
+                textColor: "text-slate-800"
+            },
+            {
+                id: 3,
+                type: "steps",
+                title: "AKTIVITI 1: THE NAME GAME",
+                subtitle: "Mari Berkenalan Dengan Gaya",
+                bgColor: "bg-blue-50",
+                textColor: "text-blue-900",
+                timer: 600, // 10 minit
+                steps: [
+                    "Berdiri dalam satu bulatan besar.",
+                    "Sebut NAMA anda dengan satu GAYA tangan.",
+                    "Seluruh kumpulan ULANG nama & gaya tersebut.",
+                    "Kita raikan tenaga & kreativiti!"
+                ]
+            },
+            {
+                id: 4,
+                type: "groups",
+                title: "PEMBENTUKAN KUMPULAN",
+                subtitle: "Sila bergerak mengikut warna/nombor anda",
+                bgColor: "bg-slate-100",
+                textColor: "text-slate-800",
+                timer: 300 // 5 minit
+            },
+            {
+                id: 5,
+                type: "list",
+                title: "IDENTITI PASUKAN",
+                subtitle: "Lantikan AJK & War Cry",
+                bgColor: "bg-indigo-50",
+                textColor: "text-indigo-900",
+                timer: 300, // 5 minit
+                items: [
+                    { label: "PENGHULU", desc: "Ketua yang memimpin" },
+                    { label: "PENCATAT", desc: "Tulisan cantik & pantas" },
+                    { label: "PENJAGA MASA", desc: "Tegas & disiplin" },
+                    { label: "SORAK (Cheerleader)", desc: "Paling bising & ceria" }
+                ],
+                footer: "Tugasan: Cipta Nama Kumpulan (Kuasa/Dominan) & Satu 'War Cry' Pendek!"
+            },
+            {
+                id: 6,
+                type: "anatomy",
+                title: "BENGKEL: VISI PPT 2026",
+                subtitle: "Lakaran Watak PPT Ideal",
+                bgColor: "bg-white",
+                textColor: "text-slate-900",
+                timer: 1200 // 20 minit
+            },
+            {
+                id: 7,
+                type: "cards",
+                title: "GALLERY WALK",
+                subtitle: "Sesi Jelajah Galeri",
+                bgColor: "bg-orange-50",
+                textColor: "text-orange-900",
+                timer: 600, // 10 minit
+                points: [
+                    { title: "TAMPAL", icon: "pen-tool", desc: "Tampal hasil kerja di dinding." },
+                    { title: "BENTANG", icon: "mic", desc: "Seorang wakil kekal di stesen." },
+                    { title: "LAWAT", icon: "users", desc: "Ahli lain bergerak pusingan jam." },
+                    { title: "KOMEN", icon: "check-square", desc: "Beri pandangan & soalan." }
+                ]
+            },
+            {
+                id: 8,
+                type: "rules",
+                title: "ETIKA KURSUS (HOUSE RULES)",
+                subtitle: "Kontrak Pembelajaran Kita",
+                bgColor: "bg-slate-900",
+                textColor: "text-white"
+            }
+        ];
+
+        let currentSlide = 0;
+        let timerInterval;
+
+        function renderSlide() {
+            const slide = slides[currentSlide];
+            const container = document.getElementById('slideContainer');
+            const body = document.getElementById('mainBody');
+            
+            // Clear existing timer if any
+            if (timerInterval) clearInterval(timerInterval);
+
+            // Update Body Classes (Colors)
+            body.className = `w-full h-screen flex flex-col transition-colors duration-500 overflow-hidden font-sans ${slide.bgColor} ${slide.textColor}`;
+
+            // Generate Content HTML
+            let contentHtml = '';
+
+            // --- TIMER COMPONENT ---
+            let timerHtml = '';
+            if (slide.timer) {
+                const minutes = Math.floor(slide.timer / 60);
+                const seconds = slide.timer % 60;
+                const displayTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                
+                timerHtml = `
+                <div class="fixed top-24 right-8 z-50 flex items-center gap-3 bg-black/60 backdrop-blur-md px-5 py-2 rounded-full border border-white/20 shadow-xl transition-all" id="timerBox">
+                    <i data-lucide="clock" class="text-white w-5 h-5"></i>
+                    <span id="timerDisplay" class="font-mono text-2xl font-bold text-white">${displayTime}</span>
+                    <button onclick="toggleTimer(${slide.timer})" id="timerBtn" class="ml-2 bg-green-600 hover:bg-green-500 text-white rounded-full p-1 w-8 h-8 flex items-center justify-center transition-colors">
+                        <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+                    </button>
+                    <button onclick="resetTimer(${slide.timer})" class="bg-slate-600 hover:bg-slate-500 text-white rounded-full p-1 w-8 h-8 flex items-center justify-center transition-colors">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    </button>
+                </div>`;
+            }
+
+            if (slide.type === 'title') {
+                contentHtml = `
+                <div class="flex flex-col items-center text-center slide-enter">
+                    <div class="mb-6 p-4 bg-white/10 rounded-full inline-block backdrop-blur-sm">
+                        <i data-lucide="target" width="64" height="64" class="text-blue-300"></i>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight leading-tight uppercase">
+                        ${slide.title}
+                    </h1>
+                    <div class="h-1 w-32 bg-blue-500 mb-6"></div>
+                    <h2 class="text-xl md:text-3xl font-light opacity-90 mb-4">
+                        ${slide.subtitle}
+                    </h2>
+                    <p class="text-lg opacity-70 max-w-2xl mx-auto">
+                        ${slide.content}
+                    </p>
+                </div>`;
+            } else {
+                // Header for content slides
+                let innerContent = '';
+
+                // Switch logic for inner content
+                if (slide.type === 'chart') {
+                    innerContent = `
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <div class="relative w-64 h-64 md:w-80 md:h-80 mb-8">
+                            <div class="absolute inset-0 rounded-full bg-blue-500" style="clip-path: polygon(50% 50%, 100% 50%, 100% 0, 50% 0)"></div>
+                            <div class="w-full h-full rounded-full border-[20px] md:border-[30px] border-slate-200 relative overflow-hidden flex items-center justify-center bg-red-500">
+                                <div class="absolute top-0 right-0 w-1/2 h-1/2 bg-blue-600 origin-bottom-left rotate-[54deg]"></div>
+                                <div class="z-10 bg-white w-2/3 h-2/3 rounded-full flex items-center justify-center shadow-inner">
+                                    <div class="text-center">
+                                        <span class="block text-3xl md:text-4xl font-bold text-red-600">85%</span>
+                                        <span class="text-xs text-gray-500">vs</span>
+                                        <span class="block text-xl md:text-2xl font-bold text-blue-600">15%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col md:flex-row gap-4 md:gap-8 text-lg">
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 md:w-6 md:h-6 bg-blue-600 rounded"></div>
+                                <span>Kemahiran Teknikal</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-4 h-4 md:w-6 md:h-6 bg-red-500 rounded"></div>
+                                <span class="font-bold">Human Engineering</span>
+                            </div>
+                        </div>
+                    </div>`;
+                } else if (slide.type === 'steps') {
+                    innerContent = `
+                    <div class="flex flex-col items-center justify-center h-full gap-8">
+                        <i data-lucide="smile" width="64" height="64" class="text-yellow-500"></i>
+                        <div class="grid gap-4 md:gap-6 w-full max-w-3xl">
+                            ${slide.steps.map((step, idx) => `
+                                <div class="flex items-center gap-4 md:gap-6 bg-white/50 p-4 md:p-6 rounded-xl shadow-sm border border-blue-100">
+                                    <div class="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-600 text-white flex items-center justify-center text-lg md:text-xl font-bold">
+                                        ${idx + 1}
+                                    </div>
+                                    <p class="text-lg md:text-2xl font-medium">${step}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>`;
+                } else if (slide.type === 'groups') {
+                    const colors = ['Merah', 'Biru', 'Hijau', 'Kuning', 'Ungu'];
+                    const colorClasses = ['bg-red-500', 'bg-blue-500', 'bg-green-500', 'bg-yellow-400 text-slate-800', 'bg-purple-500'];
+                    
+                    innerContent = `
+                    <div class="flex flex-col items-center justify-center h-full gap-10">
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 w-full max-w-5xl px-4">
+                            ${colors.map((c, i) => `
+                                <div class="h-32 md:h-48 rounded-xl flex flex-col items-center justify-center shadow-lg transform hover:scale-105 transition-all ${colorClasses[i]} text-white">
+                                    <i data-lucide="users" width="32" height="32" class="mb-2"></i>
+                                    <span class="text-lg md:text-xl font-bold uppercase">${c}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <p class="text-lg md:text-2xl font-light text-center max-w-2xl bg-white p-6 rounded-lg shadow-sm">
+                            "Sila berkumpul mengikut warna gula-gula atau nombor yang anda peroleh."
+                        </p>
+                    </div>`;
+                } else if (slide.type === 'list') {
+                    innerContent = `
+                    <div class="flex flex-col items-center justify-center h-full gap-8 w-full">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 w-full max-w-4xl px-4">
+                            ${slide.items.map((item, i) => `
+                                <div class="bg-white p-4 md:p-6 rounded-xl shadow-md border-l-8 border-indigo-500 flex flex-col text-slate-800">
+                                    <span class="text-indigo-600 font-bold text-xs md:text-sm tracking-widest mb-1">JAWATAN ${i+1}</span>
+                                    <span class="text-xl md:text-2xl font-bold">${item.label}</span>
+                                    <span class="text-slate-500 mt-1 md:mt-2 text-sm md:text-base">${item.desc}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="mt-4 md:mt-8 bg-indigo-600 text-white p-4 md:p-6 rounded-xl w-full max-w-4xl text-center shadow-lg mx-4">
+                            <div class="flex items-center justify-center gap-3 mb-2">
+                                <i data-lucide="target" width="24" height="24"></i>
+                                <h3 class="text-lg md:text-xl font-bold uppercase">Misi Utama</h3>
+                            </div>
+                            <p class="text-lg md:text-2xl">${slide.footer}</p>
+                        </div>
+                    </div>`;
+                } else if (slide.type === 'anatomy') {
+                    innerContent = `
+                    <div class="flex flex-col items-center h-full justify-center w-full">
+                        <div class="relative w-full max-w-4xl h-[400px] md:h-[500px] bg-slate-50 rounded-2xl border border-slate-200 shadow-inner p-4 flex items-center justify-center overflow-hidden">
+                            <div class="absolute w-1 bg-slate-300 h-3/4 left-1/2 -translate-x-1/2"></div>
+                            <div class="absolute w-3/4 h-1 bg-slate-300 top-1/2 -translate-y-1/2"></div>
+                            
+                            <!-- Box Template -->
+                            <div class="absolute top-4 left-4 md:top-10 md:left-20 bg-white p-2 md:p-4 rounded-lg shadow-md border-l-4 border-blue-500 max-w-[150px] md:max-w-xs z-10 text-xs md:text-sm">
+                                <div class="flex items-center gap-2 mb-1 text-blue-600 font-bold"><i data-lucide="book-open" width="14"></i> KEPALA</div>
+                                <p class="text-slate-600 hidden md:block">Ilmu baharu?</p>
+                                <p class="text-[10px] md:text-xs text-slate-400 italic">cth: AI</p>
+                            </div>
+
+                            <div class="absolute top-4 right-4 md:top-10 md:right-20 bg-white p-2 md:p-4 rounded-lg shadow-md border-l-4 border-orange-500 max-w-[150px] md:max-w-xs z-10 text-xs md:text-sm text-right md:text-left">
+                                <div class="flex items-center justify-end md:justify-start gap-2 mb-1 text-orange-600 font-bold"><i data-lucide="mic" width="14"></i> MULUT</div>
+                                <p class="text-slate-600 hidden md:block">Cara bercakap?</p>
+                                <p class="text-[10px] md:text-xs text-slate-400 italic">cth: Diplomasi</p>
+                            </div>
+
+                            <div class="absolute bottom-1/2 translate-y-10 left-4 md:translate-y-16 md:left-16 bg-white p-2 md:p-4 rounded-lg shadow-md border-l-4 border-green-500 max-w-[150px] md:max-w-xs z-10 text-xs md:text-sm">
+                                <div class="flex items-center gap-2 mb-1 text-green-600 font-bold"><i data-lucide="zap" width="14"></i> TANGAN</div>
+                                <p class="text-slate-600 hidden md:block">Kemahiran?</p>
+                                <p class="text-[10px] md:text-xs text-slate-400 italic">cth: HRMIS</p>
+                            </div>
+
+                            <div class="absolute bottom-1/2 translate-y-10 right-4 md:translate-y-16 md:right-16 bg-white p-2 md:p-4 rounded-lg shadow-md border-l-4 border-red-500 max-w-[150px] md:max-w-xs z-10 text-xs md:text-sm text-right md:text-left">
+                                <div class="flex items-center justify-end md:justify-start gap-2 mb-1 text-red-600 font-bold"><i data-lucide="heart" width="14"></i> HATI</div>
+                                <p class="text-slate-600 hidden md:block">Nilai murni?</p>
+                                <p class="text-[10px] md:text-xs text-slate-400 italic">cth: Sabar</p>
+                            </div>
+
+                            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white p-2 md:p-4 rounded-lg shadow-md border-t-4 border-purple-500 max-w-[200px] z-10 text-center text-xs md:text-sm">
+                                <div class="flex items-center justify-center gap-2 mb-1 text-purple-600 font-bold"><i data-lucide="arrow-right" width="14"></i> KAKI (Tindakan)</div>
+                            </div>
+
+                            <div class="opacity-20 flex justify-center items-center">
+                                <i data-lucide="users" width="200" height="200" class="md:w-[300px] md:h-[300px]"></i>
+                            </div>
+                        </div>
+                    </div>`;
+                } else if (slide.type === 'cards') {
+                    innerContent = `
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 h-full items-center content-center max-w-6xl mx-auto w-full px-4 text-slate-800">
+                        ${slide.points.map(pt => `
+                            <div class="bg-white p-4 md:p-6 rounded-xl shadow-lg hover:-translate-y-2 transition-transform duration-300 border-t-4 border-orange-400 h-48 md:h-64 flex flex-col items-center justify-center text-center">
+                                <div class="bg-orange-100 p-3 md:p-4 rounded-full mb-2 md:mb-4 text-orange-600">
+                                    <i data-lucide="${pt.icon}"></i>
+                                </div>
+                                <h3 class="text-lg md:text-xl font-bold mb-1 md:mb-2">${pt.title}</h3>
+                                <p class="text-slate-600 text-xs md:text-sm">${pt.desc}</p>
+                            </div>
+                        `).join('')}
+                    </div>`;
+                } else if (slide.type === 'rules') {
+                    const rules = [
+                        { icon: "volume-x", title: "Mod Senyap", desc: "Telefon bimbit getar. Jawab di luar." },
+                        { icon: "clock", title: "Masa Itu Emas", desc: "Masuk 5 minit awal. Lewat didenda." },
+                        { icon: "shield", title: "Zon Selamat", desc: "Apa berlaku di sini, kekal di sini." },
+                        { icon: "user-plus", title: "Hormat", desc: "Setuju untuk tidak bersetuju." },
+                        { icon: "zap", title: "Penyertaan 100%", desc: "Tiada penumpang (freerider)." }
+                    ];
+                    
+                    innerContent = `
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 max-w-5xl px-4 w-full">
+                            ${rules.map(rule => `
+                                <div class="bg-slate-800 p-4 md:p-6 rounded-xl border border-slate-700 hover:bg-slate-700 transition-colors">
+                                    <div class="text-blue-400 mb-2 md:mb-3"><i data-lucide="${rule.icon}" width="32" height="32"></i></div>
+                                    <h4 class="text-base md:text-lg font-bold text-white mb-1">${rule.title}</h4>
+                                    <p class="text-slate-400 text-xs md:text-sm">${rule.desc}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>`;
+                }
+
+                contentHtml = `
+                <div class="h-full flex flex-col slide-enter relative">
+                    ${timerHtml}
+                    <div class="text-center mb-4 md:mb-8 mt-4">
+                        <h2 class="text-2xl md:text-4xl font-bold mb-1 md:mb-2">${slide.title}</h2>
+                        <p class="text-sm md:text-xl opacity-70 uppercase tracking-widest">${slide.subtitle}</p>
+                    </div>
+                    <div class="flex-1 relative w-full">
+                        ${innerContent}
+                    </div>
+                </div>`;
+            }
+
+            container.innerHTML = contentHtml;
+            
+            // Re-initialize Icons
+            lucide.createIcons();
+            
+            // Update Progress Bar
+            updateUI();
+        }
+
+        // TIMER FUNCTIONS
+        let timeLeft = 0;
+        let isPaused = true;
+
+        function toggleTimer(duration) {
+            const btn = document.getElementById('timerBtn');
+            const display = document.getElementById('timerDisplay');
+            
+            if (isPaused) {
+                // Start Timer
+                if (timeLeft === 0) timeLeft = duration;
+                isPaused = false;
+                btn.innerHTML = '<i data-lucide="pause" class="w-4 h-4 fill-current"></i>';
+                lucide.createIcons();
+                
+                timerInterval = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        const m = Math.floor(timeLeft / 60);
+                        const s = timeLeft % 60;
+                        display.textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+                        
+                        if (timeLeft <= 10) {
+                            display.classList.add('timer-pulse');
+                        }
+                    } else {
+                        clearInterval(timerInterval);
+                        display.textContent = "TAMAT";
+                        display.classList.remove('timer-pulse');
+                        // Optional sound here
+                    }
+                }, 1000);
+            } else {
+                // Pause Timer
+                clearInterval(timerInterval);
+                isPaused = true;
+                btn.innerHTML = '<i data-lucide="play" class="w-4 h-4 fill-current"></i>';
+                lucide.createIcons();
+                display.classList.remove('timer-pulse');
+            }
+        }
+
+        function resetTimer(duration) {
+            clearInterval(timerInterval);
+            timeLeft = duration;
+            isPaused = true;
+            
+            const minutes = Math.floor(duration / 60);
+            const seconds = duration % 60;
+            const displayTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            
+            const display = document.getElementById('timerDisplay');
+            if (display) {
+                display.textContent = displayTime;
+                display.classList.remove('timer-pulse');
+            }
+            
+            const btn = document.getElementById('timerBtn');
+            if (btn) {
+                btn.innerHTML = '<i data-lucide="play" class="w-4 h-4 fill-current"></i>';
+                lucide.createIcons();
+            }
+        }
+
+        function updateUI() {
+            // Update text
+            document.getElementById('slideCounter').innerText = `SLOT 1 / SLAID ${currentSlide + 1}`;
+            
+            // Update dots
+            const bar = document.getElementById('progressBar');
+            bar.innerHTML = slides.map((_, i) => 
+                `<div class="h-1 rounded-full transition-all ${i === currentSlide ? 'bg-current opacity-100 w-8 md:w-12' : 'bg-current opacity-30 w-4 md:w-8'}"></div>`
+            ).join('');
+
+            // Update Buttons
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+
+            btnPrev.disabled = currentSlide === 0;
+            btnPrev.classList.toggle('opacity-50', currentSlide === 0);
+            btnPrev.classList.toggle('cursor-not-allowed', currentSlide === 0);
+            btnPrev.classList.toggle('hover:bg-white/10', currentSlide !== 0);
+
+            if (currentSlide === slides.length - 1) {
+                btnNext.innerHTML = 'Tamat <i data-lucide="check" width="20"></i>';
+                btnNext.classList.add('opacity-50');
+            } else {
+                btnNext.innerHTML = 'Seterusnya <i data-lucide="arrow-right" width="20"></i>';
+                btnNext.classList.remove('opacity-50');
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide();
+            }
+        }
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Initialize
+        renderSlide();
+    </script>
+</body>   
