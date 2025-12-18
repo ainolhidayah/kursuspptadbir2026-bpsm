@@ -16,14 +16,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .slide-content { height: 100%; display: flex; flex-direction: column; }
-        
-        /* Timer Animation */
-        .timer-pulse { animation: pulse-red 1s infinite; }
-        @keyframes pulse-red {
-            0% { transform: scale(1); color: white; }
-            50% { transform: scale(1.05); color: #ef4444; }
-            100% { transform: scale(1); color: white; }
-        }
     </style>
 </head>
 <body class="bg-slate-900 text-white transition-colors duration-500" id="mainBody">
@@ -81,7 +73,6 @@
                 subtitle: "Mari Berkenalan Dengan Gaya",
                 bgColor: "bg-blue-50",
                 textColor: "text-blue-900",
-                timer: 600, // 10 minit
                 steps: [
                     "Berdiri dalam satu bulatan besar.",
                     "Sebut NAMA anda dengan satu GAYA tangan.",
@@ -95,8 +86,7 @@
                 title: "PEMBENTUKAN KUMPULAN",
                 subtitle: "Sila bergerak mengikut warna/nombor anda",
                 bgColor: "bg-slate-100",
-                textColor: "text-slate-800",
-                timer: 300 // 5 minit
+                textColor: "text-slate-800"
             },
             {
                 id: 5,
@@ -105,7 +95,6 @@
                 subtitle: "Lantikan AJK & War Cry",
                 bgColor: "bg-indigo-50",
                 textColor: "text-indigo-900",
-                timer: 300, // 5 minit
                 items: [
                     { label: "PENGHULU", desc: "Ketua yang memimpin" },
                     { label: "PENCATAT", desc: "Tulisan cantik & pantas" },
@@ -120,8 +109,7 @@
                 title: "BENGKEL: VISI PPT 2026",
                 subtitle: "Lakaran Watak PPT Ideal",
                 bgColor: "bg-white",
-                textColor: "text-slate-900",
-                timer: 1200 // 20 minit
+                textColor: "text-slate-900"
             },
             {
                 id: 7,
@@ -130,7 +118,6 @@
                 subtitle: "Sesi Jelajah Galeri",
                 bgColor: "bg-orange-50",
                 textColor: "text-orange-900",
-                timer: 600, // 10 minit
                 points: [
                     { title: "TAMPAL", icon: "pen-tool", desc: "Tampal hasil kerja di dinding." },
                     { title: "BENTANG", icon: "mic", desc: "Seorang wakil kekal di stesen." },
@@ -149,41 +136,17 @@
         ];
 
         let currentSlide = 0;
-        let timerInterval;
 
         function renderSlide() {
             const slide = slides[currentSlide];
             const container = document.getElementById('slideContainer');
             const body = document.getElementById('mainBody');
             
-            // Clear existing timer if any
-            if (timerInterval) clearInterval(timerInterval);
-
             // Update Body Classes (Colors)
             body.className = `w-full h-screen flex flex-col transition-colors duration-500 overflow-hidden font-sans ${slide.bgColor} ${slide.textColor}`;
 
             // Generate Content HTML
             let contentHtml = '';
-
-            // --- TIMER COMPONENT ---
-            let timerHtml = '';
-            if (slide.timer) {
-                const minutes = Math.floor(slide.timer / 60);
-                const seconds = slide.timer % 60;
-                const displayTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-                
-                timerHtml = `
-                <div class="fixed top-24 right-8 z-50 flex items-center gap-3 bg-black/60 backdrop-blur-md px-5 py-2 rounded-full border border-white/20 shadow-xl transition-all" id="timerBox">
-                    <i data-lucide="clock" class="text-white w-5 h-5"></i>
-                    <span id="timerDisplay" class="font-mono text-2xl font-bold text-white">${displayTime}</span>
-                    <button onclick="toggleTimer(${slide.timer})" id="timerBtn" class="ml-2 bg-green-600 hover:bg-green-500 text-white rounded-full p-1 w-8 h-8 flex items-center justify-center transition-colors">
-                        <i data-lucide="play" class="w-4 h-4 fill-current"></i>
-                    </button>
-                    <button onclick="resetTimer(${slide.timer})" class="bg-slate-600 hover:bg-slate-500 text-white rounded-full p-1 w-8 h-8 flex items-center justify-center transition-colors">
-                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                    </button>
-                </div>`;
-            }
 
             if (slide.type === 'title') {
                 contentHtml = `
@@ -365,8 +328,7 @@
                 }
 
                 contentHtml = `
-                <div class="h-full flex flex-col slide-enter relative">
-                    ${timerHtml}
+                <div class="h-full flex flex-col slide-enter">
                     <div class="text-center mb-4 md:mb-8 mt-4">
                         <h2 class="text-2xl md:text-4xl font-bold mb-1 md:mb-2">${slide.title}</h2>
                         <p class="text-sm md:text-xl opacity-70 uppercase tracking-widest">${slide.subtitle}</p>
@@ -384,70 +346,6 @@
             
             // Update Progress Bar
             updateUI();
-        }
-
-        // TIMER FUNCTIONS
-        let timeLeft = 0;
-        let isPaused = true;
-
-        function toggleTimer(duration) {
-            const btn = document.getElementById('timerBtn');
-            const display = document.getElementById('timerDisplay');
-            
-            if (isPaused) {
-                // Start Timer
-                if (timeLeft === 0) timeLeft = duration;
-                isPaused = false;
-                btn.innerHTML = '<i data-lucide="pause" class="w-4 h-4 fill-current"></i>';
-                lucide.createIcons();
-                
-                timerInterval = setInterval(() => {
-                    if (timeLeft > 0) {
-                        timeLeft--;
-                        const m = Math.floor(timeLeft / 60);
-                        const s = timeLeft % 60;
-                        display.textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
-                        
-                        if (timeLeft <= 10) {
-                            display.classList.add('timer-pulse');
-                        }
-                    } else {
-                        clearInterval(timerInterval);
-                        display.textContent = "TAMAT";
-                        display.classList.remove('timer-pulse');
-                        // Optional sound here
-                    }
-                }, 1000);
-            } else {
-                // Pause Timer
-                clearInterval(timerInterval);
-                isPaused = true;
-                btn.innerHTML = '<i data-lucide="play" class="w-4 h-4 fill-current"></i>';
-                lucide.createIcons();
-                display.classList.remove('timer-pulse');
-            }
-        }
-
-        function resetTimer(duration) {
-            clearInterval(timerInterval);
-            timeLeft = duration;
-            isPaused = true;
-            
-            const minutes = Math.floor(duration / 60);
-            const seconds = duration % 60;
-            const displayTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-            
-            const display = document.getElementById('timerDisplay');
-            if (display) {
-                display.textContent = displayTime;
-                display.classList.remove('timer-pulse');
-            }
-            
-            const btn = document.getElementById('timerBtn');
-            if (btn) {
-                btn.innerHTML = '<i data-lucide="play" class="w-4 h-4 fill-current"></i>';
-                lucide.createIcons();
-            }
         }
 
         function updateUI() {
@@ -501,4 +399,5 @@
         // Initialize
         renderSlide();
     </script>
-</body>   
+</body>
+</html>
