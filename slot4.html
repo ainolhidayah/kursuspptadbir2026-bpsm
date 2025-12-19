@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slaid Slot 4 - Peserta (Versi Final)</title>
+    <title>Slaid Slot 4 - Peserta (Versi Final Dibaiki)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -20,30 +20,24 @@
         
         /* Animations */
         @keyframes dropCoin {
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateY(0) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(-300px) rotate(0deg) scale(0.5); opacity: 0; }
+            20% { opacity: 1; transform: translateY(-100px) rotate(180deg) scale(1.2); }
+            100% { transform: translateY(0) rotate(720deg) scale(1); opacity: 0; } /* Drop into bank */
         }
-        .coin-drop { animation: dropCoin 1s ease-out forwards; }
+        .coin-anim { animation: dropCoin 1s ease-in forwards; }
 
-        @keyframes growBar {
-            from { height: 0; }
-            to { height: var(--height); }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
         }
-        .animate-bar { animation: growBar 1.5s ease-out forwards; }
+        .float-text { animation: floatUp 1.5s ease-out forwards; position: absolute; font-weight: bold; z-index: 50; }
 
-        .conflict-card:hover { transform: translateY(-10px); }
-        
         /* Card Flip Animation */
         .perspective-1000 { perspective: 1000px; }
         .transform-style-3d { transform-style: preserve-3d; }
         .backface-hidden { backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
 
-        /* Pie Chart Hover Effects */
-        .pie-slice { transition: transform 0.3s ease, opacity 0.3s ease; cursor: pointer; }
-        .pie-slice:hover { transform: scale(1.05); opacity: 0.9; }
-        
         /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -79,7 +73,7 @@
     </div>
 
     <script>
-        // Data Slaid Slot 4 (Gabungan Lengkap)
+        // Data Slaid Slot 4
         const slides = [
             // --- BAHAGIAN 1: ASAS KEPIMPINAN ---
             {
@@ -87,7 +81,7 @@
                 type: "title",
                 title: "KETRAMPILAN KEPIMPINAN",
                 subtitle: "SLOT 4: 11.00 PAGI - 1.00 TGH HARI",
-                content: "Gaya Situasional, Komunikasi & Pengaruh",
+                content: "Gaya Situasional & Pengaruh Tanpa Kuasa",
                 bgColor: "bg-gradient-to-br from-indigo-950 to-purple-900",
                 textColor: "text-white"
             },
@@ -123,175 +117,72 @@
                 bgColor: "bg-indigo-900",
                 textColor: "text-white",
                 scenarios: [
-                    { 
-                        text: "Staf baharu lapor diri hari pertama. Tak tahu guna sistem.", 
-                        correct: "DIRECTING", 
-                        reason: "Mereka perlukan arahan jelas, bukan delegasi."
-                    },
-                    { 
-                        text: "Pn. Salmah (15 tahun kerja) sangat cekap, tapi minggu ni murung masalah keluarga.", 
-                        correct: "SUPPORTING", 
-                        reason: "Dia tahu buat kerja, cuma emosi terganggu. Perlukan sokongan."
-                    },
-                    { 
-                        text: "En. Chong proaktif, selalu siap kerja awal & sempurna.", 
-                        correct: "DELEGATING", 
-                        reason: "Jangan kacau orang pakar. Beri kepercayaan."
-                    },
-                    {
-                        text: "Staf baru dinaikkan pangkat, bersemangat tapi belum mahir urus pasukan.",
-                        correct: "COACHING",
-                        reason: "Perlukan bimbingan untuk kemahiran baru, tapi semangat dah ada."
-                    },
-                    {
-                        text: "Pegawai lama yang tiba-tiba prestasi merosot dan mula kerap MC.",
-                        correct: "SUPPORTING",
-                        reason: "Perlukan sokongan emosi, bukan arahan kerja."
-                    },
-                    {
-                        text: "Projek 'urgent' perlu siap esok, tiada masa untuk ajar.",
-                        correct: "DIRECTING",
-                        reason: "Keadaan cemas perlukan arahan pantas (Authoritative)."
-                    }
+                    { text: "Staf baharu lapor diri hari pertama. Tak tahu guna sistem.", correct: "DIRECTING", reason: "Mereka perlukan arahan jelas, bukan delegasi." },
+                    { text: "Pn. Salmah (15 tahun kerja) sangat cekap, tapi minggu ni murung masalah keluarga.", correct: "SUPPORTING", reason: "Dia tahu buat kerja, cuma emosi terganggu. Perlukan sokongan." },
+                    { text: "En. Chong proaktif, selalu siap kerja awal & sempurna.", correct: "DELEGATING", reason: "Jangan kacau orang pakar. Beri kepercayaan." },
+                    { text: "Staf baru dinaikkan pangkat, bersemangat tapi belum mahir urus pasukan.", correct: "COACHING", reason: "Perlukan bimbingan untuk kemahiran baru, tapi semangat dah ada." },
+                    { text: "Pegawai lama yang tiba-tiba prestasi merosot dan mula kerap MC.", correct: "SUPPORTING", reason: "Perlukan sokongan emosi, bukan arahan kerja." },
+                    { text: "Projek 'urgent' perlu siap esok, tiada masa untuk ajar.", correct: "DIRECTING", reason: "Keadaan cemas perlukan arahan pantas (Authoritative)." }
                 ]
             },
             
-            // --- BAHAGIAN 2: KOMUNIKASI & KONFLIK ---
+            // --- BAHAGIAN 2: PENGARUH TANPA KUASA ---
             {
                 id: 6,
-                type: "section_break",
-                title: "KOMUNIKASI BERPENGARUH",
-                subtitle: "Seni Memenangi Hati",
-                bgColor: "bg-teal-900",
+                type: "bank_intro",
+                title: "BANK AKAUN EMOSI",
+                subtitle: "Konsep Stephen Covey",
+                bgColor: "bg-slate-900",
                 textColor: "text-white"
             },
             {
                 id: 7,
-                type: "hook_mehrabian_svg", 
-                title: "APA YANG ORANG DENGAR?",
-                subtitle: "Hukum Mehrabian (7-38-55) - Klik Carta Pai",
-                bgColor: "bg-white",
-                textColor: "text-slate-900"
+                type: "bank_simulation", // UPDATED: Ejaan & Ikon
+                title: "SIMULASI: DEPOSIT ATAU PENGELUARAN?",
+                subtitle: "Pilih Tindakan Anda Untuk Membina Kepercayaan",
+                bgColor: "bg-emerald-900",
+                textColor: "text-white",
+                situations: [
+                    { q: "Staf buat salah kecil dalam surat.", optA: "Tegur depan orang ramai.", optB: "Panggil masuk bilik, tegur secara peribadi.", resA: -20, resB: 20, fbA: "PENGELUARAN BESAR! Anda memalukan dia.", fbB: "DEPOSIT! Anda menjaga air muka dia." },
+                    { q: "Staf sakit dan minta cuti mengejut.", optA: "Benarkan dengan nada ambil berat.", optB: "Sindir: 'Asyik sakit je awak ni'.", resA: 20, resB: -20, fbA: "DEPOSIT! Anda tunjuk empati.", fbB: "PENGELUARAN! Anda nampak tidak berperikemanusiaan." },
+                    { q: "Projek berjaya disiapkan awal.", optA: "Diam sahaja, itu memang kerja dia.", optB: "Puji dalam mesyuarat jabatan.", resA: -10, resB: 30, fbA: "PENGELUARAN KECIL. Staf rasa tidak dihargai.", fbB: "DEPOSIT BESAR! Pengiktirafan awam." },
+                    { q: "Anda terjanji nak belanja makan tapi lupa.", optA: "Buat tak tahu.", optB: "Minta maaf & ganti tarikh segera.", resA: -30, resB: 10, fbA: "PENGELUARAN! Hilang kepercayaan (Integriti).", fbB: "DEPOSIT PEMULIHAN. Mengaku salah itu mulia." },
+                    { q: "Staf beri idea baru yang agak pelik.", optA: "Gelakkan idea tersebut.", optB: "Dengar dulu dan bincang kebolehlaksanaan.", resA: -20, resB: 15, fbA: "PENGELUARAN! Membunuh kreativiti.", fbB: "DEPOSIT! Menghargai sumbangan idea." },
+                    { q: "Staf minta balik awal sebab anak demam.", optA: "Tanya banyak soalan curiga.", optB: "Benarkan segera dan tanya khabar esok.", resA: -15, resB: 25, fbA: "PENGELUARAN! Kurang kepercayaan.", fbB: "DEPOSIT! Timbang rasa yang tinggi." },
+                    { q: "Anda buat kesilapan dalam arahan.", optA: "Salahkan staf sebab tak faham.", optB: "Mengaku kesilapan dan perbetulkan.", resA: -30, resB: 20, fbA: "PENGELUARAN! Ego tinggi.", fbB: "DEPOSIT! Menunjukkan kerendahan hati." },
+                    { q: "Staf hantar kerja lewat sedikit.", optA: "Terus marah tanpa tanya sebab.", optB: "Tanya punca kelewatan dahulu.", resA: -15, resB: 10, fbA: "PENGELUARAN! Terburu-buru menghukum.", fbB: "DEPOSIT! Adil dan rasional." },
+                    { q: "Staf mengadu masalah peribadi.", optA: "Dengar dengan penuh perhatian.", optB: "Potong cakap dan suruh sambung kerja.", resA: 20, resB: -25, fbA: "DEPOSIT! Pendengar yang baik.", fbB: "PENGELUARAN! Tidak prihatin." },
+                    { q: "Ada jamuan di pejabat.", optA: "Makan asing dengan staf bawahan.", optB: "Duduk makan sekali dengan semua.", resA: -10, resB: 15, fbA: "PENGELUARAN! Mewujudkan jurang.", fbB: "DEPOSIT! Mengeratkan silaturrahim." }
+                ]
             },
             {
                 id: 8,
-                type: "active_listening",
-                title: "JENIS PENDENGARAN",
-                subtitle: "Telinga vs Hati",
-                bgColor: "bg-teal-50",
-                textColor: "text-teal-900"
-            },
-            {
-                id: 9,
-                type: "zoo",
-                title: "ZOO KONFLIK",
-                subtitle: "Kenali Gaya Anda",
-                bgColor: "bg-orange-50",
-                textColor: "text-orange-900",
-                animals: [
-                    { name: "JERUNG", style: "Competing", desc: "'Cara aku atau kau keluar.'", icon: "sword", color: "bg-red-500" },
-                    { name: "KURA-KURA", style: "Avoiding", desc: "'Tak apa lah, malas gaduh.'", icon: "shield-off", color: "bg-green-500" },
-                    { name: "TEDDY BEAR", style: "Accommodating", desc: "'Ikut awak lah, asalkan bahagia.'", icon: "heart", color: "bg-pink-500" },
-                    { name: "MUSANG", style: "Compromising", desc: "'Kita bahagi dua, adil.'", icon: "scissors", color: "bg-orange-500" },
-                    { name: "BURUNG HANTU", style: "Collaborating", desc: "'Jom cari jalan puaskan hati kita berdua.'", icon: "glasses", color: "bg-blue-600" }
-                ]
-            },
-            {
-                id: 10,
-                type: "emergency_protocol", 
-                title: "SITUASI CEMAS: PROTOKOL 3T",
-                subtitle: "Bila Keadaan Menjadi Tegang",
-                bgColor: "bg-slate-800",
-                textColor: "text-white"
-            },
-            {
-                id: 11,
-                type: "simulation",
-                title: "SIMULASI: ANGRY STAF",
-                subtitle: "Pilih Respon Terbaik (6 Situasi)",
-                bgColor: "bg-slate-900",
-                textColor: "text-white",
-                scenarios: [
-                    {
-                        context: "Cikgu A menyerbu bilik: 'Kenapa claim saya tak masuk lagi?! Pejabat ni tidur ke?!'",
-                        options: [
-                            { text: "'Cikgu jangan kurang ajar! Keluar!'", type: "WRONG", feedback: "Eskalasi! Dia akan lebih marah." },
-                            { text: "'Maaf cikgu, saya nampak cikgu marah. Mari kita semak sama-sama.'", type: "RIGHT", feedback: "Tepat! Validasi emosi dahulu." }
-                        ]
-                    },
-                    {
-                        context: "Staf B menangis di meja: 'Saya tak tahan dah, kerja banyak sangat!'",
-                        options: [
-                            { text: "'Sabarlah, semua orang pun banyak kerja.'", type: "WRONG", feedback: "Dismissive. Dia rasa tidak didengar." },
-                            { text: "'Nampak berat beban awak. Jom bincang mana boleh kita susun semula.'", type: "RIGHT", feedback: "Empati + Solusi." }
-                        ]
-                    },
-                    {
-                        context: "Dua staf bergaduh jerit-menjerit di pantri.",
-                        options: [
-                            { text: "Tengok saja dari jauh (takut masuk campur).", type: "WRONG", feedback: "Pasif. Konflik akan merebak." },
-                            { text: "Leraikan segera: 'Stop! Balik meja masing-masing. Jumpa saya 5 minit lagi.'", type: "RIGHT", feedback: "Tegas & Mengawal keadaan." }
-                        ]
-                    },
-                    {
-                        context: "Bos panggil mesyuarat mengejut 4:30 petang, staf merungut nak balik.",
-                        options: [
-                            { text: "'Ikut arahan bos je la, jangan banyak bunyi.'", type: "WRONG", feedback: "Mematikan semangat." },
-                            { text: "'Saya faham ini last minute. Kita fokus agenda penting je supaya boleh balik cepat.'", type: "RIGHT", feedback: "Memahami & Praktikal." }
-                        ]
-                    },
-                    {
-                        context: "Ibu bapa mengamuk di kaunter pasal yuran.",
-                        options: [
-                            { text: "Bawa masuk bilik tertutup & tawarkan air.", type: "RIGHT", feedback: "Mengasingkan punca bising & menyejukkan hati." },
-                            { text: "Bertekak di kaunter untuk pertahankan staf.", type: "WRONG", feedback: "Memalukan semua pihak di tempat awam." }
-                        ]
-                    },
-                    {
-                        context: "Rakan sejawat mengata anda di belakang (Gossip).",
-                        options: [
-                            { text: "Serang dia depan orang ramai.", type: "WRONG", feedback: "Tidak profesional." },
-                            { text: "Jumpa empat mata: 'Saya dengar cerita ni, betul ke awak cakap?'", type: "RIGHT", feedback: "Konfrontasi sihat & matang." }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 12,
-                type: "technique",
-                title: "TEKNIK SANDWICH",
-                subtitle: "Menegur Tanpa Melukakan",
-                bgColor: "bg-yellow-50",
-                textColor: "text-yellow-900"
-            },
-            {
-                id: 13,
-                type: "iceberg",
-                title: "FENOMENA AISBERG",
-                subtitle: "Apa Yang Tersirat",
-                bgColor: "bg-cyan-900",
-                textColor: "text-white"
-            },
-
-            // --- BAHAGIAN 3: KREDIBILITI & PENUTUP ---
-            {
-                id: 14,
-                type: "bank",
-                title: "AKAUN BANK EMOSI",
-                subtitle: "Leading Without Authority",
-                bgColor: "bg-white",
-                textColor: "text-slate-900"
-            },
-            {
-                id: 15,
                 type: "credibility_interactive", 
                 title: "3K KREDIBILITI",
                 subtitle: "Klik Kad Untuk Info",
                 bgColor: "bg-slate-900",
                 textColor: "text-white"
             },
+
+            // --- BAHAGIAN 3: INTEGRITI & PENUTUP ---
             {
-                id: 16,
+                id: 9,
+                type: "zoo", // Updated images for better visibility (Flat Icons)
+                title: "ZOO KONFLIK",
+                subtitle: "Kenali Gaya Anda (Thomas-Kilmann)",
+                bgColor: "bg-orange-50",
+                textColor: "text-orange-900",
+                animals: [
+                    // Menggunakan ikon flaticon/icons8 yang lebih stabil dan jelas untuk metafora
+                    { name: "JERUNG", style: "Competing", desc: "'Cara aku atau kau keluar.'", img: "https://img.icons8.com/color/96/shark.png", color: "bg-red-500" },
+                    { name: "KURA-KURA", style: "Avoiding", desc: "'Tak apa lah, malas gaduh.'", img: "https://img.icons8.com/color/96/turtle.png", color: "bg-green-500" },
+                    { name: "TEDDY BEAR", style: "Accommodating", desc: "'Ikut awak lah, asalkan bahagia.'", img: "https://img.icons8.com/color/96/teddy-bear.png", color: "bg-pink-500" },
+                    { name: "MUSANG", style: "Compromising", desc: "'Kita bahagi dua, adil.'", img: "https://img.icons8.com/color/96/fox.png", color: "bg-orange-500" },
+                    { name: "BURUNG HANTU", style: "Collaborating", desc: "'Jom cari jalan puaskan hati kita berdua.'", img: "https://img.icons8.com/color/96/owl.png", color: "bg-blue-600" }
+                ]
+            },
+            {
+                id: 10,
                 type: "dilemma",
                 title: "KAJIAN KES: DILEMA PENYELIA",
                 subtitle: "Ujian Integriti",
@@ -299,7 +190,7 @@
                 textColor: "text-red-900"
             },
             {
-                id: 17,
+                id: 11,
                 type: "closing",
                 title: "PEMIMPIN IDOLA",
                 subtitle: "Refleksi Akhir",
@@ -309,39 +200,21 @@
         ];
 
         let currentSlide = 0;
-        
-        // State management
         let bossMode = false;
         let currentScenarioIndex = 0;
-        let currentSimIndex = 0; 
-        let bankBalance = 50;
-        let simStep = 0; 
-        let activePieSlice = null;
-        let gameFeedback = ""; // Store feedback text for the game
-        let isGameCorrect = false; // Store correctness for the game
+        let bankBalance = 50; 
+        let currentBankSimIndex = 0;
 
         function renderSlide() {
             const slide = slides[currentSlide];
             const container = document.getElementById('slideContainer');
             const body = document.getElementById('mainBody');
             
-            // Reset states specific to slides if leaving/entering fresh
-            if(slide.id !== 5) {
-                // Keep game state if we just navigated away and back? 
-                // For simplicity, let's keep state unless page refresh, but UI re-renders based on index.
-            }
-
-            if(slide.id !== 11) {
-                // Keep sim state
-            }
-            
-            if(slide.id !== 7) activePieSlice = null;
-            
-            // Update Body Classes
             body.className = `w-full h-screen flex flex-col transition-colors duration-700 font-sans ${slide.bgColor} ${slide.textColor}`;
 
             let contentHtml = '';
 
+            // --- 1. TITLE ---
             if (slide.type === 'title') {
                 contentHtml = `
                 <div class="flex flex-col items-center text-center slide-enter px-4">
@@ -358,7 +231,10 @@
                         ${slide.content}
                     </p>
                 </div>`;
-            } else if (slide.type === 'boss_leader_interactive') {
+            } 
+            
+            // --- 2. BOSS VS LEADER ---
+            else if (slide.type === 'boss_leader_interactive') {
                 contentHtml = `
                 <div class="flex flex-col h-full justify-center items-center slide-enter w-full max-w-6xl mx-auto px-4">
                     <div class="flex items-center gap-4 mb-8 bg-slate-100 p-2 rounded-full shadow-inner">
@@ -402,7 +278,10 @@
                         </div>
                     </div>
                 </div>`;
-            } else if (slide.type === 'myth') {
+            } 
+            
+            // --- 3. MYTH ---
+            else if (slide.type === 'myth') {
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full gap-10 slide-enter px-4">
                     <h2 class="text-4xl md:text-6xl font-black text-slate-800 text-center">MITOS vs FAKTA</h2>
@@ -419,7 +298,10 @@
                         </div>
                     </div>
                 </div>`;
-            } else if (slide.type === 'quadrant') {
+            } 
+            
+            // --- 4. QUADRANT ---
+            else if (slide.type === 'quadrant') {
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4">
                     <div class="text-center mb-8">
@@ -488,7 +370,10 @@
                         </div>
                     </div>
                 </div>`;
-            } else if (slide.type === 'game') {
+            }
+
+            // --- 5. DOCTOR GAME ---
+            else if (slide.type === 'game') {
                 const scenario = slide.scenarios[currentScenarioIndex];
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-4xl mx-auto px-4">
@@ -519,270 +404,100 @@
                     </div>
                     <div id="feedbackResult" class="hidden mt-6 text-xl font-bold text-amber-400 animate-bounce"></div>
                 </div>`;
-            } else if (slide.type === 'section_break') {
-                contentHtml = `
-                <div class="flex flex-col items-center justify-center h-full text-center slide-enter px-4">
-                    <div class="mb-8 p-6 bg-teal-500/20 rounded-full animate-pulse">
-                        <i data-lucide="message-circle" width="100" height="100" class="text-teal-300"></i>
-                    </div>
-                    <h2 class="text-5xl md:text-7xl font-black text-white mb-4 tracking-tight">${slide.title}</h2>
-                    <p class="text-2xl text-teal-200 font-light uppercase tracking-widest border-t border-teal-700 pt-6 mt-2">${slide.subtitle}</p>
-                </div>`;
-            } else if (slide.type === 'hook_mehrabian_svg') {
-                contentHtml = `
-                <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4">
-                    <div class="text-center mb-8">
-                        <h2 class="text-4xl md:text-5xl font-black text-slate-800 mb-2">HUKUM MEHRABIAN</h2>
-                        <p class="text-slate-500 text-lg">Klik pada setiap bahagian carta untuk maklumat.</p>
-                    </div>
-                    
-                    <div class="flex flex-col md:flex-row items-center justify-center gap-16 w-full">
-                        <!-- SVG Interactive Pie Chart -->
-                        <div class="relative w-80 h-80 drop-shadow-2xl">
-                            <svg viewBox="0 0 100 100" class="w-full h-full transform -rotate-90">
-                                <!-- 55% Slice (Bahasa Badan) -->
-                                <path d="M 50 50 L 50 0 A 50 50 0 1 1 17.5 90.5 Z" fill="#ef4444" 
-                                    class="pie-slice hover:brightness-110" onclick="showPieInfo('body')"></path>
-                                
-                                <!-- 38% Slice (Nada Suara) -->
-                                <path d="M 50 50 L 17.5 90.5 A 50 50 0 0 1 29.3 4.5 Z" fill="#14b8a6" 
-                                    class="pie-slice hover:brightness-110" onclick="showPieInfo('tone')"></path>
-                                
-                                <!-- 7% Slice (Perkataan) -->
-                                <path d="M 50 50 L 29.3 4.5 A 50 50 0 0 1 50 0 Z" fill="#cbd5e1" 
-                                    class="pie-slice hover:brightness-110" onclick="showPieInfo('words')"></path>
-                                
-                                <!-- Inner Circle -->
-                                <circle cx="50" cy="50" r="25" fill="white" />
-                            </svg>
-                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                <i data-lucide="mouse-pointer-2" class="text-slate-300 animate-bounce"></i>
-                            </div>
-                        </div>
+            }
 
-                        <!-- Dynamic Info Panel -->
-                        <div id="pieInfoPanel" class="w-full md:w-96 min-h-[200px] flex items-center">
-                            <div class="text-left space-y-4 animate-fade-in">
-                                <h3 class="text-4xl font-black text-slate-800">KOMUNIKASI</h3>
-                                <p class="text-slate-500 text-lg">Elemen manakah yang paling memberi kesan kepada pendengar?</p>
-                                <div class="flex gap-2">
-                                    <span class="w-4 h-4 bg-red-500 rounded-full inline-block"></span> Bahasa Badan
-                                    <span class="w-4 h-4 bg-teal-500 rounded-full inline-block"></span> Nada
-                                    <span class="w-4 h-4 bg-slate-300 rounded-full inline-block"></span> Perkataan
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-            } else if (slide.type === 'active_listening') {
+            // --- 6. BANK INTRO (LIGHTER CARD FOR VISIBILITY) ---
+            else if (slide.type === 'bank_intro') {
                 contentHtml = `
-                <div class="flex flex-col items-center justify-center h-full slide-enter px-4">
-                    <h2 class="text-4xl md:text-5xl font-black text-teal-900 mb-12 text-center">JENIS PENDENGARAN</h2>
-                    <div class="space-y-6 w-full max-w-4xl">
-                        <div class="flex items-center gap-6 bg-white p-6 rounded-2xl shadow-sm opacity-50 hover:opacity-100 transition-opacity">
-                            <div class="bg-slate-200 p-4 rounded-full"><i data-lucide="ear-off" class="text-slate-500"></i></div>
-                            <div><h3 class="text-xl font-bold text-slate-700">1. MENDENGAR KOSONG</h3><p class="text-slate-500">Masuk telinga kanan, keluar kiri.</p></div>
-                        </div>
-                        <div class="flex items-center gap-6 bg-white p-6 rounded-2xl shadow-md hover:scale-105 transition-transform border-l-8 border-yellow-400">
-                            <div class="bg-yellow-100 p-4 rounded-full"><i data-lucide="message-circle" class="text-yellow-600"></i></div>
-                            <div><h3 class="text-xl font-bold text-yellow-800">2. MENDENGAR UNTUK MENJAWAB</h3><p class="text-slate-600">Dengar sambil susun ayat balas.</p></div>
-                        </div>
-                        <div class="flex items-center gap-6 bg-teal-600 p-8 rounded-2xl shadow-2xl hover:scale-105 transition-transform border-l-8 border-teal-300 transform translate-x-4">
-                            <div class="bg-white p-4 rounded-full"><i data-lucide="heart-handshake" class="text-teal-600"></i></div>
-                            <div><h3 class="text-2xl font-black text-white">3. MENDENGAR UNTUK MEMAHAMI</h3><p class="text-teal-100 text-lg">Empati. Dengar emosi di sebalik perkataan.</p></div>
-                        </div>
+                <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
+                    <div class="mb-8 p-6 bg-white/20 rounded-full animate-pulse shadow-xl border border-white/30">
+                         <!-- Visual Wallet Image -->
+                         <img src="https://cdn-icons-png.flaticon.com/512/1086/1086741.png" class="w-32 h-32 object-contain" alt="Wallet">
+                    </div>
+                    <h2 class="text-6xl font-black text-white mb-4 tracking-tight">BANK AKAUN EMOSI</h2>
+                    <p class="text-2xl text-slate-300 italic font-light">"Sebelum minta pengeluaran (pertolongan), pastikan ada deposit (kebaikan)."</p>
+                    <div class="mt-8 bg-white/10 px-6 py-2 rounded-lg inline-block">
+                        <span class="text-sm font-bold text-amber-400">KONSEP STEPHEN COVEY</span>
                     </div>
                 </div>`;
-            } else if (slide.type === 'zoo') {
-                contentHtml = `
-                <div class="flex flex-col items-center justify-center h-full slide-enter w-full px-4">
-                    <div class="text-center mb-8">
-                        <h2 class="text-4xl font-black text-orange-900 mb-2">ZOO KONFLIK</h2>
-                        <p class="text-orange-700">Klik kad untuk lihat strategi.</p>
-                    </div>
-                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 w-full max-w-7xl">
-                        ${slide.animals.map(animal => `
-                            <div class="conflict-card h-80 rounded-2xl overflow-hidden shadow-lg relative group cursor-pointer bg-white" onclick="alert('${animal.name} (${animal.style}): ${animal.desc}')">
-                                <div class="${animal.color} h-1/2 flex items-center justify-center text-white"><i data-lucide="${animal.icon}" width="48" height="48"></i></div>
-                                <div class="p-4 text-center h-1/2 flex flex-col justify-center">
-                                    <h3 class="font-black text-lg mb-1">${animal.name}</h3>
-                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">${animal.style}</p>
-                                    <p class="text-sm text-slate-600 italic opacity-0 group-hover:opacity-100 transition-opacity">"${animal.desc}"</p>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="mt-8 text-center opacity-60 text-xs font-mono text-orange-900 bg-orange-100 px-4 py-1 rounded-full inline-block">
-                        Sumber: Thomas-Kilmann Conflict Mode Instrument (TKI)
-                    </div>
-                </div>`;
-            } else if (slide.type === 'emergency_protocol') {
-                contentHtml = `
-                <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-5xl mx-auto px-4 text-center">
-                    <div class="mb-10 bg-red-600 text-white p-6 rounded-full shadow-lg animate-pulse">
-                        <i data-lucide="siren" width="64" height="64"></i>
-                    </div>
-                    <h2 class="text-5xl md:text-7xl font-black text-white mb-4 tracking-tight">PROTOKOL 3T</h2>
-                    <p class="text-2xl text-slate-300 mb-12 uppercase tracking-widest">Bila Berhadapan Dengan Orang Mengamuk</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full text-slate-900">
-                        <div class="bg-white p-8 rounded-2xl shadow-xl hover:-translate-y-2 transition-transform">
-                            <div class="text-6xl font-black text-slate-200 mb-4">1</div>
-                            <h3 class="text-2xl font-bold text-blue-600 mb-2">TENANG</h3>
-                            <p class="text-sm text-slate-600">Tarik nafas. Jangan ikut emosi marah dia. Kawal diri.</p>
-                        </div>
-                        <div class="bg-white p-8 rounded-2xl shadow-xl hover:-translate-y-2 transition-transform">
-                            <div class="text-6xl font-black text-slate-200 mb-4">2</div>
-                            <h3 class="text-2xl font-bold text-orange-500 mb-2">TAHAN</h3>
-                            <p class="text-sm text-slate-600">Tahan diri dari menyampuk. Biar dia luah sampai habis.</p>
-                        </div>
-                        <div class="bg-white p-8 rounded-2xl shadow-xl hover:-translate-y-2 transition-transform">
-                            <div class="text-6xl font-black text-slate-200 mb-4">3</div>
-                            <h3 class="text-2xl font-bold text-green-600 mb-2">TINDAK</h3>
-                            <p class="text-sm text-slate-600">Respon dengan nada rendah, empati & solusi (bukan alasan).</p>
-                        </div>
-                    </div>
-                </div>`;
-            } else if (slide.type === 'simulation') {
-                const scenario = slide.scenarios[currentSimIndex];
-                let simContent = '';
+            }
+
+            // --- 7. BANK SIMULATION (10 Q, SPELLING FIXED, BIGGER PIGGY, DYNAMIC WALLET) ---
+            else if (slide.type === 'bank_simulation') {
+                const situation = slide.situations[currentBankSimIndex];
                 
-                if (simStep === 0) {
-                    simContent = `
-                        <div class="bg-white/10 p-8 rounded-3xl backdrop-blur border border-white/20 text-center max-w-4xl animate-fade-in w-full">
-                            <div class="flex justify-between items-center mb-6">
-                                <button onclick="prevSimScenario()" class="text-white hover:text-amber-300 transition-colors ${currentSimIndex === 0 ? 'opacity-30 cursor-not-allowed' : ''}" ${currentSimIndex === 0 ? 'disabled' : ''}>
-                                    <i data-lucide="arrow-left-circle" width="32"></i>
-                                </button>
-                                <div class="flex items-center gap-4">
-                                    <span class="text-amber-400 font-bold tracking-widest uppercase">Situasi ${currentSimIndex + 1} / 6</span>
-                                    <div class="bg-red-600 text-white font-bold inline-block px-4 py-1 rounded-full animate-pulse">SITUASI CEMAS</div>
-                                </div>
-                                <button onclick="nextSimScenario()" id="btnNextSim" class="text-white hover:text-amber-300 transition-colors opacity-30 cursor-not-allowed" disabled>
-                                    <i data-lucide="arrow-right-circle" width="32"></i>
-                                </button>
-                            </div>
-                            <h3 class="text-2xl md:text-4xl font-bold mb-8 leading-tight">"${scenario.context}"</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <button onclick="checkSimAnswer('${scenario.options[0].type}', 0)" class="p-6 bg-slate-800 hover:bg-slate-700 rounded-xl border border-slate-600 transition-all text-left group h-full flex flex-col justify-center">
-                                    <span class="block text-xs text-slate-400 mb-2 group-hover:text-blue-300">PILIHAN A:</span>
-                                    <span class="text-lg font-bold">"${scenario.options[0].text}"</span>
-                                </button>
-                                <button onclick="checkSimAnswer('${scenario.options[1].type}', 1)" class="p-6 bg-slate-800 hover:bg-slate-700 rounded-xl border border-slate-600 transition-all text-left group h-full flex flex-col justify-center">
-                                    <span class="block text-xs text-slate-400 mb-2 group-hover:text-blue-300">PILIHAN B:</span>
-                                    <span class="text-lg font-bold">"${scenario.options[1].text}"</span>
-                                </button>
-                            </div>
-                        </div>`;
-                } else if (simStep === 1) {
-                    // Feedback logic using simLastChoiceIndex
-                    const chosenOption = scenario.options[window.simLastChoiceIndex];
-                    const isCorrect = chosenOption.type === "RIGHT";
-                    
-                    // Find correct option for display if wrong
-                    const correctOption = scenario.options.find(opt => opt.type === "RIGHT");
-                    
-                    const bgClass = isCorrect ? "bg-emerald-900/90 border-emerald-500" : "bg-red-900/90 border-red-500";
-                    const icon = isCorrect ? "check-circle" : "flame";
-                    const title = isCorrect ? "TINDAKAN TEPAT!" : "ESKALASI BERLAKU!";
-                    const textColor = isCorrect ? "text-emerald-400" : "text-red-500";
-                    
-                    simContent = `
-                        <div class="${bgClass} p-10 rounded-3xl backdrop-blur border-4 text-center max-w-3xl animate-fade-in w-full">
-                            <i data-lucide="${icon}" width="80" height="80" class="mx-auto ${textColor} mb-6"></i>
-                            <h3 class="text-4xl font-black mb-4 text-white">${title}</h3>
-                            <p class="text-xl text-white mb-2">"${chosenOption.feedback}"</p>
-                            
-                            ${!isCorrect ? `<div class="mt-4 p-4 bg-black/30 rounded-xl text-sm text-slate-300"><strong>Sepatutnya:</strong> "${correctOption.text}" (${correctOption.feedback})</div>` : ''}
-                            
-                            <div class="mt-8 flex justify-center gap-4">
-                                <button onclick="resetSimScenario()" class="bg-slate-600 text-white px-6 py-3 rounded-full font-bold hover:bg-slate-500 flex items-center gap-2">
-                                    <i data-lucide="rotate-ccw" width="20"></i> Ulang Semula
-                                </button>
-                                <button onclick="nextSimScenario()" class="bg-white text-slate-900 px-8 py-3 rounded-full font-bold hover:bg-slate-200 flex items-center gap-2">
-                                    ${currentSimIndex < 5 ? 'Seterusnya <i data-lucide="arrow-right" width="20"></i>' : 'TAMAT <i data-lucide="check" width="20"></i>'}
-                                </button>
-                            </div>
-                        </div>`;
-                }
-                contentHtml = `<div class="flex flex-col items-center justify-center h-full slide-enter px-4">${simContent}</div>`;
-            } else if (slide.type === 'technique') {
                 contentHtml = `
-                <div class="flex flex-col items-center justify-center h-full slide-enter px-4">
-                    <h2 class="text-5xl font-black text-yellow-900 mb-12">TEKNIK SANDWICH</h2>
-                    <div class="flex flex-col gap-2 max-w-2xl w-full">
-                        <div class="bg-amber-300 p-8 rounded-t-[3rem] text-center shadow-lg relative group hover:-translate-y-2 transition-transform">
-                            <h3 class="text-2xl font-bold text-amber-900">PUJIAN / POSITIF</h3>
-                            <p class="text-amber-800 italic">"Saya suka komitmen kerja awak selama ini..."</p>
-                        </div>
-                        <div class="bg-red-400 p-8 text-center shadow-lg relative group hover:scale-105 transition-transform z-10 mx-4 rounded-xl">
-                            <h3 class="text-2xl font-bold text-white">TEGURAN / ISU</h3>
-                            <p class="text-red-100 italic">"...cuma kebelakangan ini kehadiran agak lewat..."</p>
-                        </div>
-                        <div class="bg-amber-300 p-8 rounded-b-[3rem] text-center shadow-lg relative group hover:translate-y-2 transition-transform">
-                            <h3 class="text-2xl font-bold text-amber-900">HARAPAN / SOKONGAN</h3>
-                            <p class="text-amber-800 italic">"...saya yakin awak boleh perbaiki."</p>
-                        </div>
+                <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-5xl mx-auto px-4">
+                    <div class="w-full flex justify-between items-center mb-4">
+                         <div class="flex items-center gap-4">
+                            <button onclick="prevBankSim()" class="text-emerald-400 hover:text-white transition-colors ${currentBankSimIndex === 0 ? 'opacity-30 cursor-not-allowed' : ''}" ${currentBankSimIndex === 0 ? 'disabled' : ''}>
+                                <i data-lucide="arrow-left-circle" width="32"></i>
+                            </button>
+                            <h2 class="text-3xl font-bold text-emerald-400">SITUASI ${currentBankSimIndex + 1} / 10</h2>
+                            <button onclick="nextBankSim()" class="text-emerald-400 hover:text-white transition-colors ${currentBankSimIndex === slide.situations.length - 1 ? 'opacity-30 cursor-not-allowed' : ''}" ${currentBankSimIndex === slide.situations.length - 1 ? 'disabled' : ''}>
+                                <i data-lucide="arrow-right-circle" width="32"></i>
+                            </button>
+                         </div>
+                         <div class="bg-slate-800 px-6 py-2 rounded-full border border-slate-600 flex items-center gap-4">
+                            <!-- Updated Visual Wallet Icon -->
+                            <img src="https://cdn-icons-png.flaticon.com/512/1086/1086741.png" class="w-12 h-12 object-contain" alt="Wallet">
+                            <div class="flex flex-col items-end">
+                                <span class="text-xs text-slate-400 uppercase">Baki Akaun</span>
+                                <span class="text-3xl font-bold font-mono ${bankBalance < 0 ? 'text-red-500' : (bankBalance < 30 ? 'text-yellow-500' : 'text-green-400')}">${bankBalance}%</span>
+                            </div>
+                         </div>
                     </div>
-                </div>`;
-            } else if (slide.type === 'iceberg') {
-                contentHtml = `
-                <div class="flex flex-col items-center justify-center h-full slide-enter px-4">
-                    <h2 class="text-4xl font-bold text-cyan-100 mb-8">FENOMENA AISBERG</h2>
-                    <div class="relative w-full max-w-3xl h-[500px] flex justify-center perspective-1000">
-                        <!-- Water Line -->
-                        <div class="absolute top-1/3 w-full h-1 bg-cyan-400/50 z-20 border-t border-cyan-300 dashed"></div>
-                        
-                        <!-- Iceberg Top -->
-                        <div class="absolute top-0 w-64 h-1/3 bg-white rounded-t-full flex items-center justify-center z-10 shadow-lg animate-float">
-                            <div class="text-center text-slate-800 p-4">
-                                <h3 class="font-black text-xl">TINGKAH LAKU</h3>
-                                <p class="text-sm">(Apa yang kita nampak: Marah, Diam)</p>
+
+                    <div class="flex flex-col md:flex-row gap-8 w-full items-center">
+                        <!-- Left: Questions -->
+                        <div class="flex-1 w-full">
+                            <!-- Situation Card -->
+                            <div class="bg-white text-slate-900 p-8 rounded-2xl shadow-2xl w-full mb-6 relative overflow-hidden min-h-[120px] flex items-center justify-center">
+                                <div class="absolute top-0 left-0 w-2 h-full bg-emerald-500"></div>
+                                <h3 class="text-2xl font-bold text-center">"${situation.q}"</h3>
+                                <div id="floatContainer" class="absolute inset-0 pointer-events-none"></div>
+                            </div>
+
+                            <!-- Options -->
+                            <div class="grid grid-cols-1 gap-4 w-full" id="bankOptions">
+                                <button onclick="chooseBankOption('A')" class="p-4 bg-slate-800 hover:bg-slate-700 border-2 border-slate-600 hover:border-emerald-500 rounded-xl text-left transition-all group w-full">
+                                    <span class="block text-xs font-bold text-slate-400 mb-1 group-hover:text-emerald-300">PILIHAN A</span>
+                                    <span class="text-lg font-medium leading-tight">${situation.optA}</span>
+                                </button>
+                                <button onclick="chooseBankOption('B')" class="p-4 bg-slate-800 hover:bg-slate-700 border-2 border-slate-600 hover:border-emerald-500 rounded-xl text-left transition-all group w-full">
+                                    <span class="block text-xs font-bold text-slate-400 mb-1 group-hover:text-emerald-300">PILIHAN B</span>
+                                    <span class="text-lg font-medium leading-tight">${situation.optB}</span>
+                                </button>
+                            </div>
+
+                            <!-- Feedback (Hidden initially) -->
+                            <div id="bankFeedback" class="hidden mt-6 p-6 rounded-xl bg-black/50 backdrop-blur w-full text-center border border-white/20 animate-fade-in">
+                                <h4 id="fbTitle" class="text-2xl font-black mb-2"></h4>
+                                <p id="fbText" class="text-lg text-slate-200 mb-4"></p>
                             </div>
                         </div>
 
-                        <!-- Iceberg Bottom (Hidden/Deep) -->
-                        <div class="absolute top-1/3 w-96 h-2/3 bg-cyan-600/80 rounded-b-full flex flex-col items-center pt-12 backdrop-blur-sm border-t border-white/20 group cursor-pointer transition-all duration-500 hover:bg-cyan-500 hover:scale-105">
-                            <div class="text-center text-white p-4 space-y-6 opacity-60 group-hover:opacity-100 transition-opacity">
-                                <div class="bg-white/10 p-3 rounded-lg">
-                                    <h3 class="font-bold text-cyan-200">EMOSI</h3>
-                                    <p class="text-sm">(Takut, Kecewa, Tertekan)</p>
+                        <!-- Right: Piggy Bank Visual (Giant Size) -->
+                        <div class="w-full md:w-1/3 flex justify-center">
+                            <div class="relative w-full h-[450px] bg-slate-800/50 rounded-3xl border-4 border-slate-600 flex items-end justify-center overflow-hidden p-4 shadow-inner">
+                                <!-- Liquid Level -->
+                                <div id="bankBar" class="w-full bg-gradient-to-t from-green-500 to-green-300 rounded-xl transition-all duration-500 relative shadow-[0_0_20px_rgba(34,197,94,0.5)]" style="height: 50%">
+                                    <div class="absolute top-0 w-full h-2 bg-white/30 animate-pulse"></div>
                                 </div>
-                                <div class="bg-white/10 p-3 rounded-lg">
-                                    <h3 class="font-bold text-cyan-200">NILAI / KEPERCAYAAN</h3>
-                                    <p class="text-sm">(Rasa tidak dihargai, Masalah keluarga)</p>
-                                </div>
-                                <div class="bg-white/20 px-4 py-2 rounded-lg animate-pulse mt-4">
-                                    <p class="text-xs font-italic">"Punca sebenar ada di bawah sini."</p>
-                                </div>
+                                
+                                <!-- Coin Container -->
+                                <div id="coinContainer" class="absolute inset-0 pointer-events-none z-20"></div>
+                                
+                                <!-- Giant Piggy Bank Image Overlay -->
+                                <img src="https://cdn-icons-png.flaticon.com/512/2845/2845686.png" class="absolute bottom-8 w-64 h-64 object-contain opacity-95 drop-shadow-2xl z-10 filter brightness-110" alt="Bank">
                             </div>
                         </div>
                     </div>
                 </div>`;
-            } else if (slide.type === 'bank') {
-                contentHtml = `
-                <div class="flex flex-col items-center justify-center h-full slide-enter px-4">
-                    <div class="text-center mb-10">
-                        <h2 class="text-4xl md:text-5xl font-black text-slate-800 mb-2">BANK AKAUN EMOSI</h2>
-                        <p class="text-slate-500 text-xl">Konsep: Deposit vs Pengeluaran</p>
-                    </div>
-                    <div class="flex flex-col md:flex-row items-center gap-12">
-                        <div class="flex flex-col gap-4">
-                            <button onclick="makeDeposit()" class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-bold shadow-lg flex items-center gap-3 transform active:scale-95 transition-all w-64">
-                                <i data-lucide="plus-circle"></i> BUAT DEPOSIT
-                            </button>
-                            <button onclick="makeWithdrawal()" class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-bold shadow-lg flex items-center gap-3 transform active:scale-95 transition-all w-64">
-                                <i data-lucide="minus-circle"></i> PENGELUARAN
-                            </button>
-                        </div>
-                        <div class="relative w-64 h-80 bg-slate-200 rounded-3xl border-4 border-slate-300 flex items-end justify-center overflow-hidden shadow-inner p-4">
-                            <div id="bankLevel" class="w-full bg-gradient-to-t from-green-500 to-green-300 rounded-xl transition-all duration-500 relative" style="height: 50%"></div>
-                            <div id="coinContainer" class="absolute inset-0 pointer-events-none"></div>
-                            <div class="absolute bottom-4 bg-white/80 backdrop-blur px-4 py-1 rounded-full text-slate-800 font-bold shadow-sm">BAKI EMOSI</div>
-                        </div>
-                    </div>
-                </div>`;
-            } else if (slide.type === 'credibility_interactive') { 
+            }
+
+            // --- 8. KREDIBILITI (INTERACTIVE) ---
+            else if (slide.type === 'credibility_interactive') {
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4">
                     <h2 class="text-5xl font-black text-white mb-8 text-center">3K KREDIBILITI</h2>
@@ -841,7 +556,35 @@
                         </div>
                     </div>
                 </div>`;
-            } else if (slide.type === 'dilemma') {
+            }
+
+            // --- 9. ZOO KONFLIK (UPDATED IMAGES - FLATICON URLs) ---
+            else if (slide.type === 'zoo') {
+                 contentHtml = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter w-full px-4">
+                    <div class="text-center mb-8">
+                        <h2 class="text-4xl font-black text-orange-500 mb-2">ZOO KONFLIK</h2>
+                        <p class="text-orange-200">Kenali Gaya Anda (Thomas-Kilmann)</p>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 w-full max-w-7xl">
+                        ${slide.animals.map(animal => `
+                            <div class="conflict-card h-80 rounded-2xl overflow-hidden shadow-lg relative group cursor-pointer bg-white" onclick="alert('${animal.name} (${animal.style}): ${animal.desc}')">
+                                <div class="${animal.color} h-1/2 flex items-center justify-center text-white p-4">
+                                     <img src="${animal.img}" class="w-full h-full object-contain filter drop-shadow-md transform hover:scale-110 transition-transform" alt="${animal.name}">
+                                </div>
+                                <div class="p-4 text-center h-1/2 flex flex-col justify-center">
+                                    <h3 class="font-black text-lg mb-1 text-slate-800">${animal.name}</h3>
+                                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">${animal.style}</p>
+                                    <p class="text-sm text-slate-600 italic opacity-0 group-hover:opacity-100 transition-opacity">"${animal.desc}"</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+            }
+
+            // --- 10. DILEMMA ---
+            else if (slide.type === 'dilemma') {
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter px-4 max-w-5xl mx-auto text-center">
                     <div class="bg-white p-10 rounded-3xl shadow-2xl border-t-8 border-red-600 mb-10 w-full relative">
@@ -856,7 +599,10 @@
                     </div>
                     <div id="dilemmaResult" class="hidden mt-6 p-6 rounded-xl text-xl font-bold w-full animate-fade-in"></div>
                 </div>`;
-            } else if (slide.type === 'closing') {
+            }
+
+            // --- 11. CLOSING ---
+            else if (slide.type === 'closing') {
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full text-center slide-enter px-4">
                     <i data-lucide="sparkles" width="80" height="80" class="text-amber-400 mb-6 animate-pulse"></i>
@@ -875,33 +621,6 @@
         }
 
         // --- Interactive Functions ---
-        function showPieInfo(type) {
-            const panel = document.getElementById('pieInfoPanel');
-            let content = '';
-            
-            if (type === 'body') {
-                content = `
-                <div class="bg-red-50 border-l-8 border-red-500 p-6 rounded-r-xl shadow-lg w-full animate-fade-in">
-                    <h3 class="text-4xl font-black text-red-600 mb-2">55% BAHASA BADAN</h3>
-                    <p class="text-lg text-slate-700">Visual adalah raja. Postur tubuh, kontak mata, ekspresi wajah, dan pergerakan tangan menyampaikan mesej sebenar sebelum anda membuka mulut.</p>
-                </div>`;
-            } else if (type === 'tone') {
-                content = `
-                <div class="bg-teal-50 border-l-8 border-teal-500 p-6 rounded-r-xl shadow-lg w-full animate-fade-in">
-                    <h3 class="text-4xl font-black text-teal-600 mb-2">38% NADA SUARA</h3>
-                    <p class="text-lg text-slate-700">Bukan apa yang anda cakap, tapi <strong>bagaimana</strong> anda cakap. Intonasi, kelajuan, dan volume suara menentukan emosi mesej.</p>
-                </div>`;
-            } else if (type === 'words') {
-                content = `
-                <div class="bg-slate-100 border-l-8 border-slate-400 p-6 rounded-r-xl shadow-lg w-full animate-fade-in">
-                    <h3 class="text-4xl font-black text-slate-500 mb-2">7% PERKATAAN</h3>
-                    <p class="text-lg text-slate-700">Isi kandungan (content) hanyalah sebahagian kecil. Jika bahasa badan & nada tidak selari dengan perkataan, orang tidak akan percaya.</p>
-                </div>`;
-            }
-            
-            panel.innerHTML = content;
-        }
-
         function checkAnswer(answer) {
             const scenario = slides[4].scenarios[currentScenarioIndex];
             const resultDiv = document.getElementById('feedbackResult');
@@ -918,7 +637,6 @@
                     nextBtn.classList.add('animate-pulse');
                 }
             } else {
-                // Find why it might be wrong (simple logic for now)
                 let reason = "Cuba lagi.";
                 if (answer === "DIRECTING" && scenario.correct !== "DIRECTING") reason = "Terlalu mengarah untuk situasi ini.";
                 else if (answer === "DELEGATING" && scenario.correct !== "DELEGATING") reason = "Belum bersedia untuk dilepaskan sepenuhnya.";
@@ -943,73 +661,108 @@
                 renderSlide();
             }
         }
-
-        // Updated checkSimAnswer to accept index
-        window.checkSimAnswer = function(type, index) {
-             window.simLastChoiceIndex = index;
-             simStep = 1;
-             renderSlide();
-        }
-
-        function nextSimScenario() {
-            if (currentSimIndex < 5) {
-                currentSimIndex++;
-                simStep = 0;
-            } else {
-                // End of simulation
-                alert("Tahniah! Anda telah menyelesaikan semua situasi cemas.");
-                // Optionally go to next slide
-                nextSlide();
-            }
-            renderSlide();
-        }
-        
-        function prevSimScenario() {
-            if (currentSimIndex > 0) {
-                currentSimIndex--;
-                simStep = 0;
-                renderSlide();
-            }
-        }
-        
-        function resetSimScenario() {
-            simStep = 0;
-            renderSlide();
-        }
-
-        function setSimStep(step) {
-            simStep = step;
-            renderSlide();
-        }
         
         function setBossMode(mode) {
             bossMode = mode;
             renderSlide();
         }
 
+        // BANK SIMULATION LOGIC
+        function chooseBankOption(choice) {
+            const situation = slides[6].situations[currentBankSimIndex];
+            const change = choice === 'A' ? situation.resA : situation.resB;
+            const feedbackTitle = change > 0 ? "DEPOSIT BERJAYA!" : "PENGELUARAN!";
+            const feedbackText = choice === 'A' ? situation.fbA : situation.fbB;
+            const titleColor = change > 0 ? "text-green-400" : "text-red-500";
+            
+            bankBalance += change;
+            if (bankBalance > 100) bankBalance = 100;
+            // Removed lower bound limit so it can go negative
+            // if (bankBalance < 0) bankBalance = 0; 
+
+            document.getElementById('bankOptions').classList.add('hidden');
+            const fbBox = document.getElementById('bankFeedback');
+            fbBox.classList.remove('hidden');
+            document.getElementById('fbTitle').className = `text-3xl font-black mb-2 ${titleColor}`;
+            document.getElementById('fbTitle').innerText = feedbackTitle;
+            document.getElementById('fbText').innerText = feedbackText;
+
+            const container = document.getElementById('floatContainer');
+            const floatEl = document.createElement('div');
+            floatEl.className = `float-text ${titleColor} text-4xl`;
+            floatEl.style.left = '50%';
+            floatEl.style.top = '50%';
+            floatEl.style.transform = 'translate(-50%, -50%)';
+            floatEl.innerText = change > 0 ? `+${change}` : `${change}`;
+            container.appendChild(floatEl);
+        }
+
+        function nextBankSim() {
+            if (currentBankSimIndex < 9) {
+                currentBankSimIndex++;
+                renderSlide();
+            } else {
+                alert(`Simulasi Tamat! Baki Akhir Akaun Emosi Anda: ${bankBalance}%`);
+                nextSlide();
+            }
+        }
+        
+        function prevBankSim() {
+             if (currentBankSimIndex > 0) {
+                currentBankSimIndex--;
+                renderSlide();
+            }
+        }
+
+        function updateBank(amount) {
+            bankBalance += amount;
+            if (bankBalance > 100) bankBalance = 100;
+            // Removed lower bound limit so it can go negative
+            
+            // Update Bar
+            const bar = document.getElementById('bankBar');
+            const text = document.getElementById('balanceText');
+            if (bar) {
+                 // For visual bar height, clip at 0
+                 let visualHeight = bankBalance < 0 ? 0 : bankBalance;
+                 bar.style.height = `${visualHeight}%`;
+            }
+            if (text) text.innerText = bankBalance;
+            
+            // Color Logic
+            if (bar) {
+                if(bankBalance < 30) {
+                    bar.classList.remove('from-green-500', 'to-green-300');
+                    bar.classList.add('bg-red-500');
+                } else {
+                    bar.classList.add('from-green-500', 'to-green-300');
+                    bar.classList.remove('bg-red-500');
+                }
+            }
+
+            // Coin Animation
+            if (amount > 0) {
+                const coinArea = document.getElementById('coinArea');
+                if (coinArea) {
+                    const coin = document.createElement('div');
+                    coin.className = 'coin';
+                    coin.style.left = Math.random() * 80 + '%';
+                    coinArea.appendChild(coin);
+                    setTimeout(() => coin.remove(), 800);
+                }
+            }
+        }
+
         function makeDeposit() {
-            if(bankBalance < 100) bankBalance += 10;
-            updateBankVisual();
-            const container = document.getElementById('coinContainer');
-            const coin = document.createElement('div');
-            coin.className = 'absolute left-1/2 w-8 h-8 bg-yellow-400 rounded-full border-2 border-yellow-600 shadow-md coin-drop';
-            coin.style.left = `${Math.random() * 60 + 20}%`;
-            container.appendChild(coin);
-            setTimeout(() => coin.remove(), 1000);
+             if(bankBalance < 100) bankBalance += 10;
+             renderSlide(); // Re-render to show updated balance
+             // Trigger animation manually after render if needed, but simple re-render works for static update
         }
 
         function makeWithdrawal() {
-            if(bankBalance > 0) bankBalance -= 10;
-            updateBankVisual();
-        }
-
-        function updateBankVisual() {
-            const level = document.getElementById('bankLevel');
-            if(level) {
-                level.style.height = `${bankBalance}%`;
-                if(bankBalance < 30) level.className = "w-full bg-red-500 rounded-xl transition-all duration-500 relative";
-                else level.className = "w-full bg-gradient-to-t from-green-500 to-green-300 rounded-xl transition-all duration-500 relative";
-            }
+             // Removed lower bound check
+             bankBalance -= 10;
+             renderSlide();
         }
 
         function resolveDilemma(choice) {
