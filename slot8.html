@@ -52,6 +52,9 @@
             to { transform: rotate(0deg) scale(1); opacity: 1; }
         }
         .pie-animate { animation: spinPie 1s ease-out forwards; }
+        
+        /* Iframe & Video Container Transition */
+        .video-container { transition: all 0.3s ease; }
     </style>
 </head>
 <body class="text-white transition-colors duration-500" id="mainBody">
@@ -161,6 +164,7 @@
                 title: "AKTIVITI BERKUMPULAN",
                 subtitle: "Bedah Video: Simon Sinek",
                 videoSrc: "How to win over customer.mp4", 
+                youtubeId: "iIahC1BRYyU", // ID Video YouTube Simon Sinek sebagai backup
                 bg: "bg-black"
             },
 
@@ -275,6 +279,7 @@
         let discussionTimer = null;
         let discussionTimeLeft = 15 * 60; // 15 minit dalam saat
         let isTimerRunning = false;
+        let useYoutube = false; // Status untuk toggle video
 
         function renderSlide() {
             const slide = slides[currentSlide];
@@ -370,10 +375,6 @@
                                  #06b6d4 7% 45%, 
                                  #ec4899 45% 100%
                              );">
-                             <!-- Optional Center Hole for Donut Style (Uncomment to enable)
-                             <div class="absolute inset-0 m-auto w-32 h-32 bg-indigo-950 rounded-full flex items-center justify-center">
-                                <span class="text-white font-bold text-xl">100%</span>
-                             </div> -->
                         </div>
 
                         <!-- LEGEND -->
@@ -406,9 +407,8 @@
                 </div>`;
             }
 
-            // --- 5. VIDEO DISCUSSION (WITH TIMER) ---
+            // --- 5. VIDEO DISCUSSION (WITH BACKUP TOGGLE) ---
             else if (slide.type === 'video_discussion') {
-                // Calculate display time on initial render or re-render
                 const minutes = Math.floor(discussionTimeLeft / 60);
                 const seconds = discussionTimeLeft % 60;
                 const displayTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
@@ -417,20 +417,41 @@
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4 gap-4">
                     <h2 class="text-3xl md:text-5xl font-orbitron mb-2 text-white text-center neon-cyan">HOW TO WIN OVER CUSTOMERS</h2>
 
+                    <!-- Butang Toggle Sumber Video -->
+                    <div class="flex justify-end w-full max-w-3xl mb-1">
+                        <button onclick="toggleVideoSource()" class="text-xs bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-cyan-300 flex items-center gap-2">
+                            <i data-lucide="refresh-cw" width="14"></i> ${useYoutube ? 'Guna Fail Komputer' : 'Guna Video Online (Backup)'}
+                        </button>
+                    </div>
+
                     <!-- Video Container -->
                     <div class="w-full max-w-3xl aspect-video bg-black rounded-xl border-2 border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.2)] overflow-hidden relative group">
+                        
+                        ${!useYoutube ? `
+                        <!-- MODE 1: FAIL TEMPATAN -->
                         <video controls class="w-full h-full object-contain" id="videoPlayer" onerror="videoError()">
                             <source src="${slide.videoSrc}" type="video/mp4">
-                            <!-- Fallback message in HTML if tag not supported -->
-                            <p class="text-white p-4 text-center">Browser anda tidak menyokong tag video ini.</p>
+                            <p class="text-white p-4 text-center">Pelayar tidak menyokong.</p>
                         </video>
-                        <!-- Error Message Container (Hidden by default) -->
-                        <div id="videoErrorMessage" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-gray-900 text-white p-8 text-center z-10">
+                        <div id="videoErrorMessage" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-gray-900/90 text-white p-8 text-center z-10">
                             <i data-lucide="alert-triangle" class="w-16 h-16 text-red-500 mb-4"></i>
-                            <h3 class="text-2xl font-bold text-red-400 mb-2">Video Tidak Dijumpai</h3>
-                            <p class="mb-4">Sila pastikan fail <strong>"${slide.videoSrc}"</strong> berada di dalam folder yang sama dengan fail ini.</p>
-                            <p class="text-sm text-gray-400">Tips: Semak ejaan nama fail dan pastikan ia berakhir dengan .mp4</p>
+                            <h3 class="text-xl font-bold text-red-400 mb-2">Video Tidak Dijumpai</h3>
+                            <p class="text-sm mb-4">Pastikan fail <strong>"${slide.videoSrc}"</strong> ada.</p>
+                            <button onclick="toggleVideoSource()" class="bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-6 rounded-full">
+                                Guna YouTube Sekarang
+                            </button>
                         </div>
+                        ` : `
+                        <!-- MODE 2: YOUTUBE EMBED -->
+                        <iframe 
+                            class="w-full h-full" 
+                            src="https://www.youtube.com/embed/${slide.youtubeId}?rel=0" 
+                            title="Simon Sinek Customer Service" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                        `}
                     </div>
 
                     <div class="flex flex-row w-full max-w-5xl gap-6 mt-2">
@@ -753,6 +774,11 @@
             if (errorMsg) {
                 errorMsg.classList.remove('hidden');
             }
+        }
+
+        function toggleVideoSource() {
+            useYoutube = !useYoutube;
+            renderSlide(); // Re-render slide to switch source
         }
 
         function startDiscussionTimer() {
