@@ -144,7 +144,7 @@
                 type: "video_discussion",
                 title: "AKTIVITI BERKUMPULAN",
                 subtitle: "Bedah Video: Simon Sinek",
-                // Menggunakan nama fail tempatan yang pendek
+                // PERHATIAN: Pastikan nama fail di dalam komputer anda tepat seperti di bawah
                 videoSrc: "How to win over customer.mp4", 
                 bg: "bg-black"
             },
@@ -360,10 +360,18 @@
 
                     <!-- Video Container (Kecilkan sikit untuk muat timer) -->
                     <div class="w-full max-w-3xl aspect-video bg-black rounded-xl border-2 border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.2)] overflow-hidden relative group">
-                        <video controls class="w-full h-full object-contain">
+                        <video controls class="w-full h-full object-contain" id="videoPlayer" onerror="videoError()">
                             <source src="${slide.videoSrc}" type="video/mp4">
-                            Browser anda tidak menyokong tag video ini atau fail video tidak dijumpai.
+                            <!-- Fallback message in HTML if tag not supported -->
+                            <p class="text-white p-4 text-center">Browser anda tidak menyokong tag video ini.</p>
                         </video>
+                        <!-- Error Message Container (Hidden by default) -->
+                        <div id="videoErrorMessage" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-gray-900 text-white p-8 text-center z-10">
+                            <i data-lucide="alert-triangle" class="w-16 h-16 text-red-500 mb-4"></i>
+                            <h3 class="text-2xl font-bold text-red-400 mb-2">Video Tidak Dijumpai</h3>
+                            <p class="mb-4">Sila pastikan fail <strong>"${slide.videoSrc}"</strong> berada di dalam folder yang sama dengan fail ini.</p>
+                            <p class="text-sm text-gray-400">Tips: Semak ejaan nama fail dan pastikan ia berakhir dengan .mp4</p>
+                        </div>
                     </div>
 
                     <div class="flex flex-row w-full max-w-5xl gap-6 mt-2">
@@ -694,10 +702,23 @@
             container.innerHTML = html;
             lucide.createIcons();
             updateProgressBar();
+
+            // Re-attach video error listener if video slide is rendered
+            const videoElement = document.getElementById('videoPlayer');
+            if(videoElement) {
+                videoElement.addEventListener('error', videoError);
+            }
         }
 
         // --- LOGIC ---
         
+        function videoError() {
+            const errorMsg = document.getElementById('videoErrorMessage');
+            if (errorMsg) {
+                errorMsg.classList.remove('hidden');
+            }
+        }
+
         function startDiscussionTimer() {
             if (isTimerRunning) return;
             isTimerRunning = true;
@@ -806,4 +827,3 @@
     </script>
 </body>
 </html>
-
