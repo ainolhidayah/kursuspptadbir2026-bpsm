@@ -137,31 +137,41 @@
                 subtitle: "Satu Saat Untuk 'SEND', Seumur Hidup Menyesal",
                 bg: "bg-slate-900"
             },
+            
+            // --- SLAID BARU DITAMBAH: VIDEO SIMON SINEK ---
+            {
+                id: 4, // ID baru
+                type: "video_discussion",
+                title: "AKTIVITI BERKUMPULAN",
+                subtitle: "Bedah Video: Simon Sinek",
+                videoSrc: "How to win over customers without giving them what they want. By Simon Sinek #simonsinek #makemoney.mp4",
+                bg: "bg-black"
+            },
 
             // --- BAHAGIAN 2: MEHRABIAN (FLASH CARDS) ---
             {
-                id: 4,
+                id: 5,
                 type: "mehrabian_intro",
                 title: "PERATURAN 7-38-55",
                 subtitle: "Apa Yang Orang Sebenarnya 'Dengar'?",
                 bg: "bg-indigo-950"
             },
             {
-                id: 5,
+                id: 6,
                 type: "flashcard_words",
                 title: "7% PERKATAAN",
                 subtitle: "Klik Kad Untuk Info",
                 bg: "bg-slate-900"
             },
             {
-                id: 6,
+                id: 7,
                 type: "flashcard_tone",
                 title: "38% NADA SUARA",
                 subtitle: "Klik Kad Untuk Info",
                 bg: "bg-slate-900"
             },
             {
-                id: 7,
+                id: 8,
                 type: "flashcard_body",
                 title: "55% BAHASA BADAN",
                 subtitle: "Klik Kad Untuk Info",
@@ -170,14 +180,14 @@
 
             // --- BAHAGIAN 3: KOMUNIKASI BERSEMUKA ---
             {
-                id: 8,
+                id: 9,
                 type: "sandwich",
                 title: "TEKNIK SANDWICH",
                 subtitle: "Menegur Tanpa Melukakan",
                 bg: "bg-gray-900"
             },
             {
-                id: 9,
+                id: 10,
                 type: "active_listening_eq",
                 title: "MENDENGAR DENGAN EMPATI (EQ)",
                 subtitle: "Jangan Jadi 'Radio Buruk'",
@@ -186,28 +196,28 @@
 
             // --- BAHAGIAN 4: DIPLOMASI DIGITAL ---
             {
-                id: 10,
+                id: 11,
                 type: "digital_intro",
                 title: "DIPLOMASI DIGITAL",
                 subtitle: "Etika WhatsApp & Media Sosial",
                 bg: "bg-cyan-950"
             },
             {
-                id: 11,
+                id: 12,
                 type: "whatsapp_rules",
                 title: "PERATURAN EMAS WHATSAPP",
                 subtitle: "Rasmi Tapi Santai?",
                 bg: "bg-slate-900"
             },
             {
-                id: 12,
+                id: 13,
                 type: "blue_tick",
                 title: "KAJIAN KES: BLUE TICK",
                 subtitle: "Dilema 'Seen' Tapi Tak Balas",
                 bg: "bg-blue-950"
             },
             {
-                id: 13,
+                id: 14,
                 type: "social_media_trap",
                 title: "PERANGKAP MEDIA SOSIAL",
                 subtitle: "Membasuh Kain Kotor Di Facebook",
@@ -216,7 +226,7 @@
 
             // --- BAHAGIAN 5: AKTIVITI REPAIR MESSAGE (6 KES) ---
             {
-                id: 14,
+                id: 15,
                 type: "repair_intro",
                 title: "AKTIVITI: REPAIR THE MESSAGE",
                 subtitle: "Ubah Kasar Jadi Profesional",
@@ -224,7 +234,7 @@
             },
             // Satu slaid interaktif untuk kesemua 6 kes
             {
-                id: 15,
+                id: 16,
                 type: "repair_simulation_all",
                 title: "SIMULASI MESEJ: 6 SITUASI",
                 subtitle: "Gunakan Slider Untuk Baiki Mesej",
@@ -233,14 +243,14 @@
 
             // --- BAHAGIAN 6: KUIZ & PENUTUP ---
             {
-                id: 16,
+                id: 17,
                 type: "group_quiz",
                 title: "KUIZ KUMPULAN: ETIKA DIGITAL",
                 subtitle: "Uji Kefahaman Anda (6 Soalan)",
                 bg: "bg-violet-950"
             },
             {
-                id: 17,
+                id: 18,
                 type: "closing",
                 title: "RUMUSAN AKHIR & PENUTUP",
                 subtitle: "Terima Kasih PPT 2026",
@@ -336,7 +346,34 @@
                 </div>`;
             }
 
-            // --- 4. MEHRABIAN INTRO ---
+            // --- 4. VIDEO DISCUSSION (NEW) ---
+            else if (slide.type === 'video_discussion') {
+                html = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="bg-red-600 text-white px-4 py-1 rounded-full font-bold animate-pulse text-sm md:text-base">🔴 AKTIVITI BERKUMPULAN</span>
+                        <span class="text-cyan-400 font-orbitron text-lg md:text-xl"><i data-lucide="clock" class="inline w-5 h-5"></i> 15 MINIT</span>
+                    </div>
+
+                    <h2 class="text-3xl md:text-5xl font-orbitron mb-6 text-white text-center neon-cyan">HOW TO WIN OVER CUSTOMERS</h2>
+
+                    <!-- Video Container -->
+                    <div class="w-full max-w-4xl aspect-video bg-black rounded-xl border-2 border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.2)] overflow-hidden relative group">
+                        <video controls class="w-full h-full object-contain">
+                            <source src="${slide.videoSrc}" type="video/mp4">
+                            Browser anda tidak menyokong tag video ini.
+                        </video>
+                    </div>
+
+                    <!-- Discussion Prompt -->
+                    <div class="mt-8 bg-slate-800/80 p-6 rounded-xl border border-slate-600 max-w-4xl w-full text-center shadow-lg">
+                        <p class="text-lg text-cyan-200 font-bold mb-2"><i data-lucide="message-square" class="inline mr-2"></i> ARAHAN PERBINCANGAN:</p>
+                        <p class="text-white text-xl">"Berdasarkan video Simon Sinek, bincangkan bagaimana kita boleh memenangi hati pelanggan (stakeholders) <br><span class="text-yellow-400 font-bold">tanpa semestinya memberikan semua yang mereka mahu?</span>"</p>
+                    </div>
+                </div>`;
+            }
+
+            // --- 5. MEHRABIAN INTRO ---
             else if (slide.type === 'mehrabian_intro') {
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
@@ -359,7 +396,7 @@
                 </div>`;
             }
 
-            // --- 5. FLASHCARD WORDS ---
+            // --- 6. FLASHCARD WORDS ---
             else if (slide.type === 'flashcard_words') {
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-2xl mx-auto px-4">
@@ -382,7 +419,7 @@
                 </div>`;
             }
 
-            // --- 6. FLASHCARD TONE ---
+            // --- 7. FLASHCARD TONE ---
             else if (slide.type === 'flashcard_tone') {
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-2xl mx-auto px-4">
@@ -406,7 +443,7 @@
                 </div>`;
             }
 
-            // --- 7. FLASHCARD BODY ---
+            // --- 8. FLASHCARD BODY ---
             else if (slide.type === 'flashcard_body') {
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-2xl mx-auto px-4">
@@ -430,7 +467,7 @@
                 </div>`;
             }
 
-            // --- 8. SANDWICH ---
+            // --- 9. SANDWICH ---
             else if (slide.type === 'sandwich') {
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-4xl mx-auto px-4">
@@ -455,7 +492,7 @@
                 </div>`;
             }
 
-            // --- 9. LISTENING EQ ---
+            // --- 10. LISTENING EQ ---
             else if (slide.type === 'active_listening_eq') {
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
@@ -476,7 +513,7 @@
                 </div>`;
             }
 
-            // --- 10. DIGITAL DIPLOMACY INTRO ---
+            // --- 11. DIGITAL DIPLOMACY INTRO ---
             else if (slide.type === 'digital_intro') {
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
@@ -489,7 +526,7 @@
                 </div>`;
             }
 
-            // --- 11. WHATSAPP RULES ---
+            // --- 12. WHATSAPP RULES ---
             else if (slide.type === 'whatsapp_rules') {
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4">
@@ -520,7 +557,7 @@
                 </div>`;
             }
 
-            // --- 12. BLUE TICK ---
+            // --- 13. BLUE TICK ---
             else if (slide.type === 'blue_tick') {
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter px-4">
@@ -537,7 +574,7 @@
                 </div>`;
             }
 
-            // --- 13. SOCIAL MEDIA TRAP ---
+            // --- 14. SOCIAL MEDIA TRAP ---
             else if (slide.type === 'social_media_trap') {
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
@@ -552,7 +589,7 @@
                 </div>`;
             }
 
-            // --- 14. REPAIR MESSAGE INTRO ---
+            // --- 15. REPAIR MESSAGE INTRO ---
             else if (slide.type === 'repair_intro') {
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
@@ -562,7 +599,7 @@
                 </div>`;
             }
 
-            // --- 15. REPAIR SIMULATION (ALL 6 CASES) ---
+            // --- 16. REPAIR SIMULATION (ALL 6 CASES) ---
             else if (slide.type === 'repair_simulation_all') {
                 const scenario = repairScenarios[currentRepairCase];
                 
@@ -604,7 +641,7 @@
                 </div>`;
             }
 
-            // --- 16. GROUP QUIZ (REMAINS) ---
+            // --- 17. GROUP QUIZ (REMAINS) ---
             else if (slide.type === 'group_quiz') {
                 const qs = [
                     { id: 1, q: "Staf hantar mesej pukul 11 malam.", a: "Abaikan & Balas Esok (Right to Disconnect)" },
@@ -633,7 +670,7 @@
                 </div>`;
             }
 
-            // --- 17. CLOSING ---
+            // --- 18. CLOSING ---
             else if (slide.type === 'closing') {
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
@@ -681,8 +718,6 @@
         function updateProgressBar() {
             const bar = document.getElementById('progressBar');
             // Since we merged simulation slides, total length is adjusted in logic if needed, but array length is what matters
-            // Adjusted logic: Simulation is now ONE slide object (id:15) but acts like multiple.
-            // However, visually we want 1 slide indicator.
             
             bar.innerHTML = slides.map((_, i) => 
                 `<div class="h-2 rounded-full transition-all duration-300 ${i === currentSlide ? 'bg-cyan-500 w-6 md:w-8 shadow-[0_0_10px_#06b6d4]' : 'bg-slate-700 w-2 md:w-4'}"></div>`
