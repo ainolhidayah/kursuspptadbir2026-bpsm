@@ -138,13 +138,14 @@
                 bg: "bg-slate-900"
             },
             
-            // --- SLAID BARU DITAMBAH: VIDEO SIMON SINEK ---
+            // --- SLAID BARU DITAMBAH: VIDEO SIMON SINEK (LOCAL FILE) ---
             {
-                id: 4, // ID baru
+                id: 4, 
                 type: "video_discussion",
                 title: "AKTIVITI BERKUMPULAN",
                 subtitle: "Bedah Video: Simon Sinek",
-                videoSrc: "How to win over customer.mp4",
+                // Menggunakan nama fail tempatan yang pendek
+                videoSrc: "How to win over customer.mp4", 
                 bg: "bg-black"
             },
 
@@ -274,9 +275,6 @@
                 body.className = `w-full h-screen flex flex-col transition-colors duration-500 font-sans ${slide.bg} text-white`;
             }
 
-            // Reset States logic if needed
-            // if (slide.type === 'repair_simulation_all') isProfessional = false; // Optional reset
-
             let html = '';
 
             // --- 1. TITLE ---
@@ -323,8 +321,6 @@
                             <span>💬 500 Comments</span>
                             <span>🔄 3K Shares</span>
                         </div>
-                        
-                        <!-- Warning Badge -->
                         <div class="absolute -top-6 -right-6 bg-red-600 text-white font-bold px-4 py-2 rounded-full shadow-lg animate-bounce border-2 border-white">
                             CAREER OVER!
                         </div>
@@ -346,7 +342,7 @@
                 </div>`;
             }
 
-            // --- 4. VIDEO DISCUSSION (NEW) ---
+            // --- 4. VIDEO DISCUSSION (UPDATED to Local File) ---
             else if (slide.type === 'video_discussion') {
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4">
@@ -357,15 +353,14 @@
 
                     <h2 class="text-3xl md:text-5xl font-orbitron mb-6 text-white text-center neon-cyan">HOW TO WIN OVER CUSTOMERS</h2>
 
-                    <!-- Video Container -->
                     <div class="w-full max-w-4xl aspect-video bg-black rounded-xl border-2 border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.2)] overflow-hidden relative group">
+                        <!-- Menggunakan Video HTML5 dengan fail tempatan -->
                         <video controls class="w-full h-full object-contain">
                             <source src="${slide.videoSrc}" type="video/mp4">
-                            Browser anda tidak menyokong tag video ini.
+                            Browser anda tidak menyokong tag video ini atau fail video tidak dijumpai.
                         </video>
                     </div>
 
-                    <!-- Discussion Prompt -->
                     <div class="mt-8 bg-slate-800/80 p-6 rounded-xl border border-slate-600 max-w-4xl w-full text-center shadow-lg">
                         <p class="text-lg text-cyan-200 font-bold mb-2"><i data-lucide="message-square" class="inline mr-2"></i> ARAHAN PERBINCANGAN:</p>
                         <p class="text-white text-xl">"Berdasarkan video Simon Sinek, bincangkan bagaimana kita boleh memenangi hati pelanggan (stakeholders) <br><span class="text-yellow-400 font-bold">tanpa semestinya memberikan semua yang mereka mahu?</span>"</p>
@@ -402,13 +397,11 @@
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-2xl mx-auto px-4">
                     <div class="relative w-full h-96 perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
                         <div class="card-inner relative w-full h-full transition-transform duration-700 transform-style-3d">
-                            <!-- FRONT -->
                             <div class="absolute w-full h-full backface-hidden bg-slate-800 rounded-3xl flex flex-col justify-center items-center text-center shadow-[0_0_30px_rgba(255,255,255,0.1)] border-2 border-slate-600">
                                 <h1 class="text-9xl font-black text-slate-500 mb-4">7%</h1>
                                 <h3 class="text-3xl font-bold text-white uppercase tracking-widest">PERKATAAN</h3>
                                 <p class="mt-8 text-cyan-400 animate-bounce flex items-center gap-2"><i data-lucide="mouse-pointer-2"></i> KLIK UNTUK INFO</p>
                             </div>
-                            <!-- BACK -->
                             <div class="absolute w-full h-full backface-hidden bg-slate-200 rounded-3xl p-8 flex flex-col justify-center items-center text-center shadow-xl rotate-y-180 text-slate-900">
                                 <i data-lucide="file-text" width="64" height="64" class="text-slate-600 mb-6"></i>
                                 <h3 class="text-3xl font-black mb-4">ISI KANDUNGAN</h3>
@@ -425,13 +418,11 @@
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-2xl mx-auto px-4">
                     <div class="relative w-full h-96 perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
                         <div class="card-inner relative w-full h-full transition-transform duration-700 transform-style-3d">
-                            <!-- FRONT -->
                             <div class="absolute w-full h-full backface-hidden bg-cyan-900/50 rounded-3xl flex flex-col justify-center items-center text-center shadow-[0_0_30px_rgba(6,182,212,0.3)] border-2 border-cyan-500">
                                 <h1 class="text-9xl font-black text-cyan-400 mb-4">38%</h1>
                                 <h3 class="text-3xl font-bold text-white uppercase tracking-widest">NADA SUARA</h3>
                                 <p class="mt-8 text-white animate-bounce flex items-center gap-2"><i data-lucide="mouse-pointer-2"></i> KLIK UNTUK INFO</p>
                             </div>
-                            <!-- BACK -->
                             <div class="absolute w-full h-full backface-hidden bg-cyan-100 rounded-3xl p-8 flex flex-col justify-center items-center text-center shadow-xl rotate-y-180 text-cyan-900">
                                 <i data-lucide="mic" width="64" height="64" class="text-cyan-600 mb-6"></i>
                                 <h3 class="text-3xl font-black mb-4">INTONASI</h3>
@@ -449,13 +440,11 @@
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-2xl mx-auto px-4">
                     <div class="relative w-full h-96 perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
                         <div class="card-inner relative w-full h-full transition-transform duration-700 transform-style-3d">
-                            <!-- FRONT -->
                             <div class="absolute w-full h-full backface-hidden bg-pink-900/50 rounded-3xl flex flex-col justify-center items-center text-center shadow-[0_0_30px_rgba(236,72,153,0.3)] border-2 border-pink-500">
                                 <h1 class="text-9xl font-black text-pink-500 mb-4">55%</h1>
                                 <h3 class="text-3xl font-bold text-white uppercase tracking-widest">BAHASA BADAN</h3>
                                 <p class="mt-8 text-white animate-bounce flex items-center gap-2"><i data-lucide="mouse-pointer-2"></i> KLIK UNTUK INFO</p>
                             </div>
-                            <!-- BACK -->
                             <div class="absolute w-full h-full backface-hidden bg-pink-100 rounded-3xl p-8 flex flex-col justify-center items-center text-center shadow-xl rotate-y-180 text-pink-900">
                                 <i data-lucide="user" width="64" height="64" class="text-pink-600 mb-6"></i>
                                 <h3 class="text-3xl font-black mb-4">VISUAL</h3>
@@ -473,17 +462,14 @@
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-4xl mx-auto px-4">
                     <h2 class="text-5xl font-orbitron mb-12 text-white">TEKNIK SANDWICH</h2>
                     <div class="flex flex-col gap-4 w-full">
-                        <!-- Top Bun -->
                         <div class="bg-amber-400 text-amber-900 p-6 rounded-t-[3rem] rounded-b-lg text-center font-bold text-2xl shadow-lg transform hover:-translate-y-2 transition-transform">
                             <i data-lucide="thumbs-up" class="inline mr-2"></i> PUJIAN / POSITIF
                             <p class="text-base font-normal mt-1">"Saya suka komitmen awak datang awal..."</p>
                         </div>
-                        <!-- Meat -->
                         <div class="bg-red-500 text-white p-6 rounded-lg text-center font-bold text-2xl shadow-lg transform hover:scale-105 transition-transform mx-4">
                             <i data-lucide="alert-triangle" class="inline mr-2"></i> TEGURAN / ISU
                             <p class="text-base font-normal mt-1">"...tapi laporan ini banyak ralat perlu dibaiki..."</p>
                         </div>
-                        <!-- Bottom Bun -->
                         <div class="bg-amber-400 text-amber-900 p-6 rounded-b-[3rem] rounded-t-lg text-center font-bold text-2xl shadow-lg transform hover:translate-y-2 transition-transform">
                             <i data-lucide="star" class="inline mr-2"></i> HARAPAN / SOKONGAN
                             <p class="text-base font-normal mt-1">"...saya tahu awak boleh buat lebih baik sebab awak teliti."</p>
@@ -605,7 +591,6 @@
                 
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-4xl mx-auto px-4 overflow-y-auto">
-                    <!-- Navigasi Kes -->
                     <div class="flex items-center justify-between w-full mb-6">
                          <button onclick="prevRepairCase()" class="text-cyan-400 hover:text-white transition-colors ${currentRepairCase === 0 ? 'opacity-30 cursor-not-allowed' : ''}" ${currentRepairCase === 0 ? 'disabled' : ''}>
                              <i data-lucide="arrow-left-circle" width="32"></i>
@@ -617,18 +602,15 @@
                     </div>
 
                     <div class="w-full relative h-64 bg-slate-800 rounded-3xl overflow-hidden border border-slate-600 shadow-2xl">
-                        <!-- Rude Message (Default) -->
                         <div class="absolute inset-0 flex items-center justify-center p-8 bg-red-900/90 transition-opacity duration-500 ${isProfessional ? 'opacity-0 pointer-events-none' : 'opacity-100'}">
                             <p class="text-2xl font-bold text-white text-center leading-relaxed">${scenario.rude}</p>
                         </div>
                         
-                        <!-- Pro Message (Hidden) -->
                         <div class="absolute inset-0 flex items-center justify-center p-8 bg-green-900/95 transition-opacity duration-500 ${isProfessional ? 'opacity-100' : 'opacity-0 pointer-events-none'}">
                             <p class="text-xl font-medium text-white text-center leading-relaxed">${scenario.pro}</p>
                         </div>
                     </div>
 
-                    <!-- Toggle Switch -->
                     <div class="mt-8 flex items-center gap-6 bg-slate-900 px-6 py-3 rounded-full border border-slate-700 shadow-lg">
                         <span class="text-red-400 font-bold ${!isProfessional ? 'opacity-100' : 'opacity-50'}">KASAR</span>
                         <div onclick="toggleMessage()" class="w-20 h-10 bg-slate-700 rounded-full relative cursor-pointer shadow-inner transition-colors duration-300 ${isProfessional ? 'bg-green-600' : 'bg-red-600'}">
@@ -762,4 +744,3 @@
     </script>
 </body>
 </html>
-
