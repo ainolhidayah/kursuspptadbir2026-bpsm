@@ -138,7 +138,7 @@
                 bg: "bg-slate-900"
             },
             
-            // --- SLAID BARU DITAMBAH: VIDEO SIMON SINEK (LOCAL FILE) ---
+            // --- SLAID BARU DITAMBAH: VIDEO SIMON SINEK (LOCAL FILE) + TIMER ---
             {
                 id: 4, 
                 type: "video_discussion",
@@ -262,6 +262,11 @@
         let currentSlide = 0;
         let isProfessional = false;
         let currentRepairCase = 0; // Index for repair scenarios
+        
+        // --- TIMER VARIABLES ---
+        let discussionTimer = null;
+        let discussionTimeLeft = 15 * 60; // 15 minit dalam saat
+        let isTimerRunning = false;
 
         function renderSlide() {
             const slide = slides[currentSlide];
@@ -342,28 +347,44 @@
                 </div>`;
             }
 
-            // --- 4. VIDEO DISCUSSION (UPDATED to Local File) ---
+            // --- 4. VIDEO DISCUSSION (WITH TIMER) ---
             else if (slide.type === 'video_discussion') {
+                // Calculate display time on initial render or re-render
+                const minutes = Math.floor(discussionTimeLeft / 60);
+                const seconds = discussionTimeLeft % 60;
+                const displayTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
                 html = `
-                <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4">
-                    <div class="flex items-center gap-4 mb-4">
-                        <span class="bg-red-600 text-white px-4 py-1 rounded-full font-bold animate-pulse text-sm md:text-base">🔴 AKTIVITI BERKUMPULAN</span>
-                        <span class="text-cyan-400 font-orbitron text-lg md:text-xl"><i data-lucide="clock" class="inline w-5 h-5"></i> 15 MINIT</span>
-                    </div>
+                <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4 gap-4">
+                    <h2 class="text-3xl md:text-5xl font-orbitron mb-2 text-white text-center neon-cyan">HOW TO WIN OVER CUSTOMERS</h2>
 
-                    <h2 class="text-3xl md:text-5xl font-orbitron mb-6 text-white text-center neon-cyan">HOW TO WIN OVER CUSTOMERS</h2>
-
-                    <div class="w-full max-w-4xl aspect-video bg-black rounded-xl border-2 border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.2)] overflow-hidden relative group">
-                        <!-- Menggunakan Video HTML5 dengan fail tempatan -->
+                    <!-- Video Container (Kecilkan sikit untuk muat timer) -->
+                    <div class="w-full max-w-3xl aspect-video bg-black rounded-xl border-2 border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.2)] overflow-hidden relative group">
                         <video controls class="w-full h-full object-contain">
                             <source src="${slide.videoSrc}" type="video/mp4">
                             Browser anda tidak menyokong tag video ini atau fail video tidak dijumpai.
                         </video>
                     </div>
 
-                    <div class="mt-8 bg-slate-800/80 p-6 rounded-xl border border-slate-600 max-w-4xl w-full text-center shadow-lg">
-                        <p class="text-lg text-cyan-200 font-bold mb-2"><i data-lucide="message-square" class="inline mr-2"></i> ARAHAN PERBINCANGAN:</p>
-                        <p class="text-white text-xl">"Berdasarkan video Simon Sinek, bincangkan bagaimana kita boleh memenangi hati pelanggan (stakeholders) <br><span class="text-yellow-400 font-bold">tanpa semestinya memberikan semua yang mereka mahu?</span>"</p>
+                    <div class="flex flex-row w-full max-w-5xl gap-6 mt-2">
+                        <!-- Instructions Box -->
+                        <div class="flex-1 bg-slate-800/80 p-6 rounded-xl border border-slate-600 text-center shadow-lg flex flex-col justify-center">
+                            <p class="text-lg text-cyan-200 font-bold mb-2"><i data-lucide="message-square" class="inline mr-2"></i> ARAHAN PERBINCANGAN:</p>
+                            <p class="text-white text-lg">"Bagaimana memenangi hati pelanggan (stakeholders) <br><span class="text-yellow-400 font-bold">tanpa beri semua yang mereka mahu?</span>"</p>
+                        </div>
+
+                        <!-- Timer Box -->
+                        <div class="w-1/3 bg-slate-900/90 p-6 rounded-xl border-2 border-yellow-500/50 text-center shadow-xl flex flex-col justify-center items-center gap-4">
+                            <div id="timerDisplay" class="text-6xl font-mono font-bold text-yellow-400 drop-shadow-[0_0_10px_rgba(250,204,21,0.5)]">
+                                ${displayTime}
+                            </div>
+                            <button id="btnTimer" onclick="startDiscussionTimer()" 
+                                class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all flex items-center justify-center gap-2 w-full ${isTimerRunning ? 'opacity-50 cursor-not-allowed' : ''}" 
+                                ${isTimerRunning ? 'disabled' : ''}>
+                                <i data-lucide="${isTimerRunning ? 'hourglass' : 'play-circle'}"></i> 
+                                ${isTimerRunning ? 'SEDANG BERJALAN...' : 'MULA (15 MINIT)'}
+                            </button>
+                        </div>
                     </div>
                 </div>`;
             }
@@ -676,6 +697,47 @@
         }
 
         // --- LOGIC ---
+        
+        function startDiscussionTimer() {
+            if (isTimerRunning) return;
+            isTimerRunning = true;
+            const display = document.getElementById('timerDisplay');
+            const btn = document.getElementById('btnTimer');
+            
+            // Update UI immediately
+            if(btn) {
+                btn.innerHTML = `<i data-lucide="hourglass"></i> SEDANG BERJALAN...`;
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                lucide.createIcons();
+            }
+
+            discussionTimer = setInterval(() => {
+                discussionTimeLeft--;
+                
+                // Format time
+                const minutes = Math.floor(discussionTimeLeft / 60);
+                const seconds = discussionTimeLeft % 60;
+                const text = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (document.getElementById('timerDisplay')) {
+                    document.getElementById('timerDisplay').innerText = text;
+                }
+
+                if (discussionTimeLeft <= 0) {
+                    clearInterval(discussionTimer);
+                    isTimerRunning = false;
+                    if (document.getElementById('timerDisplay')) {
+                        document.getElementById('timerDisplay').innerText = "MASA TAMAT!";
+                        document.getElementById('timerDisplay').classList.add('text-red-500', 'animate-bounce');
+                    }
+                    if(btn) {
+                        btn.innerHTML = "TAMAT";
+                    }
+                }
+            }, 1000);
+        }
+
         function toggleMessage() {
             isProfessional = !isProfessional;
             renderSlide(); // Re-render to update classes
@@ -744,4 +806,3 @@
     </script>
 </body>
 </html>
-
