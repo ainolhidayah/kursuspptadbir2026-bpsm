@@ -17,10 +17,15 @@
         .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
         @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
-        /* KESAN PHOENIX MENYALA (Lebih Terang) */
+        /* KESAN PHOENIX MENYALA */
         .phoenix-glow { 
-            box-shadow: 0 0 15px #f97316, 0 0 30px #ea580c; /* Cahaya oren terang */
-            border: 2px solid #fdba74; /* Border oren muda */
+            box-shadow: 0 0 15px #f97316, 0 0 30px #ea580c; 
+            border: 2px solid #fdba74; 
+        }
+        
+        .phoenix-glow-blue { 
+            box-shadow: 0 0 15px #3b82f6, 0 0 30px #2563eb; 
+            border: 2px solid #93c5fd; 
         }
     </style>
 </head>
@@ -31,44 +36,79 @@
         <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-600/10 blur-[120px] rounded-full"></div>
     </div>
 
-    <header class="relative z-10 pt-10 pb-2 px-6 max-w-5xl mx-auto w-full animate-fade-in">
+    <header class="relative z-10 pt-10 pb-2 px-4 md:px-6 max-w-7xl mx-auto w-full animate-fade-in">
         
-        <div class="text-center mb-8">
+        <div class="text-center mb-10">
             <span class="inline-block py-1 px-4 rounded-full bg-blue-900/40 border border-blue-500/30 text-blue-300 text-xs font-bold tracking-[0.2em] mb-4 shadow-lg">BPSM KPM TAHUN 2026</span>
             <h1 class="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-slate-400 leading-tight">
                 KEPIMPINAN & PENYELIAAN BERKESAN
             </h1>
         </div>
 
-        <div class="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8 shadow-2xl mb-12">
-            
-            <div class="relative group mx-auto md:mx-0">
-                <div class="w-40 h-40 md:w-48 md:h-48 rounded-full p-1 bg-gradient-to-tr from-amber-500 via-red-500 to-purple-600 shadow-2xl">
-                    <img src="gambar_saya.jpg" alt="Puan Ainol" class="w-full h-full rounded-full object-cover border-4 border-slate-900 bg-slate-700" onerror="this.src='https://ui-avatars.com/api/?name=Ainol+Hidayah&background=0D8ABC&color=fff&size=256'">
+        <!-- GRID PENCERAMAH (DUA ORANG) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+
+            <!-- KAD PENCERAMAH 1: PUAN AINOL -->
+            <div class="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-3xl p-6 flex flex-col sm:flex-row items-center gap-6 shadow-2xl hover:bg-slate-800/60 transition-colors">
+                <div class="relative group flex-shrink-0">
+                    <div class="w-32 h-32 md:w-40 md:h-40 rounded-full p-1 bg-gradient-to-tr from-amber-500 via-red-500 to-purple-600 shadow-xl">
+                        <img src="gambar_saya.jpg" alt="Puan Ainol" class="w-full h-full rounded-full object-cover border-4 border-slate-900 bg-slate-700" onerror="this.src='https://ui-avatars.com/api/?name=Ainol+Hidayah&background=ea580c&color=fff&size=256'">
+                    </div>
+                    <div class="absolute bottom-0 -right-2 bg-gradient-to-b from-slate-800 to-black rounded-full p-2 phoenix-glow z-20">
+                        <i data-lucide="flame" class="w-6 h-6 text-orange-500 fill-orange-600 animate-pulse"></i>
+                    </div>
                 </div>
                 
-                <div class="absolute bottom-0 -right-2 bg-gradient-to-b from-slate-800 to-black rounded-full p-3 phoenix-glow z-20 transform hover:scale-110 transition-transform cursor-help" title="Lambang Phoenix: Kebangkitan Semula">
-                    <i data-lucide="flame" class="w-10 h-10 text-orange-500 fill-orange-600 animate-pulse"></i>
+                <div class="text-center sm:text-left flex-1">
+                    <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Penceramah 1</p>
+                    <h2 class="text-xl md:text-2xl font-serif font-bold text-white mb-1">Pn. Ainol Hidayah</h2>
+                    <p class="text-xs text-slate-400 mb-3">Fasilitator Utama</p>
+                    
+                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                        <div class="flex items-center gap-2 bg-blue-900/30 px-3 py-1.5 rounded-full border border-blue-500/30 text-xs text-blue-200">
+                            <i data-lucide="search" class="w-3 h-3 text-blue-400"></i>
+                            <span>Penyelidikan</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-amber-900/30 px-3 py-1.5 rounded-full border border-amber-500/30 text-xs text-amber-200">
+                            <i data-lucide="coins" class="w-3 h-3 text-amber-400"></i>
+                            <span>Numismatik</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="text-center md:text-left flex-1">
-                <p class="text-slate-400 text-sm font-bold uppercase tracking-widest mb-1">Penceramah Anda</p>
-                <h2 class="text-2xl md:text-4xl font-serif font-bold text-white mb-2">Puan Ainol Hidayah Abdul Rauof <span class="text-base font-sans font-normal text-slate-400 block md:inline mt-1 md:mt-0">B.S.K</span></h2>
-                <p class="text-slate-300 leading-relaxed mb-6 italic text-lg">"Memimpin bukan sekadar memberi arahan, tetapi membangkitkan potensi seperti burung Phoenix."</p>
-                
-                <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
-                    <div class="flex items-center gap-3 bg-blue-900/30 px-4 py-2 rounded-full border border-blue-500/30 text-sm text-blue-200 shadow-sm hover:bg-blue-900/50 transition-colors">
-                        <i data-lucide="search" class="w-5 h-5 text-blue-400"></i>
-                        <span class="font-semibold">Penyelidikan (Research)</span>
+            <!-- KAD PENCERAMAH 2: ENCIK AZHAN (DITAMBAH) -->
+            <div class="bg-slate-800/40 backdrop-blur-md border border-slate-700/50 rounded-3xl p-6 flex flex-col sm:flex-row items-center gap-6 shadow-2xl hover:bg-slate-800/60 transition-colors">
+                <div class="relative group flex-shrink-0">
+                    <div class="w-32 h-32 md:w-40 md:h-40 rounded-full p-1 bg-gradient-to-tr from-cyan-500 via-blue-500 to-indigo-600 shadow-xl">
+                        <!-- Sila ganti src gambar di bawah dengan gambar Encik Azhan -->
+                        <img src="gambar_azhan.jpg" alt="Encik Azhan" class="w-full h-full rounded-full object-cover border-4 border-slate-900 bg-slate-700" onerror="this.src='https://ui-avatars.com/api/?name=Azhan+Ahmad&background=0284c7&color=fff&size=256'">
                     </div>
-                    <div class="flex items-center gap-3 bg-amber-900/30 px-4 py-2 rounded-full border border-amber-500/30 text-sm text-amber-200 shadow-sm hover:bg-amber-900/50 transition-colors">
-                        <i data-lucide="coins" class="w-5 h-5 text-amber-400"></i>
-                        <span class="font-semibold">Numismatik (Duit Lama)</span>
+                    <div class="absolute bottom-0 -right-2 bg-gradient-to-b from-slate-800 to-black rounded-full p-2 phoenix-glow-blue z-20">
+                        <i data-lucide="book-open-check" class="w-6 h-6 text-blue-400 fill-blue-500 animate-pulse"></i>
+                    </div>
+                </div>
+                
+                <div class="text-center sm:text-left flex-1">
+                    <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Penceramah 2</p>
+                    <h2 class="text-xl md:text-2xl font-serif font-bold text-white mb-1">En. Azhan Ahmad</h2>
+                    <p class="text-xs text-slate-400 mb-3">Fasilitator Bersama</p>
+                    
+                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                        <div class="flex items-center gap-2 bg-emerald-900/30 px-3 py-1.5 rounded-full border border-emerald-500/30 text-xs text-emerald-200">
+                            <i data-lucide="banknote" class="w-3 h-3 text-emerald-400"></i>
+                            <span>Koleksi Mata Wang</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-indigo-900/30 px-3 py-1.5 rounded-full border border-indigo-500/30 text-xs text-indigo-200">
+                            <i data-lucide="book" class="w-3 h-3 text-indigo-400"></i>
+                            <span>Membaca Buku</span>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </div>
+        <!-- TAMAT GRID PENCERAMAH -->
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12 text-center">
             <div class="bg-blue-900/20 border border-blue-500/20 p-4 rounded-xl hover:bg-blue-900/30 transition-colors">
@@ -199,7 +239,7 @@
     </main>
 
     <footer class="relative z-10 py-8 text-center text-slate-500 text-sm border-t border-slate-800 bg-slate-900/50 backdrop-blur">
-        <p class="mb-2">© 2026 oleh Ainol Hidayah Abdul Rauof</p>
+        <p class="mb-2">© 2026 oleh Ainol Hidayah Abdul Rauof & Azhan Ahmad</p>
         <p class="text-xs opacity-50">Dibangunkan untuk Kursus Kepimpinan dan Penyeliaan Berkesan</p>
     </footer>
 
@@ -208,6 +248,3 @@
     </script>
 </body>
 </html>
-
-
-
