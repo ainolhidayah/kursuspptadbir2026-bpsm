@@ -22,7 +22,7 @@
         @keyframes dropCoin {
             0% { transform: translateY(-300px) rotate(0deg) scale(0.5); opacity: 0; }
             20% { opacity: 1; transform: translateY(-100px) rotate(180deg) scale(1.2); }
-            100% { transform: translateY(0) rotate(720deg) scale(1); opacity: 0; } /* Drop into bank */
+            100% { transform: translateY(0) rotate(720deg) scale(1); opacity: 0; }
         }
         .coin-anim { animation: dropCoin 1s ease-in forwards; }
 
@@ -35,7 +35,7 @@
         /* Card Flip Animation */
         .perspective-1000 { perspective: 1000px; }
         .transform-style-3d { transform-style: preserve-3d; }
-        .backface-hidden { backface-visibility: hidden; }
+        .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
 
         /* Scrollbar */
@@ -77,45 +77,19 @@
         const slides = [
             // --- BAHAGIAN 1: ASAS KEPIMPINAN ---
             {
-                id: 1,
-                type: "title",
-                title: "KETRAMPILAN KEPIMPINAN",
-                subtitle: "SLOT 4: 11.00 PAGI - 1.00 TGH HARI",
-                content: "Gaya Situasional & Pengaruh Tanpa Kuasa",
-                bgColor: "bg-gradient-to-br from-indigo-950 to-purple-900",
-                textColor: "text-white"
+                id: 1, type: "title", title: "KETRAMPILAN KEPIMPINAN", subtitle: "SLOT 4: 11.00 PAGI - 1.00 TGH HARI", content: "Gaya Situasional & Pengaruh Tanpa Kuasa", bgColor: "bg-gradient-to-br from-indigo-950 to-purple-900", textColor: "text-white"
             },
             {
-                id: 2,
-                type: "boss_leader_interactive", 
-                title: "BOSS vs LEADER",
-                subtitle: "Pilih Mod Untuk Lihat Perbezaan",
-                bgColor: "bg-white",
-                textColor: "text-slate-900",
+                id: 2, type: "boss_leader_interactive",  title: "BOSS vs LEADER", subtitle: "Pilih Mod Untuk Lihat Perbezaan", bgColor: "bg-white", textColor: "text-slate-900",
             },
             {
-                id: 3,
-                type: "myth",
-                title: "MITOS KEPIMPINAN",
-                subtitle: "Pangkat vs Pengaruh",
-                bgColor: "bg-slate-100",
-                textColor: "text-slate-900"
+                id: 3, type: "myth", title: "MITOS KEPIMPINAN", subtitle: "Pangkat vs Pengaruh", bgColor: "bg-slate-100", textColor: "text-slate-900"
             },
             {
-                id: 4,
-                type: "quadrant",
-                title: "4 GAYA KEPIMPINAN",
-                subtitle: "Klik Kad Untuk Info (Teori Hersey-Blanchard)",
-                bgColor: "bg-purple-50",
-                textColor: "text-purple-900"
+                id: 4, type: "quadrant", title: "4 GAYA KEPIMPINAN", subtitle: "Klik Kad Untuk Info (Teori Hersey-Blanchard)", bgColor: "bg-purple-50", textColor: "text-purple-900"
             },
             {
-                id: 5,
-                type: "game",
-                title: "DOKTOR KEPIMPINAN",
-                subtitle: "Aktiviti Interaktif: Pilih 'Ubat' Yang Sesuai",
-                bgColor: "bg-indigo-900",
-                textColor: "text-white",
+                id: 5, type: "game", title: "DOKTOR KEPIMPINAN", subtitle: "Aktiviti Interaktif: Pilih 'Ubat' Yang Sesuai", bgColor: "bg-indigo-900", textColor: "text-white",
                 scenarios: [
                     { text: "Staf baharu lapor diri hari pertama. Tak tahu guna sistem.", correct: "DIRECTING", reason: "Mereka perlukan arahan jelas, bukan delegasi." },
                     { text: "Pn. Salmah (15 tahun kerja) sangat cekap, tapi minggu ni murung masalah keluarga.", correct: "SUPPORTING", reason: "Dia tahu buat kerja, cuma emosi terganggu. Perlukan sokongan." },
@@ -128,20 +102,11 @@
             
             // --- BAHAGIAN 2: PENGARUH TANPA KUASA ---
             {
-                id: 6,
-                type: "bank_intro",
-                title: "BANK AKAUN EMOSI",
-                subtitle: "Konsep Stephen Covey",
-                bgColor: "bg-slate-900",
-                textColor: "text-white"
+                id: 6, type: "bank_intro", title: "BANK AKAUN EMOSI", subtitle: "Konsep Stephen Covey", bgColor: "bg-slate-900", textColor: "text-white"
             },
             {
-                id: 7,
-                type: "bank_simulation", // UPDATED: Ejaan & Ikon
-                title: "SIMULASI: DEPOSIT ATAU PENGELUARAN?",
-                subtitle: "Pilih Tindakan Anda Untuk Membina Kepercayaan",
-                bgColor: "bg-emerald-900",
-                textColor: "text-white",
+                id: 7, type: "bank_simulation",
+                title: "SIMULASI: DEPOSIT ATAU PENGELUARAN?", subtitle: "Pilih Tindakan Anda Untuk Membina Kepercayaan", bgColor: "bg-emerald-900", textColor: "text-white",
                 situations: [
                     { q: "Staf buat salah kecil dalam surat.", optA: "Tegur depan orang ramai.", optB: "Panggil masuk bilik, tegur secara peribadi.", resA: -20, resB: 20, fbA: "PENGELUARAN BESAR! Anda memalukan dia.", fbB: "DEPOSIT! Anda menjaga air muka dia." },
                     { q: "Staf sakit dan minta cuti mengejut.", optA: "Benarkan dengan nada ambil berat.", optB: "Sindir: 'Asyik sakit je awak ni'.", resA: 20, resB: -20, fbA: "DEPOSIT! Anda tunjuk empati.", fbB: "PENGELUARAN! Anda nampak tidak berperikemanusiaan." },
@@ -156,24 +121,13 @@
                 ]
             },
             {
-                id: 8,
-                type: "credibility_interactive", 
-                title: "3K KREDIBILITI",
-                subtitle: "Klik Kad Untuk Info",
-                bgColor: "bg-slate-900",
-                textColor: "text-white"
+                id: 8, type: "credibility_interactive",  title: "3K KREDIBILITI", subtitle: "Klik Kad Untuk Info", bgColor: "bg-slate-900", textColor: "text-white"
             },
 
             // --- BAHAGIAN 3: INTEGRITI & PENUTUP ---
             {
-                id: 9,
-                type: "zoo", // Updated images for better visibility (Flat Icons)
-                title: "ZOO KONFLIK",
-                subtitle: "Kenali Gaya Anda (Thomas-Kilmann)",
-                bgColor: "bg-orange-50",
-                textColor: "text-orange-900",
+                id: 9, type: "zoo", title: "ZOO KONFLIK", subtitle: "Kenali Gaya Anda (Thomas-Kilmann)", bgColor: "bg-orange-50", textColor: "text-orange-900",
                 animals: [
-                    // Menggunakan ikon flaticon/icons8 yang lebih stabil dan jelas untuk metafora
                     { name: "JERUNG", style: "Competing", desc: "'Cara aku atau kau keluar.'", img: "https://img.icons8.com/color/96/shark.png", color: "bg-red-500" },
                     { name: "KURA-KURA", style: "Avoiding", desc: "'Tak apa lah, malas gaduh.'", img: "https://img.icons8.com/color/96/turtle.png", color: "bg-green-500" },
                     { name: "TEDDY BEAR", style: "Accommodating", desc: "'Ikut awak lah, asalkan bahagia.'", img: "https://img.icons8.com/color/96/teddy-bear.png", color: "bg-pink-500" },
@@ -182,20 +136,10 @@
                 ]
             },
             {
-                id: 10,
-                type: "dilemma",
-                title: "KAJIAN KES: DILEMA PENYELIA",
-                subtitle: "Ujian Integriti",
-                bgColor: "bg-red-50",
-                textColor: "text-red-900"
+                id: 10, type: "dilemma", title: "KAJIAN KES: DILEMA PENYELIA", subtitle: "Ujian Integriti", bgColor: "bg-red-50", textColor: "text-red-900"
             },
             {
-                id: 11,
-                type: "closing",
-                title: "PEMIMPIN IDOLA",
-                subtitle: "Refleksi Akhir",
-                bgColor: "bg-purple-950",
-                textColor: "text-amber-400"
+                id: 11, type: "closing", title: "PEMIMPIN IDOLA", subtitle: "Refleksi Akhir", bgColor: "bg-purple-950", textColor: "text-amber-400"
             }
         ];
 
@@ -406,7 +350,7 @@
                 </div>`;
             }
 
-            // --- 6. BANK INTRO (LIGHTER CARD FOR VISIBILITY) ---
+            // --- 6. BANK INTRO ---
             else if (slide.type === 'bank_intro') {
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
@@ -422,7 +366,7 @@
                 </div>`;
             }
 
-            // --- 7. BANK SIMULATION (10 Q, SPELLING FIXED, BIGGER PIGGY, DYNAMIC WALLET) ---
+            // --- 7. BANK SIMULATION ---
             else if (slide.type === 'bank_simulation') {
                 const situation = slide.situations[currentBankSimIndex];
                 
@@ -439,7 +383,7 @@
                             </button>
                          </div>
                          <div class="bg-slate-800 px-6 py-2 rounded-full border border-slate-600 flex items-center gap-4">
-                            <!-- Updated Visual Wallet Icon -->
+                            <!-- Visual Wallet Icon -->
                             <img src="https://cdn-icons-png.flaticon.com/512/1086/1086741.png" class="w-12 h-12 object-contain" alt="Wallet">
                             <div class="flex flex-col items-end">
                                 <span class="text-xs text-slate-400 uppercase">Baki Akaun</span>
@@ -477,17 +421,15 @@
                             </div>
                         </div>
 
-                        <!-- Right: Piggy Bank Visual (Giant Size) -->
+                        <!-- Right: Piggy Bank Visual -->
                         <div class="w-full md:w-1/3 flex justify-center">
                             <div class="relative w-full h-[450px] bg-slate-800/50 rounded-3xl border-4 border-slate-600 flex items-end justify-center overflow-hidden p-4 shadow-inner">
                                 <!-- Liquid Level -->
                                 <div id="bankBar" class="w-full bg-gradient-to-t from-green-500 to-green-300 rounded-xl transition-all duration-500 relative shadow-[0_0_20px_rgba(34,197,94,0.5)]" style="height: 50%">
                                     <div class="absolute top-0 w-full h-2 bg-white/30 animate-pulse"></div>
                                 </div>
-                                
                                 <!-- Coin Container -->
                                 <div id="coinContainer" class="absolute inset-0 pointer-events-none z-20"></div>
-                                
                                 <!-- Giant Piggy Bank Image Overlay -->
                                 <img src="https://cdn-icons-png.flaticon.com/512/2845/2845686.png" class="absolute bottom-8 w-64 h-64 object-contain opacity-95 drop-shadow-2xl z-10 filter brightness-110" alt="Bank">
                             </div>
@@ -507,13 +449,11 @@
                         <!-- Kepakaran -->
                         <div class="relative h-80 w-full perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
                             <div class="card-inner relative w-full h-full text-center transition-transform duration-700 transform-style-3d">
-                                <!-- Front -->
                                 <div class="absolute w-full h-full backface-hidden bg-blue-600 rounded-3xl flex flex-col items-center justify-center p-8 shadow-xl border-2 border-blue-400">
                                     <i data-lucide="briefcase" width="80" height="80" class="text-white mb-6"></i>
                                     <h3 class="text-3xl font-black text-white">KEPAKARAN</h3>
                                     <p class="text-blue-200 mt-4 text-sm">(Klik untuk info)</p>
                                 </div>
-                                <!-- Back -->
                                 <div class="absolute w-full h-full backface-hidden bg-white rounded-3xl flex flex-col items-center justify-center p-8 shadow-xl rotate-y-180 text-slate-800">
                                     <h4 class="font-bold text-xl mb-4 text-blue-600">ILMU & KEMAHIRAN</h4>
                                     <p>Kita tahu buat kerja, bukan sekadar mengarah. Staf respek kerana kita boleh jadi rujukan bila ada masalah.</p>
@@ -524,13 +464,11 @@
                         <!-- Konsistensi -->
                         <div class="relative h-80 w-full perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
                             <div class="card-inner relative w-full h-full text-center transition-transform duration-700 transform-style-3d">
-                                <!-- Front -->
                                 <div class="absolute w-full h-full backface-hidden bg-amber-500 rounded-3xl flex flex-col items-center justify-center p-8 shadow-xl border-2 border-amber-300">
                                     <i data-lucide="repeat" width="80" height="80" class="text-white mb-6"></i>
                                     <h3 class="text-3xl font-black text-white">KONSISTENSI</h3>
                                     <p class="text-amber-100 mt-4 text-sm">(Klik untuk info)</p>
                                 </div>
-                                <!-- Back -->
                                 <div class="absolute w-full h-full backface-hidden bg-white rounded-3xl flex flex-col items-center justify-center p-8 shadow-xl rotate-y-180 text-slate-800">
                                     <h4 class="font-bold text-xl mb-4 text-amber-600">CAKAP SERUPA BIKIN</h4>
                                     <p>Peraturan terpakai untuk semua, termasuk diri sendiri. Tidak 'double standard' atau berubah-ubah mood.</p>
@@ -541,13 +479,11 @@
                         <!-- Kepedulian -->
                         <div class="relative h-80 w-full perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
                             <div class="card-inner relative w-full h-full text-center transition-transform duration-700 transform-style-3d">
-                                <!-- Front -->
                                 <div class="absolute w-full h-full backface-hidden bg-pink-600 rounded-3xl flex flex-col items-center justify-center p-8 shadow-xl border-2 border-pink-400">
                                     <i data-lucide="heart" width="80" height="80" class="text-white mb-6"></i>
                                     <h3 class="text-3xl font-black text-white">KEPEDULIAN</h3>
                                     <p class="text-pink-200 mt-4 text-sm">(Klik untuk info)</p>
                                 </div>
-                                <!-- Back -->
                                 <div class="absolute w-full h-full backface-hidden bg-white rounded-3xl flex flex-col items-center justify-center p-8 shadow-xl rotate-y-180 text-slate-800">
                                     <h4 class="font-bold text-xl mb-4 text-pink-600">EMPATI TINGGI</h4>
                                     <p>Ambil berat hal kebajikan staf. Manusia bukan robot. Tanya khabar, bukan tanya kerja semata-mata.</p>
@@ -558,7 +494,7 @@
                 </div>`;
             }
 
-            // --- 9. ZOO KONFLIK (UPDATED IMAGES - FLATICON URLs) ---
+            // --- 9. ZOO KONFLIK ---
             else if (slide.type === 'zoo') {
                  contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full px-4">
@@ -601,17 +537,23 @@
                 </div>`;
             }
 
-            // --- 11. CLOSING ---
+            // --- 11. CLOSING (MODIFIED TO ADD BUTTON) ---
             else if (slide.type === 'closing') {
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full text-center slide-enter px-4">
                     <i data-lucide="sparkles" width="80" height="80" class="text-amber-400 mb-6 animate-pulse"></i>
                     <h2 class="text-4xl md:text-6xl font-black mb-6 text-white tracking-tight">JADILAH PEMIMPIN IDOLA</h2>
                     <p class="text-2xl text-purple-200 max-w-3xl leading-relaxed mb-12">"Orang lupa apa anda kata, tapi ingat bagaimana anda buat mereka rasa."</p>
-                    <div class="p-8 bg-black/30 rounded-3xl backdrop-blur-sm border border-white/10 max-w-md">
+                    <div class="p-8 bg-black/30 rounded-3xl backdrop-blur-sm border border-white/10 max-w-md mb-10">
                         <h3 class="text-xl font-bold text-white mb-4">REHAT TENGAH HARI</h3>
                         <p class="mt-4 text-sm text-slate-400">Jumpa semula jam 2.30 Petang.</p>
                     </div>
+                    
+                    <!-- NEW BUTTON ADDED HERE -->
+                    <a href="index.html" class="group px-8 py-4 rounded-full font-bold bg-slate-800 hover:bg-amber-600 border border-slate-600 hover:border-amber-400 text-white transition-all flex items-center gap-3 hover:scale-105 shadow-lg">
+                        <i data-lucide="home" class="group-hover:animate-bounce"></i> 
+                        KEMBALI KE MENU UTAMA
+                    </a>
                 </div>`;
             }
 
@@ -630,7 +572,6 @@
                 resultDiv.innerHTML = `<span class="text-green-400">TEPAT! ${scenario.reason}</span>`;
                 resultDiv.classList.remove('hidden');
                 
-                // Enable next button
                 if (nextBtn) {
                     nextBtn.disabled = false;
                     nextBtn.classList.remove('opacity-30', 'cursor-not-allowed');
@@ -677,8 +618,6 @@
             
             bankBalance += change;
             if (bankBalance > 100) bankBalance = 100;
-            // Removed lower bound limit so it can go negative
-            // if (bankBalance < 0) bankBalance = 0; 
 
             document.getElementById('bankOptions').classList.add('hidden');
             const fbBox = document.getElementById('bankFeedback');
@@ -712,57 +651,6 @@
                 currentBankSimIndex--;
                 renderSlide();
             }
-        }
-
-        function updateBank(amount) {
-            bankBalance += amount;
-            if (bankBalance > 100) bankBalance = 100;
-            // Removed lower bound limit so it can go negative
-            
-            // Update Bar
-            const bar = document.getElementById('bankBar');
-            const text = document.getElementById('balanceText');
-            if (bar) {
-                 // For visual bar height, clip at 0
-                 let visualHeight = bankBalance < 0 ? 0 : bankBalance;
-                 bar.style.height = `${visualHeight}%`;
-            }
-            if (text) text.innerText = bankBalance;
-            
-            // Color Logic
-            if (bar) {
-                if(bankBalance < 30) {
-                    bar.classList.remove('from-green-500', 'to-green-300');
-                    bar.classList.add('bg-red-500');
-                } else {
-                    bar.classList.add('from-green-500', 'to-green-300');
-                    bar.classList.remove('bg-red-500');
-                }
-            }
-
-            // Coin Animation
-            if (amount > 0) {
-                const coinArea = document.getElementById('coinArea');
-                if (coinArea) {
-                    const coin = document.createElement('div');
-                    coin.className = 'coin';
-                    coin.style.left = Math.random() * 80 + '%';
-                    coinArea.appendChild(coin);
-                    setTimeout(() => coin.remove(), 800);
-                }
-            }
-        }
-
-        function makeDeposit() {
-             if(bankBalance < 100) bankBalance += 10;
-             renderSlide(); // Re-render to show updated balance
-             // Trigger animation manually after render if needed, but simple re-render works for static update
-        }
-
-        function makeWithdrawal() {
-             // Removed lower bound check
-             bankBalance -= 10;
-             renderSlide();
         }
 
         function resolveDilemma(choice) {
