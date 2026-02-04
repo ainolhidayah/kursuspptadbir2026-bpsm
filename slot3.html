@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slot 3: Prestasi Kerja & Strategi</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; overflow: hidden; background-color: #0f172a; }
@@ -20,15 +17,20 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Card Flip */
+        /* --- PEMBETULAN CARD FLIP DI SINI --- */
         .perspective-1000 { perspective: 1000px; }
         .transform-style-3d { transform-style: preserve-3d; }
-        .backface-hidden { backface-visibility: hidden; }
+        .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; } /* Tambah webkit untuk compatibility */
         .rotate-y-180 { transform: rotateY(180deg); }
+        
+        /* Class penting yang tertinggal sebelum ini */
+        .flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        /* ------------------------------------ */
 
         /* Neon Glow */
         .neon-blue { text-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6; }
-        .neon-green { text-shadow: 0 0 10px #22c55e, 0 0 20px #22c55e; }
         .border-neon { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5), inset 0 0 15px rgba(59, 130, 246, 0.2); }
 
         /* Animations */
@@ -39,20 +41,22 @@
         }
         .animate-pulse-border { animation: pulse-border 2s infinite; }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #1e293b; }
-        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
-        
-        .overflow-y-auto { overflow-y: auto; }
-        
         /* Timer Digits */
         .timer-digit { font-variant-numeric: tabular-nums; }
+        
+        /* Utiliti tambahan untuk kad */
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
     </style>
 </head>
 <body class="text-white transition-colors duration-500" id="mainBody">
 
-    <!-- Header -->
     <div class="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-20 pointer-events-none">
         <div class="text-xl font-chakra tracking-widest text-blue-400 bg-slate-900/80 px-6 py-1 rounded-full border border-blue-500/50 backdrop-blur-sm" id="slideCounter">
             SLOT 3 / SLAID 1
@@ -60,12 +64,9 @@
         <div class="flex gap-1 pointer-events-auto" id="progressBar"></div>
     </div>
 
-    <!-- Main Content -->
     <main class="w-full h-screen px-4 md:px-16 flex flex-col justify-center relative z-10 pt-16 pb-20 overflow-hidden" id="slideContainer">
-        <!-- Content injected via JS -->
-    </main>
+        </main>
 
-    <!-- Navigation -->
     <div class="absolute bottom-0 left-0 w-full p-6 flex justify-between items-center z-20 pointer-events-none">
         <button onclick="prevSlide()" id="btnPrev" class="pointer-events-auto flex items-center gap-2 px-6 py-3 rounded-lg font-bold hover:bg-white/10 transition-all disabled:opacity-30 disabled:cursor-not-allowed bg-slate-800/80 border border-slate-600 text-white backdrop-blur-md">
             <i data-lucide="arrow-left"></i> SEBELUM
@@ -123,7 +124,7 @@
                 type: "kpi_scoreboard",
                 title: "KONSEP KPI",
                 subtitle: "Analogi Papan Skor Bola Sepak",
-                bg: "bg-green-950" // Padang bola feel
+                bg: "bg-green-950" 
             },
 
             // --- BAHAGIAN 4: BENGKEL SKT (S.M.A.R.T) ---
@@ -325,7 +326,7 @@
                 </div>`;
             }
 
-            // --- 5. TERAS INTERACTIVE ---
+            // --- 5. TERAS INTERACTIVE (BUG FIXED HERE) ---
             else if (slide.type === 'teras_interactive') {
                 const teras = [
                     { id: 1, title: "1. Komunikasi", role: "Kurangkan birokrasi, mesra pelanggan.", active: true },
@@ -342,15 +343,13 @@
                     <h2 class="text-4xl font-chakra mb-8 text-white">MANA SATU TUGAS KITA?</h2>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
                         ${teras.map(t => `
-                            <div onclick="this.classList.toggle('flipped')" class="relative h-40 perspective-1000 cursor-pointer group">
-                                <div class="card-inner relative w-full h-full text-center transition-transform duration-500 transform-style-3d">
-                                    <!-- Front -->
-                                    <div class="absolute w-full h-full backface-hidden ${t.active ? 'bg-blue-600 border-blue-400' : 'bg-slate-800 border-slate-700 opacity-60'} border-2 rounded-xl flex flex-col items-center justify-center p-4 shadow-lg">
-                                        <h3 class="font-bold text-white text-lg">${t.title}</h3>
+                            <div onclick="this.classList.toggle('flipped')" class="relative h-40 perspective-1000 cursor-pointer group select-none">
+                                <div class="card-inner w-full h-full">
+                                    <div class="absolute inset-0 backface-hidden ${t.active ? 'bg-blue-600 border-blue-400' : 'bg-slate-800 border-slate-700 opacity-60'} border-2 rounded-xl flex flex-col items-center justify-center p-4 shadow-lg z-10">
+                                        <h3 class="font-bold text-white text-lg leading-tight">${t.title}</h3>
                                         ${t.active ? '<span class="text-xs mt-2 bg-white/20 px-2 py-1 rounded animate-pulse">Klik Saya</span>' : ''}
                                     </div>
-                                    <!-- Back -->
-                                    <div class="absolute w-full h-full backface-hidden bg-white rounded-xl flex flex-col items-center justify-center p-4 shadow-xl rotate-y-180 text-slate-900">
+                                    <div class="absolute inset-0 backface-hidden bg-white rounded-xl flex flex-col items-center justify-center p-4 shadow-xl rotate-y-180 text-slate-900 border-2 border-white z-0">
                                         ${t.active ? `<i data-lucide="check" class="text-green-500 mb-2"></i><p class="text-sm font-bold leading-tight">${t.role}</p>` : `<p class="text-sm text-slate-400">Kurang berkaitan secara langsung</p>`}
                                     </div>
                                 </div>
@@ -366,7 +365,6 @@
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-5xl mx-auto px-4">
                     <h2 class="text-4xl font-chakra mb-8 text-white">KPI: ANALOGI BOLA SEPAK</h2>
                     
-                    <!-- Scoreboard -->
                     <div class="bg-black border-4 border-slate-700 rounded-3xl p-8 w-full max-w-3xl relative overflow-hidden mb-8 transition-all duration-500 ${kpiActive ? 'shadow-[0_0_50px_rgba(34,197,94,0.3)]' : 'grayscale opacity-80'}">
                         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
                         <div class="relative z-10 flex justify-between items-center text-green-500 font-mono">
@@ -389,7 +387,6 @@
                         ${kpiActive ? '"Sekarang kita tahu siapa menang! Kita tahu prestasi."' : '"Kalau tiada skor (KPI), main sampai pagi pun tak tahu siapa hebat."'}
                     </p>
 
-                    <!-- Toggle Button -->
                     <button onclick="toggleKPI()" class="px-8 py-3 rounded-full font-bold text-lg transition-all transform hover:scale-105 ${kpiActive ? 'bg-slate-600 text-white hover:bg-slate-500' : 'bg-green-600 text-white hover:bg-green-500 shadow-lg shadow-green-500/50'}">
                         ${kpiActive ? 'PADAM PAPAN SKOR' : 'HIDUPKAN KPI'}
                     </button>
@@ -411,7 +408,6 @@
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-                        <!-- S -->
                         <div class="bg-blue-900/40 p-8 rounded-2xl border border-blue-500/30 hover:border-blue-500 transition-all group">
                             <div class="text-6xl font-black text-blue-500 mb-4">S</div>
                             <h3 class="text-2xl font-bold text-white mb-2">SPECIFIC (Spesifik)</h3>
@@ -422,7 +418,6 @@
                             </div>
                         </div>
 
-                        <!-- M -->
                         <div class="bg-green-900/40 p-8 rounded-2xl border border-green-500/30 hover:border-green-500 transition-all group">
                             <div class="text-6xl font-black text-green-500 mb-4">M</div>
                             <h3 class="text-2xl font-bold text-white mb-2">MEASURABLE (Terukur)</h3>
@@ -441,19 +436,16 @@
                 html = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-                        <!-- A -->
                         <div class="bg-slate-800 p-6 rounded-2xl border border-slate-600">
                             <div class="text-5xl font-black text-yellow-500 mb-2">A</div>
                             <h3 class="text-xl font-bold text-white">ACHIEVABLE</h3>
                             <p class="text-sm text-slate-400 mt-2">Boleh dicapai. Jangan letak sasaran mustahil.</p>
                         </div>
-                        <!-- R -->
                         <div class="bg-slate-800 p-6 rounded-2xl border border-slate-600">
                             <div class="text-5xl font-black text-purple-500 mb-2">R</div>
                             <h3 class="text-xl font-bold text-white">RELEVANT</h3>
                             <p class="text-sm text-slate-400 mt-2">Berkaitan dengan tugas hakiki & gred jawatan.</p>
                         </div>
-                        <!-- T -->
                         <div class="bg-slate-800 p-6 rounded-2xl border border-slate-600">
                             <div class="text-5xl font-black text-pink-500 mb-2">T</div>
                             <h3 class="text-xl font-bold text-white">TIME-BOUND</h3>
@@ -497,14 +489,12 @@
                     
                     <div class="w-full bg-white rounded-3xl overflow-hidden shadow-2xl">
                         <div class="flex flex-col md:flex-row h-80">
-                            <!-- Bad -->
                             <div class="flex-1 bg-red-100 p-8 flex flex-col justify-center items-center text-center border-r border-slate-200">
                                 <div class="bg-red-500 text-white px-4 py-1 rounded-full text-sm font-bold mb-4">LEMAH</div>
                                 <p class="text-3xl font-bold text-slate-800 strike-through decoration-red-500 decoration-4">"Membuat surat."</p>
                                 <p class="text-red-600 mt-4 text-sm font-medium">Terlalu umum, tiada masa, tiada standard.</p>
                             </div>
                             
-                            <!-- Good (Hidden until click) -->
                             <div class="flex-1 bg-green-100 p-8 flex flex-col justify-center items-center text-center relative group cursor-pointer" onclick="this.classList.add('revealed')">
                                 <div class="absolute inset-0 bg-slate-800 flex items-center justify-center transition-opacity duration-500 z-10 group-hover:bg-slate-700 overlay">
                                     <p class="text-white font-bold animate-bounce">KLIK UNTUK JAWAPAN</p>
@@ -526,14 +516,12 @@
                     
                     <div class="w-full bg-white rounded-3xl overflow-hidden shadow-2xl">
                         <div class="flex flex-col md:flex-row h-80">
-                            <!-- Bad -->
                             <div class="flex-1 bg-red-100 p-8 flex flex-col justify-center items-center text-center border-r border-slate-200">
                                 <div class="bg-red-500 text-white px-4 py-1 rounded-full text-sm font-bold mb-4">LEMAH</div>
                                 <p class="text-3xl font-bold text-slate-800 strike-through decoration-red-500 decoration-4">"Jawab telefon."</p>
                                 <p class="text-red-600 mt-4 text-sm font-medium">Berapa cepat? Apa kualitinya?</p>
                             </div>
                             
-                            <!-- Good (Hidden until click) -->
                             <div class="flex-1 bg-green-100 p-8 flex flex-col justify-center items-center text-center relative group cursor-pointer" onclick="this.classList.add('revealed')">
                                 <div class="absolute inset-0 bg-slate-800 flex items-center justify-center transition-opacity duration-500 z-10 group-hover:bg-slate-700 overlay">
                                     <p class="text-white font-bold animate-bounce">KLIK UNTUK JAWAPAN</p>
@@ -598,129 +586,4 @@
                             <h4 class="font-bold text-white mb-2">KAUNSELING</h4>
                             <p class="text-sm text-slate-400">Rujuk pakar/rakan pembimbing.</p>
                         </div>
-                         <div class="bg-red-600/20 p-6 rounded-xl border border-red-600">
-                            <div class="text-4xl font-black text-red-500 mb-2">4</div>
-                            <h4 class="font-bold text-white mb-2">TATATERTIB</h4>
-                            <p class="text-sm text-slate-400">Tindakan disiplin (Exit).</p>
-                        </div>
-                    </div>
-                </div>`;
-            }
-
-            // --- 17. DOCUMENTATION ---
-            else if (slide.type === 'documentation') {
-                html = `
-                <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
-                    <div class="mb-8 relative">
-                         <div class="absolute inset-0 bg-blue-500 blur-3xl opacity-20 rounded-full"></div>
-                        <i data-lucide="book" width="100" height="100" class="text-indigo-400 relative z-10"></i>
-                    </div>
-                    <h2 class="text-5xl font-chakra mb-6 text-white font-bold">KUASA DOKUMENTASI</h2>
-                    <blockquote class="text-2xl text-indigo-200 italic max-w-3xl leading-relaxed border-l-4 border-indigo-500 pl-6">
-                        "Dalam perkhidmatan awam, apa yang tidak ditulis, dianggap <span class="text-white font-bold underline decoration-wavy">TIDAK BERLAKU</span>."
-                    </blockquote>
-                    <p class="mt-8 text-slate-400">Pastikan anda ada Buku Log Penyeliaan.</p>
-                </div>`;
-            }
-
-            // --- 18. CLOSING ---
-            else if (slide.type === 'closing') {
-                html = `
-                <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
-                    <h1 class="text-7xl font-chakra mb-8 text-white neon-blue font-black">TAMAT SLOT 3</h1>
-                    <div class="bg-slate-800 p-8 rounded-2xl border border-slate-600 max-w-2xl">
-                        <h3 class="text-2xl font-bold text-white mb-4">SESI SOAL JAWAB</h3>
-                        <p class="text-slate-400">"Ada sebarang persoalan mengenai SKT atau KPI?"</p>
-                    </div>
-                    <p class="mt-12 text-slate-500">Minum Pagi Disediakan.</p>
-                </div>`;
-            }
-
-            container.innerHTML = html;
-            lucide.createIcons();
-            updateProgressBar();
-        }
-
-        // --- LOGIC FUNCTIONS ---
-
-        function toggleKPI() {
-            kpiActive = !kpiActive;
-            renderSlide();
-        }
-
-        function toggleTeras(id) {
-            // Optional: Expand logic for Teras details
-        }
-
-        function toggleAnswer(index) {
-            // Logic handled by CSS in render
-        }
-
-        function startTimer(minutes) {
-            let timeLeft = minutes * 60;
-            const display = document.getElementById('timerDisplay');
-            if (timerInterval) clearInterval(timerInterval);
-
-            timerInterval = setInterval(() => {
-                const m = Math.floor(timeLeft / 60);
-                const s = timeLeft % 60;
-                display.textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    display.classList.add('text-red-500', 'animate-pulse');
-                }
-                timeLeft--;
-            }, 1000);
-        }
-
-        function resetTimer(minutes) {
-            if (timerInterval) clearInterval(timerInterval);
-            document.getElementById('timerDisplay').textContent = `${minutes}:00`;
-            document.getElementById('timerDisplay').classList.remove('text-red-500', 'animate-pulse');
-        }
-
-        function updateProgressBar() {
-            const bar = document.getElementById('progressBar');
-            bar.innerHTML = slides.map((_, i) => 
-                `<div class="h-2 rounded-full transition-all duration-300 ${i === currentSlide ? 'bg-blue-500 w-6 md:w-8' : 'bg-slate-700 w-2 md:w-4'}"></div>`
-            ).join('');
-
-            document.getElementById('slideCounter').innerText = `SLOT 3 / SLAID ${currentSlide + 1}`;
-            
-            const btnPrev = document.getElementById('btnPrev');
-            const btnNext = document.getElementById('btnNext');
-
-            btnPrev.disabled = currentSlide === 0;
-            
-            if (currentSlide === slides.length - 1) {
-                btnNext.innerHTML = 'TAMAT <i data-lucide="check-circle"></i>';
-                btnNext.classList.replace('bg-blue-600', 'bg-slate-700');
-            } else {
-                btnNext.innerHTML = 'SETERUSNYA <i data-lucide="arrow-right"></i>';
-                btnNext.classList.replace('bg-slate-700', 'bg-blue-600');
-            }
-        }
-
-        function nextSlide() {
-            if (currentSlide < slides.length - 1) {
-                currentSlide++;
-                renderSlide();
-            }
-        }
-
-        function prevSlide() {
-            if (currentSlide > 0) {
-                currentSlide--;
-                renderSlide();
-            }
-        }
-
-        renderSlide();
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
-            if (e.key === 'ArrowLeft') prevSlide();
-        });
-    </script>
-</body>
-</html>
+                         <div class="bg-red-600/20 p-6 rounded-xl border border
