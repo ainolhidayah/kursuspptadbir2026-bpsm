@@ -88,8 +88,15 @@
             {
                 id: 4, type: "quadrant", title: "4 GAYA KEPIMPINAN", subtitle: "Klik Kad Untuk Info (Teori Hersey-Blanchard)", bgColor: "bg-purple-50", textColor: "text-purple-900"
             },
+            
+            // --- SLAID BARU DITAMBAH DI SINI (SKILL VS WILL MATRIX - DIKEMASKINI) ---
             {
-                id: 5, type: "game", title: "DOKTOR KEPIMPINAN", subtitle: "Aktiviti Interaktif: Pilih 'Ubat' Yang Sesuai", bgColor: "bg-indigo-900", textColor: "text-white",
+                id: 5, type: "skill_will_matrix", title: "SKILL vs. WILL MATRIX", subtitle: "Menentukan Strategi (Klik Kad)", bgColor: "bg-white", textColor: "text-slate-900"
+            },
+            // ----------------------------------------------------------
+
+            {
+                id: 6, type: "game", title: "DOKTOR KEPIMPINAN", subtitle: "Aktiviti Interaktif: Pilih 'Ubat' Yang Sesuai", bgColor: "bg-indigo-900", textColor: "text-white",
                 scenarios: [
                     { text: "Staf baharu lapor diri hari pertama. Tak tahu guna sistem.", correct: "DIRECTING", reason: "Mereka perlukan arahan jelas, bukan delegasi." },
                     { text: "Pn. Salmah (15 tahun kerja) sangat cekap, tapi minggu ni murung masalah keluarga.", correct: "SUPPORTING", reason: "Dia tahu buat kerja, cuma emosi terganggu. Perlukan sokongan." },
@@ -102,10 +109,10 @@
             
             // --- BAHAGIAN 2: PENGARUH TANPA KUASA ---
             {
-                id: 6, type: "bank_intro", title: "BANK AKAUN EMOSI", subtitle: "Konsep Stephen Covey", bgColor: "bg-slate-900", textColor: "text-white"
+                id: 7, type: "bank_intro", title: "BANK AKAUN EMOSI", subtitle: "Konsep Stephen Covey", bgColor: "bg-slate-900", textColor: "text-white"
             },
             {
-                id: 7, type: "bank_simulation",
+                id: 8, type: "bank_simulation",
                 title: "SIMULASI: DEPOSIT ATAU PENGELUARAN?", subtitle: "Pilih Tindakan Anda Untuk Membina Kepercayaan", bgColor: "bg-emerald-900", textColor: "text-white",
                 situations: [
                     { q: "Staf buat salah kecil dalam surat.", optA: "Tegur depan orang ramai.", optB: "Panggil masuk bilik, tegur secara peribadi.", resA: -20, resB: 20, fbA: "PENGELUARAN BESAR! Anda memalukan dia.", fbB: "DEPOSIT! Anda menjaga air muka dia." },
@@ -121,12 +128,12 @@
                 ]
             },
             {
-                id: 8, type: "credibility_interactive",  title: "3K KREDIBILITI", subtitle: "Klik Kad Untuk Info", bgColor: "bg-slate-900", textColor: "text-white"
+                id: 9, type: "credibility_interactive",  title: "3K KREDIBILITI", subtitle: "Klik Kad Untuk Info", bgColor: "bg-slate-900", textColor: "text-white"
             },
 
             // --- BAHAGIAN 3: INTEGRITI & PENUTUP ---
             {
-                id: 9, type: "zoo", title: "ZOO KONFLIK", subtitle: "Kenali Gaya Anda (Thomas-Kilmann)", bgColor: "bg-orange-50", textColor: "text-orange-900",
+                id: 10, type: "zoo", title: "ZOO KONFLIK", subtitle: "Kenali Gaya Anda (Thomas-Kilmann)", bgColor: "bg-orange-50", textColor: "text-orange-900",
                 animals: [
                     { name: "JERUNG", style: "Competing", desc: "'Cara aku atau kau keluar.'", img: "https://img.icons8.com/color/96/shark.png", color: "bg-red-500" },
                     { name: "KURA-KURA", style: "Avoiding", desc: "'Tak apa lah, malas gaduh.'", img: "https://img.icons8.com/color/96/turtle.png", color: "bg-green-500" },
@@ -136,10 +143,10 @@
                 ]
             },
             {
-                id: 10, type: "dilemma", title: "KAJIAN KES: DILEMA PENYELIA", subtitle: "Ujian Integriti", bgColor: "bg-red-50", textColor: "text-red-900"
+                id: 11, type: "dilemma", title: "KAJIAN KES: DILEMA PENYELIA", subtitle: "Ujian Integriti", bgColor: "bg-red-50", textColor: "text-red-900"
             },
             {
-                id: 11, type: "closing", title: "PEMIMPIN IDOLA", subtitle: "Refleksi Akhir", bgColor: "bg-purple-950", textColor: "text-amber-400"
+                id: 12, type: "closing", title: "PEMIMPIN IDOLA", subtitle: "Refleksi Akhir", bgColor: "bg-purple-950", textColor: "text-amber-400"
             }
         ];
 
@@ -316,9 +323,96 @@
                 </div>`;
             }
 
-            // --- 5. DOCTOR GAME ---
+            // --- 5. NEW SLIDE: SKILL vs WILL MATRIX ---
+            else if (slide.type === 'skill_will_matrix') {
+                contentHtml = `
+                <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4 relative">
+                    <div class="text-center mb-6 z-10">
+                        <h2 class="text-4xl font-black text-slate-900 mb-2">SKILL vs. WILL MATRIX</h2>
+                        <p class="text-slate-600 text-xl">Menentukan Strategi Berdasarkan Kemahuan & Kemahiran</p>
+                    </div>
+
+                    <!-- AXES & LABELS -->
+                    <div class="absolute inset-0 pointer-events-none flex items-center justify-center z-0 pt-16">
+                        <!-- Vertical Axis (WILL) -->
+                        <div class="h-[520px] w-2 bg-slate-300 absolute"></div>
+                        <div class="absolute top-[80px] text-slate-400 font-bold">TINGGI</div>
+                        <div class="absolute bottom-[20px] text-slate-400 font-bold">RENDAH</div>
+                        <div class="absolute left-[5%] top-1/2 -translate-y-1/2 -rotate-90 text-slate-500 font-black text-2xl tracking-widest">KEMAHUAN (WILL)</div>
+
+                        <!-- Horizontal Axis (SKILL) -->
+                        <div class="w-[80%] h-2 bg-slate-300 absolute"></div>
+                        <div class="absolute left-[10%] bottom-[40%] text-slate-400 font-bold">RENDAH</div>
+                        <div class="absolute right-[10%] bottom-[40%] text-slate-400 font-bold">TINGGI</div>
+                        <div class="absolute bottom-[20px] text-slate-500 font-black text-2xl tracking-widest">KEMAHIRAN (SKILL)</div>
+                        
+                        <!-- Center Arrow Cross -->
+                         <div class="absolute text-slate-400 text-6xl"></div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-12 w-full max-w-4xl h-[450px] relative z-10">
+                        
+                        <!-- High Will / Low Skill (Training) - Yellow (Top Left) -->
+                        <div class="relative w-full h-full perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
+                            <div class="card-inner relative w-full h-full text-center transition-transform duration-700 transform-style-3d">
+                                <div class="absolute w-full h-full backface-hidden bg-yellow-400 rounded-3xl flex flex-col items-center justify-center p-4 shadow-xl border-4 border-slate-100">
+                                    <h3 class="text-3xl font-black text-slate-900 uppercase">Training</h3>
+                                </div>
+                                <div class="absolute w-full h-full backface-hidden bg-white rounded-3xl flex flex-col items-center justify-center p-6 text-slate-800 border-4 border-yellow-400 rotate-y-180">
+                                    <h4 class="font-bold text-lg mb-2 text-yellow-600">Guide / Latih</h4>
+                                    <p class="text-sm">Beri panduan jelas & struktur. Mereka mahu buat tapi belum pandai.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- High Will / High Skill (Coaching) - Green (Top Right) -->
+                        <div class="relative w-full h-full perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
+                            <div class="card-inner relative w-full h-full text-center transition-transform duration-700 transform-style-3d">
+                                <div class="absolute w-full h-full backface-hidden bg-green-500 rounded-3xl flex flex-col items-center justify-center p-4 shadow-xl border-4 border-slate-100">
+                                    <h3 class="text-3xl font-black text-white uppercase">Coaching</h3>
+                                </div>
+                                <div class="absolute w-full h-full backface-hidden bg-white rounded-3xl flex flex-col items-center justify-center p-6 text-slate-800 border-4 border-green-500 rotate-y-180">
+                                    <h4 class="font-bold text-lg mb-2 text-green-600">Delegate / Empower</h4>
+                                    <p class="text-sm">Beri kebebasan. Fokus pada hasil. Mereka pakar & bermotivasi.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Low Will / Low Skill (Direct) - Blue (Bottom Left) -->
+                        <div class="relative w-full h-full perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
+                            <div class="card-inner relative w-full h-full text-center transition-transform duration-700 transform-style-3d">
+                                <div class="absolute w-full h-full backface-hidden bg-blue-400 rounded-3xl flex flex-col items-center justify-center p-4 shadow-xl border-4 border-slate-100">
+                                    <h3 class="text-3xl font-black text-white uppercase">Direct</h3>
+                                </div>
+                                <div class="absolute w-full h-full backface-hidden bg-white rounded-3xl flex flex-col items-center justify-center p-6 text-slate-800 border-4 border-blue-400 rotate-y-180">
+                                    <h4 class="font-bold text-lg mb-2 text-blue-600">Direct / Supervise</h4>
+                                    <p class="text-sm">Perlukan arahan ketat. Bina kemahiran & kemahuan serentak.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Low Will / High Skill (Inspire) - Grey (Bottom Right) -->
+                        <div class="relative w-full h-full perspective-1000 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
+                            <div class="card-inner relative w-full h-full text-center transition-transform duration-700 transform-style-3d">
+                                <div class="absolute w-full h-full backface-hidden bg-slate-400 rounded-3xl flex flex-col items-center justify-center p-4 shadow-xl border-4 border-slate-100">
+                                    <h3 class="text-3xl font-black text-white uppercase">Inspire</h3>
+                                </div>
+                                <div class="absolute w-full h-full backface-hidden bg-white rounded-3xl flex flex-col items-center justify-center p-6 text-slate-800 border-4 border-slate-400 rotate-y-180">
+                                    <h4 class="font-bold text-lg mb-2 text-slate-600">Excite / Support</h4>
+                                    <p class="text-sm">Cari punca demotivasi. Beri sokongan emosi. Pandai tapi 'tak kuasa'.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>`;
+            }
+
+            // --- 6. DOCTOR GAME ---
             else if (slide.type === 'game') {
-                const scenario = slide.scenarios[currentScenarioIndex];
+                const gameSlide = slides.find(s => s.type === 'game');
+                const scenario = gameSlide.scenarios[currentScenarioIndex];
+                
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-4xl mx-auto px-4">
                     <div class="flex items-center gap-3 mb-6 bg-white/10 px-6 py-2 rounded-full justify-between w-full">
@@ -350,7 +444,7 @@
                 </div>`;
             }
 
-            // --- 6. BANK INTRO ---
+            // --- 7. BANK INTRO ---
             else if (slide.type === 'bank_intro') {
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter text-center px-4">
@@ -366,9 +460,11 @@
                 </div>`;
             }
 
-            // --- 7. BANK SIMULATION ---
+            // --- 8. BANK SIMULATION ---
             else if (slide.type === 'bank_simulation') {
-                const situation = slide.situations[currentBankSimIndex];
+                // Ensure situations are accessed correctly even after adding a slide
+                const bankSlide = slides.find(s => s.type === 'bank_simulation');
+                const situation = bankSlide.situations[currentBankSimIndex];
                 
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-5xl mx-auto px-4">
@@ -438,7 +534,7 @@
                 </div>`;
             }
 
-            // --- 8. KREDIBILITI (INTERACTIVE) ---
+            // --- 9. KREDIBILITI (INTERACTIVE) ---
             else if (slide.type === 'credibility_interactive') {
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full max-w-6xl mx-auto px-4">
@@ -494,7 +590,7 @@
                 </div>`;
             }
 
-            // --- 9. ZOO KONFLIK ---
+            // --- 10. ZOO KONFLIK ---
             else if (slide.type === 'zoo') {
                  contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter w-full px-4">
@@ -519,7 +615,7 @@
                 </div>`;
             }
 
-            // --- 10. DILEMMA ---
+            // --- 11. DILEMMA ---
             else if (slide.type === 'dilemma') {
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full slide-enter px-4 max-w-5xl mx-auto text-center">
@@ -537,7 +633,7 @@
                 </div>`;
             }
 
-            // --- 11. CLOSING (MODIFIED TO ADD BUTTON) ---
+            // --- 12. CLOSING (MODIFIED TO ADD BUTTON) ---
             else if (slide.type === 'closing') {
                 contentHtml = `
                 <div class="flex flex-col items-center justify-center h-full text-center slide-enter px-4">
@@ -549,7 +645,6 @@
                         <p class="mt-4 text-sm text-slate-400">Jumpa semula jam 2.30 Petang.</p>
                     </div>
                     
-                    <!-- NEW BUTTON ADDED HERE -->
                     <a href="index.html" class="group px-8 py-4 rounded-full font-bold bg-slate-800 hover:bg-amber-600 border border-slate-600 hover:border-amber-400 text-white transition-all flex items-center gap-3 hover:scale-105 shadow-lg">
                         <i data-lucide="home" class="group-hover:animate-bounce"></i> 
                         KEMBALI KE MENU UTAMA
@@ -564,7 +659,10 @@
 
         // --- Interactive Functions ---
         function checkAnswer(answer) {
-            const scenario = slides[4].scenarios[currentScenarioIndex];
+            // Find the slide with type 'game' in the slides array to get correct scenarios
+            const gameSlide = slides.find(s => s.type === 'game');
+            const scenario = gameSlide.scenarios[currentScenarioIndex];
+            
             const resultDiv = document.getElementById('feedbackResult');
             const nextBtn = document.getElementById('btnNextGame');
             
@@ -610,7 +708,10 @@
 
         // BANK SIMULATION LOGIC
         function chooseBankOption(choice) {
-            const situation = slides[6].situations[currentBankSimIndex];
+            // Find the slide with type 'bank_simulation' in the slides array
+            const bankSlide = slides.find(s => s.type === 'bank_simulation');
+            const situation = bankSlide.situations[currentBankSimIndex];
+            
             const change = choice === 'A' ? situation.resA : situation.resB;
             const feedbackTitle = change > 0 ? "DEPOSIT BERJAYA!" : "PENGELUARAN!";
             const feedbackText = choice === 'A' ? situation.fbA : situation.fbB;
